@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Zhang Jun Wei 的部落格</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html{ scroll-behavior:smooth; }
+
+body{
+  font-family:'Inter','Noto Sans TC',sans-serif;
+  background: radial-gradient(circle at top,#1e293b 0%,#020617 60%);
+  color:white;
+  overflow-x:hidden;
+}
+
+section{ padding:120px 8%; }
+
+/* NAV */
+.navbar{
+  position:fixed;
+  width:100%;
+  top:0;
+  z-index:999;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 8%;
+  background:rgba(2,6,23,0.65);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}
+
+.logo{
+  font-size:1.2rem;
+  font-weight:800;
+}
+
+.nav-links{
+  display:flex;
+  gap:28px;
+}
+
+.nav-links a{
+  text-decoration:none;
+  color:#cbd5e1;
+}
+
+/* HERO */
+.hero{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+}
+
+.hero-grid{
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:80px;
+  align-items:center;
+}
+
+.hero h1{
+  font-size:clamp(4rem,9vw,7rem);
+  line-height:.9;
+}
+
+.hero p{
+  color:#94a3b8;
+  line-height:2;
+}
+
+/* BUTTON */
+.btn{
+  padding:14px 28px;
+  border-radius:999px;
+  text-decoration:none;
+  font-weight:700;
+}
+
+.primary{
+  background:linear-gradient(135deg,#38bdf8,#0ea5e9);
+  color:white;
+}
+
+.secondary{
+  border:1px solid rgba(255,255,255,.1);
+  color:white;
+}
+
+/* HERO IMAGE FIX */
+.hero-image img{
+  width:100%;
+  height:420px;
+  object-fit:cover;
+  border-radius:30px;
+}
+
+/* STATUS */
+.status-card{
+  margin-top:20px;
+  padding:20px;
+  background:rgba(255,255,255,.07);
+  border-radius:20px;
+}
+
+/* ABOUT */
+.glass{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:20px;
+  padding:30px;
+}
+
+/* PHOTO */
+.photo-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:20px;
+}
+
+.photo-grid img{
+  width:100%;
+  height:300px;
+  object-fit:cover;
+  border-radius:20px;
+}
+
+/* GAME */
+.game-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:20px;
+}
+
+.game-card{
+  background:rgba(255,255,255,.05);
+  border-radius:20px;
+  overflow:hidden;
+}
+
+.game-card img{
+  width:100%;
+  height:200px;
+  object-fit:cover;
+}
+
+/* CONTACT */
+.contact{
+  background:rgba(255,255,255,.05);
+  padding:40px;
+  border-radius:20px;
+}
+
+.contact a{
+  color:#38bdf8;
+  text-decoration:none;
+}
+
+/* FOOTER */
+.footer{
+  text-align:center;
+  padding:60px;
+  border-top:1px solid rgba(255,255,255,.1);
+  color:#94a3b8;
+}
+
+/* MOBILE */
+@media(max-width:900px){
+  .hero-grid{ grid-template-columns:1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<nav class="navbar">
+  <div class="logo">Zhang Jun Wei</div>
+
+  <div class="nav-links">
+    <a href="#about">關於</a>
+    <a href="#photo">攝影</a>
+    <a href="#game">遊戲</a>
+    <a href="#contact">聯絡</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-grid">
+
+    <div>
+      <h1>Zhang<br>Jun Wei</h1>
+
+      <p>
+        17歲｜今年6月滿18｜攝影 / 剪輯 / 音樂<br><br>
+        基隆雨港生活紀錄，喜歡用鏡頭保存日常。
+      </p>
+
+      <div style="margin-top:30px;display:flex;gap:10px;">
+        <a class="btn primary" href="#photo">Explore</a>
+        <a class="btn secondary" href="https://www.instagram.com/_zhang_0.6.2.6_/" target="_blank">Instagram</a>
+      </div>
+    </div>
+
+    <div class="hero-image">
+      <img src="https://i.ibb.co/7d5rDrnR/image.png">
+
+      <div class="status-card">
+        📌 目前狀態：休學中（9/1 復學）<br>
+        🎯 專注攝影、剪輯與生活成長
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="about">
+  <h2>關於我</h2>
+
+  <div class="glass">
+    在雨港基隆生活，喜歡用相機記錄城市與時間。
+    現階段正在探索攝影與剪輯風格，希望未來能做成自己的作品品牌。
+  </div>
+</section>
+
+<section id="photo">
+  <h2>基隆與二信高中生活</h2>
+
+  <div class="photo-grid">
+    <img src="https://i.ibb.co/fV0VKky3/image.jpg">
+    <img src="https://i.ibb.co/Nk2Lr2q/image.jpg">
+    <img src="https://i.ibb.co/1DSnx1V/image.jpg">
+    <img src="https://i.ibb.co/Z1JM13ns/image.jpg">
+  </div>
+</section>
+
+<section id="game">
+  <h2>遊戲時光</h2>
+
+  <div class="game-grid">
+
+    <div class="game-card">
+      <img src="https://i.ibb.co/Y7X3WYPP/image.jpg">
+      <div style="padding:15px;">
+        <h3>極速領域</h3>
+        <p>賽道上的青春與速度感。</p>
+      </div>
+    </div>
+
+    <div class="game-card">
+      <img src="https://i.ibb.co/4w3Pny0X/image.jpg">
+      <div style="padding:15px;">
+        <h3>Roblox</h3>
+        <p>和朋友一起亂玩亂笑的世界。</p>
+      </div>
+    </div>
+
+    <div class="game-card">
+      <img src="https://i.ibb.co/dwrTYxGD/image.jpg">
+      <div style="padding:15px;">
+        <h3>WePlay</h3>
+        <p>每天聚在一起的社交空間。</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="margin-top:40px;" class="glass">
+    🎮 PC 電腦遊戲特輯<br><br>
+    Minecraft / Asphalt 9 / Pixel Gun 3D<br><br>
+    方塊建築、飆車與射擊構成的熱血回憶。
+  </div>
+</section>
+
+<section id="contact">
+  <h2>聯絡我</h2>
+
+  <div class="contact">
+    Email：<a href="mailto:chang.zhangjunwei0712@gmail.com">chang.zhangjunwei0712@gmail.com</a><br><br>
+
+    Discord：_zhang_0.6.2.6_<br><br>
+
+    Instagram：<a href="https://www.instagram.com/_zhang_0.6.2.6_/" target="_blank">_zhang_0.6.2.6_</a><br><br>
+
+    WhatsApp：
+<a href="https://wa.me/886922051439" target="_blank">
++886 922 051 439
+</a>
+（不接受簡訊）
+  </div>
+</section>
+
+<footer class="footer">
+  Zhang Jun Wei © 2026
+</footer>
+
+</body>
+</html>
