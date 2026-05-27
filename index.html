@@ -5,16 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
 <title>Zhang Jun Wei | 攝影・剪輯・創作</title>
 
-<!-- 預先載入主題色 -->
-<script>
-  (function() {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'light') {
-      document.documentElement.style.backgroundColor = '#f5f7fa';
-    }
-  })();
-</script>
-
 <style>
   /* ========== CSS 變數 ========== */
   :root {
@@ -32,7 +22,6 @@
     --input-bg: rgba(0,0,0,0.4);
     --comment-hover: rgba(76,195,255,0.1);
     --shadow-color: rgba(0,0,0,0.3);
-    --mouse-glow: radial-gradient(600px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(76,195,255,0.1), transparent 45%);
   }
 
   [data-theme="light"] {
@@ -73,60 +62,10 @@
     cursor: none;
   }
 
-  /* ========== 客製化捲軸 ========== */
+  /* 客製化捲軸 */
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: rgba(76,195,255,0.05); border-radius: 10px; }
   ::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 10px; }
-
-  /* ========== 背景特效層 ========== */
-  .noise-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    pointer-events: none; z-index: 1; opacity: 0.06;
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJmIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjgiIG51bU9jdGF2ZXM9IjMiLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjZikiLz48L3N2Zz4=');
-    background-repeat: repeat; mix-blend-mode: overlay;
-  }
-  .bokeh-container {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    pointer-events: none; z-index: 0; overflow: hidden;
-  }
-  .bokeh {
-    position: absolute; border-radius: 50%;
-    background: radial-gradient(circle, rgba(76,195,255,0.12) 0%, rgba(76,195,255,0) 70%);
-    filter: blur(12px); animation: floatBokeh 25s infinite ease-in-out;
-  }
-  @keyframes floatBokeh {
-    0% { transform: translate(0, 0) scale(1); opacity: 0.4; }
-    50% { transform: translate(40px, -30px) scale(1.15); opacity: 0.7; }
-    100% { transform: translate(-25px, 15px) scale(0.9); opacity: 0.4; }
-  }
-  .bokeh:nth-child(1) { width: 200px; height: 200px; top: 5%; left: 5%; animation-duration: 28s; }
-  .bokeh:nth-child(2) { width: 320px; height: 320px; bottom: 0%; right: -5%; animation-duration: 35s; animation-delay: 2s; }
-  .bokeh:nth-child(3) { width: 140px; height: 140px; top: 45%; right: 10%; animation-duration: 20s; animation-delay: 5s; }
-  .bokeh:nth-child(4) { width: 380px; height: 380px; bottom: -15%; left: -10%; animation-duration: 40s; animation-delay: 1s; }
-  .light-sweep {
-    position: fixed; top: 0; left: -100%; width: 100%; height: 100%;
-    background: linear-gradient(115deg, rgba(76,195,255,0) 0%, rgba(76,195,255,0.04) 40%, rgba(76,195,255,0.08) 50%, rgba(76,195,255,0.04) 60%, rgba(76,195,255,0) 100%);
-    pointer-events: none; z-index: 2; animation: sweepLight 22s infinite ease-in-out; transform: skewX(-15deg);
-  }
-  @keyframes sweepLight { 0% { left: -100%; opacity: 0; } 10% { opacity: 0.6; } 20% { left: 100%; opacity: 0; } 100% { left: 100%; opacity: 0; } }
-  .particles-container {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    pointer-events: none; z-index: 1; overflow: hidden;
-  }
-  .particle {
-    position: absolute; background: rgba(76,195,255,0.3); border-radius: 50%; filter: blur(1px);
-    animation: floatParticle 18s infinite linear;
-  }
-  @keyframes floatParticle {
-    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-    20% { opacity: 0.5; }
-    80% { opacity: 0.5; }
-    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
-  }
-  .mouse-glow-bg {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    pointer-events: none; z-index: 3; background: var(--mouse-glow); transition: background 0.08s ease;
-  }
 
   /* 自訂游標 */
   .custom-cursor-glow {
@@ -139,10 +78,7 @@
     position: fixed; pointer-events: none; z-index: 10000; transition: 0.05s ease;
     transform: translate(-50%, -50%);
   }
-  @media (max-width: 768px) {
-    body { cursor: auto; }
-    .custom-cursor-glow, .custom-cursor-dot { display: none; }
-  }
+  @media (max-width: 768px) { body { cursor: auto; } .custom-cursor-glow, .custom-cursor-dot { display: none; } }
 
   .ripple {
     position: fixed; border-radius: 50%; background: var(--accent-color);
@@ -216,7 +152,7 @@
     width: fit-content; margin-left: auto; margin-right: auto; position: relative; z-index: 10;
   }
 
-  .hero, section, .skills-section, .message-board, .quote-block, .timeline-section, .social-links {
+  .hero, section, .skills-section, .message-board, .quote-block, .timeline-section, .social-links, .cbox-container {
     position: relative; z-index: 10;
   }
 
@@ -233,28 +169,28 @@
   .hero-img { flex: 0.8; display: flex; justify-content: center; }
   .hero img { width: 100%; max-width: 280px; border-radius: 2rem; transition: transform 0.5s; box-shadow: 0 30px 40px -15px var(--shadow-color); border: 1px solid var(--border-color); }
 
-  section, .skills-section, .message-board, .quote-block, .timeline-section, .social-links {
+  section, .skills-section, .message-board, .quote-block, .timeline-section, .social-links, .cbox-container {
     width: 92%; max-width: 1300px; margin: 1.8rem auto; padding: 1.8rem;
     background: var(--card-bg); backdrop-filter: blur(12px); border-radius: 1.5rem;
     opacity: 0; transform: translateY(40px) scale(0.98);
     transition: 0.8s cubic-bezier(0.2, 0.85, 0.3, 1);
     border: 0.5px solid var(--border-color);
   }
-  section.show, .skills-section.show, .message-board.show, .quote-block.show, .timeline-section.show, .social-links.show { opacity: 1; transform: translateY(0) scale(1); }
+  section.show, .skills-section.show, .message-board.show, .quote-block.show, .timeline-section.show, .social-links.show, .cbox-container.show { opacity: 1; transform: translateY(0) scale(1); }
   
-  section h2, .skills-section h2, .timeline-section h2, .social-links h2 {
+  section h2, .skills-section h2, .timeline-section h2, .social-links h2, .cbox-container h2 {
     font-size: 1.6rem; font-weight: 620; margin-bottom: 1.5rem;
     background: linear-gradient(120deg, var(--text-primary), var(--accent-color));
     background-clip: text; -webkit-background-clip: text; color: transparent;
     display: flex; align-items: center; gap: 1rem;
   }
-  section h2::before, .skills-section h2::before, .timeline-section h2::before, .social-links h2::before {
+  section h2::before, .skills-section h2::before, .timeline-section h2::before, .social-links h2::before, .cbox-container h2::before {
     content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
   }
-  section h2::after, .skills-section h2::after, .timeline-section h2::after, .social-links h2::after {
+  section h2::after, .skills-section h2::after, .timeline-section h2::after, .social-links h2::after, .cbox-container h2::after {
     content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
   }
-  section h2 span, .skills-section h2 span, .timeline-section h2 span, .social-links h2 span { margin: 0 1rem; }
+  section h2 span, .skills-section h2 span, .timeline-section h2 span, .social-links h2 span, .cbox-container h2 span { margin: 0 1rem; }
 
   .about-card { background: rgba(255, 255, 255, 0.03); padding: 1.2rem; border-radius: 1.2rem; display: flex; flex-wrap: wrap; gap: 0.8rem; justify-content: center; }
   .info-row { display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.25); padding: 0.5rem 1.2rem; border-radius: 60px; font-size: 0.85rem; transition: all 0.2s; }
@@ -267,7 +203,7 @@
   .skill-bar-bg { background: var(--progress-bg); border-radius: 20px; height: 6px; overflow: hidden; }
   .skill-bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--accent-color), #a0e0ff); border-radius: 20px; transition: width 1.2s cubic-bezier(0.2, 0.9, 0.4, 1); }
 
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1.2rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.2rem; }
   .photo-item { border-radius: 1rem; overflow: hidden; background: rgba(0, 0, 0, 0.3); position: relative; transition: all 0.4s; }
   .photo-item:hover { transform: translateY(-5px); box-shadow: 0 15px 25px -10px var(--shadow-color); }
   .photo-item img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; transition: transform 0.6s; }
@@ -307,48 +243,21 @@
   .social-card { background: rgba(255,255,255,0.05); padding: 0.8rem 1.5rem; border-radius: 60px; display: flex; align-items: center; gap: 8px; transition: 0.2s; text-decoration: none; color: var(--text-secondary); cursor: pointer; }
   .social-card:hover { background: var(--accent-glow); transform: translateY(-3px); color: var(--accent-color); }
 
-  /* 聯絡區塊 - 正常顏色 */
   .contact { display: flex; flex-direction: column; gap: 0.8rem; }
-  .contact-item {
-    background: rgba(255, 255, 255, 0.04);
-    padding: 0.7rem 1rem;
-    border-radius: 60px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-  }
+  .contact-item { background: rgba(255, 255, 255, 0.04); padding: 0.7rem 1rem; border-radius: 60px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 0.8rem; color: var(--text-secondary); }
   .contact-icon { font-size: 1.2rem; min-width: 28px; }
-  .contact-item a {
-    color: var(--text-secondary);
-    text-decoration: none;
-  }
-  .write-email-btn, .suggestion-nav-btn, .copy-tip-btn {
-    background: rgba(76, 195, 255, 0.1);
-    border: 0.5px solid var(--border-color);
-    padding: 3px 10px;
-    border-radius: 40px;
-    font-size: 0.65rem;
-    cursor: pointer;
-    margin-left: auto;
-    transition: 0.2s;
-    color: var(--text-secondary);
-  }
-  .write-email-btn:hover, .suggestion-nav-btn:hover, .copy-tip-btn:hover {
-    background: var(--accent-color);
-    color: #0a1420;
-  }
+  .contact-item a { color: var(--text-secondary); text-decoration: none; }
+  .write-email-btn, .suggestion-nav-btn, .copy-tip-btn { background: rgba(76, 195, 255, 0.1); border: 0.5px solid var(--border-color); padding: 3px 10px; border-radius: 40px; font-size: 0.65rem; cursor: pointer; margin-left: auto; transition: 0.2s; color: var(--text-secondary); }
+  .write-email-btn:hover, .suggestion-nav-btn:hover, .copy-tip-btn:hover { background: var(--accent-color); color: #0a1420; }
 
-  .message-input-area { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.5rem; }
-  .message-input-area input, .message-input-area textarea { background: var(--input-bg); border: 1px solid var(--border-color); padding: 0.7rem 1rem; border-radius: 60px; color: var(--text-primary); outline: none; }
-  .message-input-area button { background: var(--accent-color); border: none; padding: 0.6rem; border-radius: 60px; font-weight: bold; color: #0a1420; cursor: pointer; width: 110px; }
-  .comments-list { max-height: 400px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.7rem; }
-  .comment-item { background: rgba(255,255,255,0.04); padding: 0.7rem 0.8rem; border-radius: 1rem; border-left: 3px solid var(--accent-color); position: relative; padding-right: 50px; }
-  .comment-name { font-weight: bold; color: var(--accent-color); font-size: 0.75rem; }
-  .comment-text { font-size: 0.8rem; margin-top: 4px; }
-  .delete-comment { position: absolute; top: 8px; right: 8px; background: rgba(255,80,80,0.15); border: none; color: #ffaaaa; font-size: 0.65rem; cursor: pointer; padding: 3px 6px; border-radius: 20px; }
+  /* Cbox 留言板容器 */
+  .cbox-iframe {
+    width: 100%;
+    height: 500px;
+    border: none;
+    border-radius: 1rem;
+    background: rgba(255,255,255,0.05);
+  }
 
   .form-iframe-container iframe { width: 100%; height: 1600px; border: none; background: transparent; }
   .copy-toast { position: fixed; bottom: 30%; left: 50%; transform: translateX(-50%); background: var(--accent-color); color: #0a1420; padding: 8px 16px; border-radius: 40px; font-size: 0.8rem; font-weight: bold; z-index: 10000; animation: toastFade 1.5s ease forwards; pointer-events: none; }
@@ -360,7 +269,7 @@
     .hero { padding: 8rem 6% 4rem; }
     .hero-text { text-align: left; }
     .hero-stats { justify-content: flex-start; }
-    .grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+    .grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
     .game-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
     .form-iframe-container iframe { height: 1450px; }
     .scroll-top-circle { right: 6rem; }
@@ -373,17 +282,11 @@
     .music-toggle { right: 1rem; bottom: 1rem; }
     .lang-switch { top: 4.5rem; right: 0.8rem; }
     .lang-btn { padding: 0.2rem 0.5rem; font-size: 0.6rem; }
+    .cbox-iframe { height: 450px; }
   }
 </style>
 </head>
 <body>
-
-<!-- 背景特效層 -->
-<div class="noise-overlay"></div>
-<div class="bokeh-container"><div class="bokeh"></div><div class="bokeh"></div><div class="bokeh"></div><div class="bokeh"></div></div>
-<div class="light-sweep"></div>
-<div class="particles-container" id="particlesContainer"></div>
-<div class="mouse-glow-bg" id="mouseGlowBg"></div>
 
 <!-- 自訂游標 -->
 <div class="custom-cursor-glow" id="customCursorGlow"></div>
@@ -476,27 +379,11 @@
   <div class="skill-item"><div class="skill-header"><span data-key="skill_creative">💡 創意</span><span class="skill-percent">80%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" data-width="80"></div></div></div>
 </div>
 
-<!-- 作品分類標籤 -->
-<div class="category-tags">
-  <span class="category-tag active" data-key="cat_all">📷 全部</span>
-  <span class="category-tag" data-key="cat_street">🌆 街拍</span>
-  <span class="category-tag" data-key="cat_portrait">👤 人像</span>
-  <span class="category-tag" data-key="cat_landscape">🏞️ 風景</span>
-</div>
-
 <!-- 攝影作品 -->
-<section id="photo"><h2><span data-key="photo_title">📷 攝影作品</span></h2><div class="grid">
-  <div class="photo-item" data-id="0"><img src="https://i.ibb.co/fV0VKky3/image.jpg" alt="城市光影" loading="lazy"><div class="photo-caption">城市光影 · 基隆港</div><div class="like-container"><button class="like-btn" data-id="0">❤️</button><span class="like-count" id="likeCount0">0</span></div></div>
-  <div class="photo-item" data-id="1"><img src="https://i.ibb.co/Nk2Lr2q/image.jpg" alt="日常凝視" loading="lazy"><div class="photo-caption">日常凝視 · 瞬間</div><div class="like-container"><button class="like-btn" data-id="1">❤️</button><span class="like-count" id="likeCount1">0</span></div></div>
-  <div class="photo-item" data-id="2"><img src="https://i.ibb.co/1DSnx1V/image.jpg" alt="色溫敘事" loading="lazy"><div class="photo-caption">色溫 · 敘事</div><div class="like-container"><button class="like-btn" data-id="2">❤️</button><span class="like-count" id="likeCount2">0</span></div></div>
-  <div class="photo-item" data-id="3"><img src="https://i.ibb.co/Z1JM13ns/image.jpg" alt="街頭故事" loading="lazy"><div class="photo-caption">街頭故事</div><div class="like-container"><button class="like-btn" data-id="3">❤️</button><span class="like-count" id="likeCount3">0</span></div></div>
-  <div class="photo-item" data-id="4"><img src="https://i.ibb.co/vvxHPTjC/image.jpg" alt="作品5" loading="lazy"><div class="photo-caption">光影敘事 · 系列五</div><div class="like-container"><button class="like-btn" data-id="4">❤️</button><span class="like-count" id="likeCount4">0</span></div></div>
-  <div class="photo-item" data-id="5"><img src="https://i.ibb.co/PZvQqvb9/image.jpg" alt="作品6" loading="lazy"><div class="photo-caption">瞬間永恆 · 系列六</div><div class="like-container"><button class="like-btn" data-id="5">❤️</button><span class="like-count" id="likeCount5">0</span></div></div>
-  <div class="photo-item" data-id="6"><img src="https://i.ibb.co/S4wm44m0/image.jpg" alt="作品7" loading="lazy"><div class="photo-caption">城市脈動 · 系列七</div><div class="like-container"><button class="like-btn" data-id="6">❤️</button><span class="like-count" id="likeCount6">0</span></div></div>
-  <div class="photo-item" data-id="7"><img src="https://i.ibb.co/MkzY2cdB/image.jpg" alt="作品8" loading="lazy"><div class="photo-caption">視覺詩篇 · 系列八</div><div class="like-container"><button class="like-btn" data-id="7">❤️</button><span class="like-count" id="likeCount7">0</span></div></div>
-  <div class="photo-item" data-id="8"><img src="https://i.ibb.co/TDM0d7dZ/image.jpg" alt="作品9" loading="lazy"><div class="photo-caption">靜謐時光 · 系列九</div><div class="like-container"><button class="like-btn" data-id="8">❤️</button><span class="like-count" id="likeCount8">0</span></div></div>
-  <div class="photo-item" data-id="9"><img src="https://i.ibb.co/m5hBMSQQ/image.jpg" alt="作品10" loading="lazy"><div class="photo-caption">鏡頭之外 · 系列十</div><div class="like-container"><button class="like-btn" data-id="9">❤️</button><span class="like-count" id="likeCount9">0</span></div></div>
-</div><p style="text-align:center; margin-top:12px; font-size:0.7rem; opacity:0.45;" data-key="photo_hint">🖱️ 滑鼠移到照片可放大 + 點擊愛心按讚/取消讚</p></section>
+<section id="photo"><h2><span data-key="photo_title">📷 攝影作品</span></h2>
+  <div class="grid" id="photoGrid"></div>
+  <p style="text-align:center; margin-top:12px; font-size:0.7rem; opacity:0.45;" data-key="photo_hint">🖱️ 滑鼠移到照片可放大 + 點擊愛心按讚/取消讚</p>
+</section>
 
 <!-- 遊戲區塊 -->
 <section id="game"><h2><span data-key="game_title">🎮 熱玩遊戲</span></h2><div class="game-grid">
@@ -521,7 +408,7 @@
   <a href="https://instagram.com/_zhang_0.6.2.6_" target="_blank" class="social-card">📷 Instagram</a>
 </div></div>
 
-<!-- 聯絡 - 正常顏色 -->
+<!-- 聯絡 -->
 <section id="contact"><h2><span data-key="contact_title">📬 與我聯繫</span></h2><div class="contact">
   <div class="contact-item"><span class="contact-icon">📧</span><a href="mailto:chang.zhangjunwei0712@gmail.com">chang.zhangjunwei0712@gmail.com</a><button class="write-email-btn" id="writeEmailBtn" data-key="contact_write">✉️ 寫信</button></div>
   <div class="contact-item"><span class="contact-icon">🎮</span><div>Discord: <strong>_zhang_0.6.2.6_</strong></div><button class="copy-tip-btn" id="copyDiscordBtn" data-key="contact_copy">📋 複製ID</button></div>
@@ -530,8 +417,19 @@
   <div class="contact-item"><span class="contact-icon">📝</span><span data-key="contact_suggest">作品建議</span><button class="suggestion-nav-btn" id="suggestionNavBtn" data-key="contact_fill">📋 填寫</button></div>
 </div></section>
 
-<!-- 留言板 -->
-<div class="message-board"><h3 data-key="board_title">💬 留言板</h3><div class="message-input-area"><input type="text" id="commentName" placeholder="你的名字" maxlength="20"><textarea id="commentMsg" rows="2" placeholder="留下你想說的話..."></textarea><button id="submitComment" data-key="board_submit">📝 送出留言</button></div><div class="comments-list" id="commentsList"><div data-key="board_empty">✨ 還沒有留言，來當第一個吧 ✨</div></div></div>
+<!-- ========== Cbox 留言板（簡單好用）========== -->
+<div class="cbox-container">
+  <h2><span data-key="board_title">💬 留言板</span></h2>
+  <iframe src="https://www3.cbox.ws/box/?boxid=3555494&boxtag=u9cwZO" 
+          class="cbox-iframe"
+          allowtransparency="yes" 
+          allow="autoplay" 
+          frameborder="0" 
+          marginheight="0" 
+          marginwidth="0" 
+          scrolling="auto">
+  </iframe>
+</div>
 
 <!-- 作品建議表單 -->
 <div class="message-board" id="suggestionSection" style="margin-top: 0.5rem;">
@@ -543,20 +441,6 @@
 <footer>© 2026 Zhang Jun Wei — 透過影像與世界對話</footer>
 
 <script>
-// 生成粒子背景
-function createParticles() {
-  const container = document.getElementById('particlesContainer');
-  if (!container) return;
-  const count = window.innerWidth > 768 ? 50 : 25;
-  for (let i = 0; i < count; i++) {
-    const p = document.createElement('div'); p.classList.add('particle');
-    const size = Math.random() * 3 + 1; p.style.width = size + 'px'; p.style.height = size + 'px';
-    p.style.left = Math.random() * 100 + '%'; p.style.animationDuration = Math.random() * 15 + 12 + 's';
-    p.style.animationDelay = Math.random() * 10 + 's'; container.appendChild(p);
-  }
-}
-createParticles();
-
 // 載入進度條
 let progress = 0;
 const progressBar = document.getElementById('progressBar');
@@ -677,8 +561,8 @@ const translations = {
     timeline3_title: "遊戲創作起步", timeline3_desc: "開始接觸並享受各種遊戲，從中獲得創作靈感",
     timeline4_title: "個人網站上線", timeline4_desc: "建立個人作品集網站，分享攝影與創作",
     social_title: "🔗 追蹤我", contact_title: "📬 與我聯繫", contact_write: "✉️ 寫信", contact_copy: "📋 複製ID",
-    contact_suggest: "作品建議", contact_fill: "📋 填寫", board_title: "💬 留言板", board_submit: "📝 送出留言",
-    board_empty: "✨ 還沒有留言，來當第一個吧 ✨", suggest_title: "📝 作品建議", suggest_desc: "💡 您的想法與建議，是我持續創作的動力！",
+    contact_suggest: "作品建議", contact_fill: "📋 填寫", board_title: "💬 留言板", 
+    suggest_title: "📝 作品建議", suggest_desc: "💡 您的想法與建議，是我持續創作的動力！",
     stat_photo: "📸 攝影 2+ 年", stat_game: "🎮 遊戲 4+ 年", stat_edit: "🎬 動態剪輯"
   },
   en: {
@@ -696,8 +580,8 @@ const translations = {
     timeline3_title: "Game Inspiration", timeline3_desc: "Started exploring various games, finding creative inspiration",
     timeline4_title: "Website Launch", timeline4_desc: "Launched personal portfolio to share photography & creations",
     social_title: "🔗 Follow Me", contact_title: "📬 Contact Me", contact_write: "✉️ Write", contact_copy: "📋 Copy ID",
-    contact_suggest: "Suggestions", contact_fill: "📋 Fill", board_title: "💬 Guestbook", board_submit: "📝 Submit",
-    board_empty: "✨ No messages yet. Be the first! ✨", suggest_title: "📝 Suggestions", suggest_desc: "💡 Your ideas and suggestions are my motivation to keep creating!",
+    contact_suggest: "Suggestions", contact_fill: "📋 Fill", board_title: "💬 Guestbook",
+    suggest_title: "📝 Suggestions", suggest_desc: "💡 Your ideas and suggestions are my motivation to keep creating!",
     stat_photo: "📸 Photography 2+ yrs", stat_game: "🎮 Gaming 4+ yrs", stat_edit: "🎬 Video Editing"
   },
   ja: {
@@ -715,8 +599,8 @@ const translations = {
     timeline3_title: "ゲーム創作の始まり", timeline3_desc: "さまざまなゲームを楽しみ、創作のインスピレーションを得る",
     timeline4_title: "個人ウェブサイト公開", timeline4_desc: "ポートフォリオサイトを公開し、作品を共有",
     social_title: "🔗 フォローする", contact_title: "📬 連絡先", contact_write: "✉️ メール", contact_copy: "📋 IDをコピー",
-    contact_suggest: "作品提案", contact_fill: "📋 記入", board_title: "💬 掲示板", board_submit: "📝 送信",
-    board_empty: "✨ まだメッセージはありません。最初の投稿をしましょう！✨", suggest_title: "📝 作品提案", suggest_desc: "💡 あなたのアイデアや提案が、私の創作の原動力です！",
+    contact_suggest: "作品提案", contact_fill: "📋 記入", board_title: "💬 掲示板",
+    suggest_title: "📝 作品提案", suggest_desc: "💡 あなたのアイデアや提案が、私の創作の原動力です！",
     stat_photo: "📸 写真 2+ 年", stat_game: "🎮 ゲーム 4+ 年", stat_edit: "🎬 動画編集"
   }
 };
@@ -786,16 +670,10 @@ const cursorGlow = document.getElementById('customCursorGlow');
 const cursorDot = document.getElementById('customCursorDot');
 if (window.innerWidth > 768) {
   document.addEventListener('mousemove', (e) => {
-    mouseGlowBg.style.setProperty('--mouse-x', e.clientX + 'px');
-    mouseGlowBg.style.setProperty('--mouse-y', e.clientY + 'px');
     if (cursorGlow) { cursorGlow.style.left = e.clientX + 'px'; cursorGlow.style.top = e.clientY + 'px'; }
     if (cursorDot) { cursorDot.style.left = e.clientX + 'px'; cursorDot.style.top = e.clientY + 'px'; }
   });
   document.addEventListener('click', (e) => { const ripple = document.createElement('div'); ripple.className = 'ripple'; ripple.style.left = e.clientX + 'px'; ripple.style.top = e.clientY + 'px'; document.body.appendChild(ripple); setTimeout(() => ripple.remove(), 600); });
-  document.querySelectorAll('a, button').forEach(el => {
-    el.addEventListener('mouseenter', () => { if (cursorGlow) cursorGlow.style.transform = 'translate(-50%, -50%) scale(1.2)'; });
-    el.addEventListener('mouseleave', () => { if (cursorGlow) cursorGlow.style.transform = 'translate(-50%, -50%) scale(1)'; });
-  });
 }
 
 // 滾動進度條
@@ -812,46 +690,88 @@ window.addEventListener('scroll', () => {
 document.getElementById('scrollTopCircle')?.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
 
 // 滾動動畫
-const animatedElements = document.querySelectorAll("section, .skills-section, .message-board, .quote-block, .timeline-section, .social-links");
+const animatedElements = document.querySelectorAll("section, .skills-section, .message-board, .quote-block, .timeline-section, .social-links, .cbox-container");
 const observer = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("show"); }); }, { threshold: 0.15 });
 animatedElements.forEach(el => observer.observe(el));
 const skillObserver = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { const fills = entry.target.querySelectorAll('.skill-bar-fill'); fills.forEach(fill => { const w = fill.getAttribute('data-width'); if (w) fill.style.width = w + '%'; }); } }); }, { threshold: 0.5 });
 document.querySelectorAll('.skills-section').forEach(el => skillObserver.observe(el));
 
-// 照片按讚
+// 所有照片
+const allPhotos = [
+  { url: "https://i.ibb.co/4g183MjF/image.jpg", caption: "基隆港邊 · 午後光影" },
+  { url: "https://i.ibb.co/yF9jxFj1/image.jpg", caption: "日常 · iPhone 11 隨手拍" },
+  { url: "https://i.ibb.co/Fq8BzpQq/image.jpg", caption: "城市角落 · 寧靜片刻" },
+  { url: "https://i.ibb.co/TDVVKqrH/image.jpg", caption: "光影之間 · 日常瞬間" },
+  { url: "https://i.ibb.co/fV0VKky3/image.jpg", caption: "城市光影 · 基隆港" },
+  { url: "https://i.ibb.co/Nk2Lr2q/image.jpg", caption: "日常凝視 · 瞬間" },
+  { url: "https://i.ibb.co/1DSnx1V/image.jpg", caption: "色溫 · 敘事" },
+  { url: "https://i.ibb.co/Z1JM13ns/image.jpg", caption: "街頭故事" },
+  { url: "https://i.ibb.co/vvxHPTjC/image.jpg", caption: "光影敘事 · 系列五" },
+  { url: "https://i.ibb.co/PZvQqvb9/image.jpg", caption: "瞬間永恆 · 系列六" },
+  { url: "https://i.ibb.co/S4wm44m0/image.jpg", caption: "城市脈動 · 系列七" },
+  { url: "https://i.ibb.co/MkzY2cdB/image.jpg", caption: "視覺詩篇 · 系列八" },
+  { url: "https://i.ibb.co/TDM0d7dZ/image.jpg", caption: "靜謐時光 · 系列九" },
+  { url: "https://i.ibb.co/m5hBMSQQ/image.jpg", caption: "鏡頭之外 · 系列十" }
+];
+
+function renderPhotoGrid() {
+  const photoGrid = document.getElementById('photoGrid');
+  if (!photoGrid) return;
+  photoGrid.innerHTML = '';
+  allPhotos.forEach((photo, idx) => {
+    const photoId = `photo_${idx}`;
+    const photoItem = document.createElement('div');
+    photoItem.className = 'photo-item';
+    photoItem.setAttribute('data-id', photoId);
+    photoItem.innerHTML = `
+      <img src="${photo.url}" alt="${photo.caption}" loading="lazy">
+      <div class="photo-caption">${photo.caption}</div>
+      <div class="like-container">
+        <button class="like-btn" data-id="${photoId}">❤️</button>
+        <span class="like-count" id="likeCount_${photoId}">0</span>
+      </div>
+    `;
+    photoGrid.appendChild(photoItem);
+  });
+  initLikes();
+}
+
 function initLikes() {
   document.querySelectorAll('.like-btn').forEach(btn => {
-    const id = btn.getAttribute('data-id'); const span = document.getElementById(`likeCount${id}`); if (!span) return;
-    let likeCount = parseInt(localStorage.getItem(`photo_like_count_${id}`)) || 0; let userLiked = localStorage.getItem(`photo_user_liked_${id}`) === 'true';
-    span.innerText = likeCount; if (userLiked) btn.classList.add('liked');
-    const newBtn = btn.cloneNode(true); btn.parentNode.replaceChild(newBtn, btn);
-    newBtn.addEventListener('click', (e) => { e.stopPropagation(); let current = parseInt(localStorage.getItem(`photo_like_count_${id}`)) || 0; let liked = localStorage.getItem(`photo_user_liked_${id}`) === 'true';
-      if (liked) { current--; localStorage.setItem(`photo_user_liked_${id}`, 'false'); newBtn.classList.remove('liked'); }
-      else { current++; localStorage.setItem(`photo_user_liked_${id}`, 'true'); newBtn.classList.add('liked'); }
-      localStorage.setItem(`photo_like_count_${id}`, current); span.innerText = current; });
+    if (btn.hasListener) return;
+    btn.hasListener = true;
+    const photoId = btn.getAttribute('data-id');
+    const span = document.getElementById(`likeCount_${photoId}`);
+    if (!span) return;
+    let likeCount = parseInt(localStorage.getItem(`photo_like_count_${photoId}`)) || 0;
+    let userLiked = localStorage.getItem(`photo_user_liked_${photoId}`) === 'true';
+    span.innerText = likeCount;
+    if (userLiked) btn.classList.add('liked');
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      let current = parseInt(localStorage.getItem(`photo_like_count_${photoId}`)) || 0;
+      let liked = localStorage.getItem(`photo_user_liked_${photoId}`) === 'true';
+      if (liked) {
+        current--;
+        localStorage.setItem(`photo_user_liked_${photoId}`, 'false');
+        btn.classList.remove('liked');
+      } else {
+        current++;
+        localStorage.setItem(`photo_user_liked_${photoId}`, 'true');
+        btn.classList.add('liked');
+      }
+      localStorage.setItem(`photo_like_count_${photoId}`, current);
+      span.innerText = current;
+    });
   });
 }
-initLikes();
+
+renderPhotoGrid();
 
 document.getElementById('writeEmailBtn')?.addEventListener('click', () => { window.location.href = 'mailto:chang.zhangjunwei0712@gmail.com'; });
 document.getElementById('suggestionNavBtn')?.addEventListener('click', () => { const section = document.getElementById('suggestionSection'); if (section) { window.scrollTo({ top: section.offsetTop - 70, behavior: "smooth" }); } });
 
-// 留言板
-function loadComments() {
-  const comments = JSON.parse(localStorage.getItem('blog_comments') || '[]');
-  const container = document.getElementById('commentsList');
-  if (!container) return;
-  if (comments.length === 0) { container.innerHTML = '<div style="text-align:center; opacity:0.6;" data-key="board_empty">✨ 還沒有留言，來當第一個吧 ✨</div>'; return; }
-  container.innerHTML = comments.map(c => `<div class="comment-item"><div class="comment-name">${escapeHtml(c.name)}</div><div class="comment-text">${escapeHtml(c.message)}</div><div class="comment-time">${c.time}</div><button class="delete-comment" data-id="${c.id}">🗑️ 刪除</button></div>`).join('');
-  document.querySelectorAll('.delete-comment').forEach(btn => { btn.addEventListener('click', (e) => { const id = btn.getAttribute('data-id'); deleteCommentById(id); }); });
-}
-function deleteCommentById(id) { let comments = JSON.parse(localStorage.getItem('blog_comments') || '[]'); const newComments = comments.filter(c => c.id != id); if (comments.length === newComments.length) return; localStorage.setItem('blog_comments', JSON.stringify(newComments)); loadComments(); }
-function addComment(name, message) { if (!name.trim() || !message.trim()) return false; const comments = JSON.parse(localStorage.getItem('blog_comments') || '[]'); comments.unshift({ id: Date.now().toString() + '_' + Math.random().toString(36).substr(2, 6), name: name.trim().substring(0, 20), message: message.trim().substring(0, 200), time: new Date().toLocaleString('zh-TW') }); localStorage.setItem('blog_comments', JSON.stringify(comments)); loadComments(); return true; }
-function escapeHtml(str) { return str.replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
-document.getElementById('submitComment')?.addEventListener('click', () => { const nameInput = document.getElementById('commentName'); const msgInput = document.getElementById('commentMsg'); if (addComment(nameInput.value, msgInput.value)) { nameInput.value = ''; msgInput.value = ''; } else { alert('請填寫名字和留言內容～'); } });
-loadComments();
-
-console.log('✅ 網站已更新：聯絡區塊顏色正常，訪客計數器已移除');
+console.log('✅ 網站已更新！留言板使用 Cbox，簡單穩定');
 </script>
 </body>
 </html>
