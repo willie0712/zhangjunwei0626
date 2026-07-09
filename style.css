@@ -26,13 +26,13 @@ body {
   color: var(--text);
   font-family: "Inter", "Noto Sans TC", system-ui, sans-serif;
   line-height: 1.75;
-  /* 背景圖：你提供的動漫圖 */
+  /* 背景圖：你選的動漫圖 */
   background-image: url('https://i.ibb.co/Y4CVmmrz/background.jpg');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
   background-blend-mode: overlay;
-  background-color: #0b0c10; /* 備用底色 */
+  background-color: #0b0c10;
 }
 
 a {
@@ -441,11 +441,6 @@ img {
   margin-bottom: 16px;
 }
 
-.photo-album iframe {
-  border-radius: 12px;
-  border: 2px solid rgba(102, 252, 241, 0.15);
-}
-
 .photo-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -498,6 +493,9 @@ img {
   padding: 20px;
   border: 1px solid rgba(102, 252, 241, 0.08);
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .game-card img {
@@ -517,6 +515,7 @@ img {
 .game-card p {
   color: var(--muted);
   font-size: 0.9rem;
+  flex: 1;
 }
 
 /* ===== 未來目標 ===== */
@@ -753,10 +752,6 @@ img {
   .goal-list,
   .photo-grid {
     grid-template-columns: 1fr;
-  }
-
-  .photo-album iframe {
-    height: 300px;
   }
 
   .profile-layout {
