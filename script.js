@@ -28,9 +28,9 @@ const translations = {
     blogTwoMeta: "剪輯練習",
     blogTwoTitle: "把生活剪成節奏",
     blogTwoDesc: "使用 CapCut 慢慢練習，讓畫面、音樂和情緒對上拍。",
-    blogThreeMeta: "2026 轉折",
-    blogThreeTitle: "停止遊戲後的新目標",
-    blogThreeDesc: "把原本放在遊戲裡的熱血，轉成攝影、朋友和未來生活的推進力。",
+    blogThreeMeta: "2026 新篇章",
+    blogThreeTitle: "攝影 x 遊戲 x 生活",
+    blogThreeDesc: "在攝影、遊戲與生活之間找到自己的節奏，持續成長、持續創作。",
     skillsEyebrow: "Skills & Gear",
     skillsTitle: "我的專長與攝影裝備",
     photographyTitle: "📷 攝影拍照",
@@ -91,9 +91,9 @@ const translations = {
     blogTwoMeta: "Editing Practice",
     blogTwoTitle: "Cutting Life Into Rhythm",
     blogTwoDesc: "Using CapCut to practice how images, music, and emotion can land on the same beat.",
-    blogThreeMeta: "2026 Reset",
-    blogThreeTitle: "New Goals After Gaming",
-    blogThreeDesc: "Turning the passion I once put into games into photography, friendships, and the future.",
+    blogThreeMeta: "2026 New Chapter",
+    blogThreeTitle: "Photography x Gaming x Life",
+    blogThreeDesc: "Finding my own rhythm between photography, gaming, and life — keep growing, keep creating.",
     skillsEyebrow: "Skills & Gear",
     skillsTitle: "Skills & Photography Gear",
     photographyTitle: "📷 Photography",
@@ -165,10 +165,10 @@ document.querySelectorAll(".nav-panel a").forEach((link) => {
 
 applyLanguage(localStorage.getItem("willie-site-lang") || "zh");
 
-// ===== 背景音樂開關（預設開啟） =====
+// ===== 背景音樂開關（預設關閉） =====
 const musicToggle = document.getElementById('musicToggle');
 const musicContainer = document.getElementById('musicContainer');
-let musicPlaying = true;
+let musicPlaying = false;
 
 if (musicToggle && musicContainer) {
   musicToggle.addEventListener('click', function() {
@@ -181,7 +181,7 @@ if (musicToggle && musicContainer) {
     } else {
       musicContainer.style.display = 'none';
       musicToggle.classList.remove('playing');
-      musicToggle.innerHTML = '<span class="music-icon">🔇</span><span class="music-text">播放音樂</span>';
+      musicToggle.innerHTML = '<span class="music-icon">🎵</span><span class="music-text">播放音樂</span>';
     }
   });
 }
