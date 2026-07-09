@@ -141,6 +141,8 @@ img {
   font-size: 0.9rem;
   letter-spacing: 2px;
   margin-bottom: 10px;
+  word-break: break-word;
+  max-width: 100%;
 }
 
 .hero-copy h1 {
