@@ -3,190 +3,270 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Willie Zhang bilingual personal blog, photography portfolio, gaming chronicle, and future goals.">
   <title>Willie Zhang的部落格</title>
   <link rel="icon" type="image/png" href="assets/willie.png">
-  <link rel="stylesheet" href="style.css">
+  <link rel="apple-touch-icon" href="assets/willie.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  
   <!-- Lightbox2 CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css">
+  
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-  <!-- ====== 導航列 ====== -->
   <header class="site-header">
-    <nav class="navbar">
-      <a class="brand" href="#">
-        <img src="assets/willie.png" alt="Willie avatar" width="40">
-        <span>Willie Zhang的部落格</span>
+    <nav class="navbar" aria-label="Main navigation">
+      <a class="brand" href="#hero" aria-label="Willie.Z home">
+        <span class="brand-mark">
+          <img src="assets/willie.png" alt="Willie avatar">
+        </span>
+        <span data-i18n="brandText">Willie Zhang的部落格</span>
       </a>
-      <button class="menu-toggle" id="menuToggle">☰</button>
-      <div class="nav-panel" id="navPanel">
-        <a href="#about">關於我</a>
-        <a href="#skills">我的專長</a>
-        <a href="#gallery">攝影作品</a>
-        <a href="#gaming">遊戲時光</a>
-        <a href="#goals">未來目標</a>
-        <a href="#contact">聯絡我</a>
+      <button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="nav-panel">
+        <a href="#about" data-i18n="navAbout">關於我</a>
+        <a href="#skills" data-i18n="navSkills">我的專長</a>
+        <a href="#gallery" data-i18n="navGallery">攝影作品</a>
+        <a href="#gaming" data-i18n="navGaming">遊戲時光</a>
+        <a href="#goals" data-i18n="navGoals">未來目標</a>
+        <a href="#contact" data-i18n="navContact">聯絡我</a>
+        <button class="lang-toggle" type="button" aria-label="Switch language">中文 / EN</button>
       </div>
     </nav>
   </header>
 
-  <!-- ====== 主視覺區 ====== -->
-  <section class="hero" id="hero">
-    <div class="hero-content">
-      <div class="hero-text">
-        <p class="eyebrow">📸 攝影生活 / 遊戲編年史 / 2026 新篇章</p>
-        <h1>Willie Zhang</h1>
-        <p class="tagline">基隆二信高中生，用鏡頭收藏雨港日常，也把熱血寫進自己的故事。</p>
-        <blockquote>「鏡頭記錄當下，熱血活在當下。」</blockquote>
-        <div class="hero-buttons">
-          <a class="btn-primary" href="#about">探索我的世界</a>
-          <a class="btn-ghost" href="https://www.instagram.com/_zhang_0.6.2.6_" target="_blank">追蹤 Instagram</a>
+  <main>
+    <section class="hero section" id="hero">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow" data-i18n="heroEyebrow">攝影生活 / 遊戲編年史 / 2026 新篇章</p>
+          <h1>Willie Zhang</h1>
+          <p class="hero-tagline" data-i18n="heroTagline">基隆二信高中生，用鏡頭收藏雨港日常，也把熱血寫進自己的故事。</p>
+          <blockquote data-i18n="heroQuote">鏡頭記錄當下，熱血活在當下。</blockquote>
+          <div class="hero-actions">
+            <a class="primary-btn" href="#about" data-i18n="heroCta">探索我的世界</a>
+            <a class="ghost-btn" href="https://www.instagram.com/_zhang_0.6.2.6_" target="_blank" rel="noopener" data-i18n="heroIg">追蹤 Instagram</a>
+          </div>
+        </div>
+        <div class="hero-visual" aria-label="Willie profile visual">
+          <img src="assets/willie.png" alt="Willie Zhang portrait">
+          <div class="status-card">
+            <span data-i18n="heroStatusTitle">目前狀態</span>
+            <strong data-i18n="heroStatus">2026 專注攝影、剪輯與生活成長</strong>
+          </div>
         </div>
       </div>
-      <div class="hero-image">
-        <img src="assets/willie.png" alt="Willie Zhang">
-        <div class="status-card">
-          <span>目前狀態</span>
-          <strong>2026 專注攝影、剪輯與生活成長</strong>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ====== 關於我 ====== -->
-  <section class="section" id="about">
-    <div class="container">
-      <h2>關於我</h2>
-      <div class="about-grid">
-        <p class="about-text">
-          今年 18 歲，目前就讀基隆二信高中。不得不誠實地說，我的脾氣有時候不太好，但如果你走進我的世界，就會發現我對朋友非常友善與義氣。我是一個熱愛用鏡頭記錄生活、在影像剪輯中尋找樂趣，同時也曾在遊戲世界裡瘋狂逐夢的熱血青年。
-        </p>
-        <div class="info-card">
-          <div><span>名字</span><strong>Willie Zhang</strong></div>
-          <div><span>所在地</span><strong>台灣基隆 / 二信高中</strong></div>
-          <div><span>Email</span><a href="mailto:chang.zhangjunwei0712@gmail.com">chang.zhangjunwei0712@gmail.com</a></div>
-          <div><span>Discord</span><strong>_zhang_0.6.2.6_</strong></div>
-        </div>
+    <section class="section profile-section" id="about">
+      <div class="section-heading">
+        <p class="eyebrow" data-i18n="aboutEyebrow">About Willie</p>
+        <h2 data-i18n="aboutTitle">關於我</h2>
       </div>
-    </div>
-  </section>
+      <div class="profile-layout">
+        <article class="about-panel">
+          <p data-i18n="aboutText">今年 18 歲，目前就讀基隆二信高中。不得不誠實地說，我的脾氣有時候不太好，但如果你走進我的世界，就會發現我對朋友非常友善與義氣。我是一個熱愛用鏡頭記錄生活、在影像剪輯中尋找樂趣，同時也曾在遊戲世界裡瘋狂逐夢的熱血青年。</p>
+        </article>
+        <aside class="profile-card">
+          <div>
+            <span data-i18n="profileNameLabel">名字 / 綽號</span>
+            <strong>Willie (Willie Zhang)</strong>
+          </div>
+          <div>
+            <span data-i18n="profileLocationLabel">所在地</span>
+            <strong data-i18n="profileLocation">台灣基隆 / 讀二信高中</strong>
+          </div>
+          <div>
+            <span>Email</span>
+            <a href="mailto:chang.zhangjunwei0712@gmail.com">chang.zhangjunwei0712@gmail.com</a>
+          </div>
+          <div>
+            <span>Discord</span>
+            <strong>_zhang_0.6.2.6_</strong>
+          </div>
+        </aside>
+      </div>
+    </section>
 
-  <!-- ====== 我的專長 ====== -->
-  <section class="section" id="skills">
-    <div class="container">
-      <h2>我的專長與攝影裝備</h2>
+    <section class="section blog-section" id="blog">
+      <div class="section-heading">
+        <p class="eyebrow" data-i18n="blogEyebrow">Blog Notes</p>
+        <h2 data-i18n="blogTitle">最新生活札記</h2>
+      </div>
+      <div class="blog-grid">
+        <article class="blog-card">
+          <span data-i18n="blogOneMeta">攝影日常</span>
+          <h3 data-i18n="blogOneTitle">雨港街頭的光</h3>
+          <p data-i18n="blogOneDesc">在基隆的雨天裡找光、找故事，也找下一張值得留下的照片。</p>
+        </article>
+        <article class="blog-card">
+          <span data-i18n="blogTwoMeta">剪輯練習</span>
+          <h3 data-i18n="blogTwoTitle">把生活剪成節奏</h3>
+          <p data-i18n="blogTwoDesc">使用 CapCut 慢慢練習，讓畫面、音樂和情緒對上拍。</p>
+        </article>
+        <article class="blog-card">
+          <span data-i18n="blogThreeMeta">2026 轉折</span>
+          <h3 data-i18n="blogThreeTitle">停止遊戲後的新目標</h3>
+          <p data-i18n="blogThreeDesc">把原本放在遊戲裡的熱血，轉成攝影、朋友和未來生活的推進力。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section skills-section" id="skills">
+      <div class="section-heading">
+        <p class="eyebrow" data-i18n="skillsEyebrow">Skills & Gear</p>
+        <h2 data-i18n="skillsTitle">我的專長與攝影裝備</h2>
+      </div>
       <div class="skills-grid">
-        <div class="skill-card">
-          <img src="assets/cam.jpg" alt="攝影">
-          <h3>📷 攝影拍照</h3>
-          <p>熟練度高。喜歡捕捉街景、人像與生活瞬間。</p>
-          <div class="progress"><span style="width:88%"></span></div>
-        </div>
-        <div class="skill-card">
-          <h3>✂️ 影片剪輯</h3>
-          <p>初級階段。目前正在鑽研剪輯節奏與特效。</p>
-          <div class="progress"><span style="width:42%"></span></div>
-        </div>
-        <div class="skill-card">
-          <h3>📦 攝影裝備</h3>
-          <p>主要使用手機/相機進行日常拍攝，搭配 CapCut 進行初級剪輯。</p>
+        <article class="skill-card">
+          <img src="assets/cam.jpg" alt="Camera gear">
+          <div>
+            <h3 data-i18n="photographyTitle">攝影拍照</h3>
+            <p data-i18n="photographyDesc">熟練度高。喜歡捕捉街景、人像與生活瞬間。</p>
+            <div class="progress" aria-label="Photography skill level"><span style="width: 88%"></span></div>
+          </div>
+        </article>
+        <article class="skill-card">
+          <div class="skill-icon capcut-icon" aria-label="CapCut icon">
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+              <path d="M15 16h34L15 48h34" />
+              <path d="M49 16 15 48" />
+              <path d="M15 16 49 48" />
+            </svg>
+          </div>
+          <div>
+            <h3 data-i18n="editingTitle">影片剪輯</h3>
+            <p data-i18n="editingDesc">初級階段。目前正在鑽研剪輯節奏與特效。</p>
+            <div class="progress" aria-label="Video editing skill level"><span style="width: 42%"></span></div>
+          </div>
+        </article>
+        <article class="gear-card">
+          <h3 data-i18n="gearTitle">攝影裝備欄</h3>
+          <p data-i18n="gearDesc">主要使用手機/相機進行日常拍攝，搭配 CapCut 進行初級剪輯。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section life-section" id="gallery">
+      <div class="section-heading">
+        <p class="eyebrow" data-i18n="lifeEyebrow">Campus & Life</p>
+        <h2 data-i18n="lifeTitle">基隆與二信高中生活</h2>
+      </div>
+      <div class="life-layout">
+        <article class="life-copy">
+          <p data-i18n="lifeText">在雨港基隆的二信高中就讀，這裡是我磨練技術、廣交朋友的地方。雖然課業生活充實，但我總能找到時間拿起相機，記錄這座城市的雨景與校園的點滴。</p>
+        </article>
+        <div class="photo-grid" aria-label="Photography works">
+          <a href="assets/photo-1.png" data-lightbox="gallery" data-title="基隆街景">
+            <img src="assets/photo-1.png" alt="Photography work 1" loading="lazy">
+          </a>
+          <a href="assets/photo-2.png" data-lightbox="gallery" data-title="校園日常">
+            <img src="assets/photo-2.png" alt="Photography work 2" loading="lazy">
+          </a>
+          <a href="assets/photo-3.png" data-lightbox="gallery" data-title="雨港印象">
+            <img src="assets/photo-3.png" alt="Photography work 3" loading="lazy">
+          </a>
+          <a href="assets/photo-4.png" data-lightbox="gallery" data-title="生活隨拍">
+            <img src="assets/photo-4.png" alt="Photography work 4" loading="lazy">
+          </a>
+          <a href="assets/photo-5.png" data-lightbox="gallery" data-title="校外教學 淡水">
+            <img src="assets/photo-5.png" alt="Photography work 5" loading="lazy">
+          </a>
+          <a href="assets/photo-6.png" data-lightbox="gallery" data-title="校外教學 北投">
+            <img src="assets/photo-6.png" alt="Photography work 6" loading="lazy">
+          </a>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ====== 攝影作品（網格 + 燈箱） ====== -->
-  <section class="section" id="gallery">
-    <div class="container">
-      <h2>📷 攝影作品</h2>
-      <p class="section-desc">點擊圖片可放大觀看</p>
-      <div class="photo-grid">
-        <a href="assets/photo-1.png" data-lightbox="gallery" data-title="基隆街景">
-          <img src="assets/photo-1.png" alt="攝影作品 1" loading="lazy">
-        </a>
-        <a href="assets/photo-2.png" data-lightbox="gallery" data-title="校園日常">
-          <img src="assets/photo-2.png" alt="攝影作品 2" loading="lazy">
-        </a>
-        <a href="assets/photo-3.png" data-lightbox="gallery" data-title="雨港印象">
-          <img src="assets/photo-3.png" alt="攝影作品 3" loading="lazy">
-        </a>
-        <a href="assets/photo-4.png" data-lightbox="gallery" data-title="生活隨拍">
-          <img src="assets/photo-4.png" alt="攝影作品 4" loading="lazy">
-        </a>
-        <a href="assets/photo-5.png" data-lightbox="gallery" data-title="校外教學 淡水">
-          <img src="assets/photo-5.png" alt="攝影作品 5" loading="lazy">
-        </a>
-        <a href="assets/photo-6.png" data-lightbox="gallery" data-title="校外教學 北投">
-          <img src="assets/photo-6.png" alt="攝影作品 6" loading="lazy">
-        </a>
+    <section class="section gaming-section" id="gaming">
+      <div class="section-heading">
+        <p class="eyebrow" data-i18n="gamingEyebrow">Gaming Chronicle</p>
+        <h2 data-i18n="gamingTitle">遊戲時光機（2022 - 2025 賽季）</h2>
       </div>
-    </div>
-  </section>
-
-  <!-- ====== 遊戲時光 ====== -->
-  <section class="section" id="gaming">
-    <div class="container">
-      <h2>🎮 遊戲時光機（2022 - 2025）</h2>
-      <p class="notice">2026 年因生活重心調整，目前已停止遊戲生活</p>
+      <div class="notice" data-i18n="gamingNotice">2022-2025 輝煌遊戲生涯（2026 年因生活重心調整，目前已停止遊戲生活）</div>
       <div class="game-grid">
-        <div class="game-card">
-          <img src="assets/speed-drifters.png" alt="極速領域">
-          <h3>極速領域</h3>
-          <p>追求極速甩尾的快感，享受在賽道上零點幾秒的博弈。</p>
-        </div>
-        <div class="game-card">
-          <img src="assets/roblox.png" alt="Roblox">
+        <article class="game-card">
+          <img src="assets/speed-drifters.png" alt="Speed Drifters visual">
+          <h3 data-i18n="gameSpeedTitle">極速領域</h3>
+          <p data-i18n="gameSpeedDesc">追求極速甩尾的快感，享受在賽道上零點幾秒的博弈。</p>
+        </article>
+        <article class="game-card">
+          <img src="assets/roblox.png" alt="Roblox visual">
           <h3>Roblox</h3>
-          <p>自由度極高的世界，和朋友們留下了超多搞笑和冒險的回憶。</p>
-        </div>
-        <div class="game-card">
-          <img src="assets/weplay.jpg" alt="WePlay">
+          <p data-i18n="gameRobloxDesc">自由度極高的世界，在這裡和朋友們留下了超多搞笑和冒險的回憶。</p>
+        </article>
+        <article class="game-card">
+          <img src="assets/weplay.jpg" alt="WePlay visual">
           <h3>WePlay</h3>
-          <p>不僅僅是玩遊戲，更是和朋友用語音打屁、聯絡感情的最佳基地。</p>
-        </div>
-        <div class="game-card">
-          <img src="assets/minecraft.jpg" alt="Minecraft">
-          <h3>Minecraft / Asphalt 9 / Pixel Gun 3D</h3>
-          <p>從方塊建築、瘋狂飆車到像素射擊，陪伴了我無數個熱血的夜晚。</p>
-        </div>
+          <p data-i18n="gameWeplayDesc">不僅僅是玩遊戲，更是和朋友用語音打屁、聯絡感情的最佳基地。</p>
+        </article>
+        <article class="game-card">
+          <img src="assets/minecraft.jpg" alt="PC gaming visual">
+          <h3 data-i18n="gamePcTitle">PC 電腦遊戲特輯</h3>
+          <small>Minecraft / Asphalt 9 / Pixel Gun 3D</small>
+          <p data-i18n="gamePcDesc">從方塊建築、瘋狂飆車到像素射擊，陪伴了我無數個熱血的夜晚。</p>
+        </article>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ====== 未來目標 ====== -->
-  <section class="section" id="goals">
-    <div class="container">
-      <h2>🎯 2026 全新篇章與未來目標</h2>
+    <section class="section goals-section" id="goals">
+      <div class="section-heading">
+        <p class="eyebrow" data-i18n="goalsEyebrow">2026 Future Goals</p>
+        <h2 data-i18n="goalsTitle">2026 全新篇章與未來目標</h2>
+      </div>
       <div class="goal-list">
-        <div><span>01</span><h3>精進攝影與剪輯技術</h3><p>嘗試接案或製作個人短片。</p></div>
-        <div><span>02</span><h3>順利從二信高中畢業</h3><p>迎向 19 歲的成年挑戰。</p></div>
-        <div><span>03</span><h3>擴展人際關係</h3><p>對身邊友善的朋友們更好。</p></div>
+        <article>
+          <span>01</span>
+          <h3 data-i18n="goalOneTitle">精進攝影與剪輯技術</h3>
+          <p data-i18n="goalOneDesc">嘗試接案或製作個人短片。</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h3 data-i18n="goalTwoTitle">順利從二信高中畢業</h3>
+          <p data-i18n="goalTwoDesc">迎向 19 歲的成年挑戰。</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3 data-i18n="goalThreeTitle">擴展人際關係</h3>
+          <p data-i18n="goalThreeDesc">對身邊友善的朋友們更好。</p>
+        </article>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
-  <!-- ====== 頁尾 ====== -->
   <footer class="footer" id="contact">
-    <div class="container">
-      <h2>📬 聯絡我</h2>
-      <p>Email: <a href="mailto:chang.zhangjunwei0712@gmail.com">chang.zhangjunwei0712@gmail.com</a></p>
-      <p>Discord: _zhang_0.6.2.6_</p>
-      <div class="socials">
-        <a href="https://www.instagram.com/_zhang_0.6.2.6_" target="_blank">Instagram</a>
-      </div>
-      <p class="copyright">© 2026 Willie Zhang. All Rights Reserved.</p>
+    <div class="footer-main">
+      <p class="eyebrow" data-i18n="contactEyebrow">Contact</p>
+      <h2 data-i18n="contactTitle">聯絡我</h2>
+      <p class="email-line">Email: <a href="mailto:chang.zhangjunwei0712@gmail.com">chang.zhangjunwei0712@gmail.com</a></p>
     </div>
+    <div class="socials">
+      <span class="social-link">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M18.6 5.2A15.8 15.8 0 0 0 14.8 4l-.2.4c1.3.3 2 .7 2.8 1.2a12.5 12.5 0 0 0-8.8 0c.8-.5 1.7-1 2.9-1.2L11.3 4a15.8 15.8 0 0 0-3.9 1.2C5 8.8 4.3 12.3 4.6 15.7a15.6 15.6 0 0 0 4.8 2.4l.9-1.4c-.5-.2-1-.4-1.5-.7l.4-.3c2.9 1.3 5.9 1.3 8.8 0l.4.3c-.5.3-1 .5-1.5.7l.9 1.4a15.6 15.6 0 0 0 4.8-2.4c.4-4-.7-7.5-3-10.5ZM10.2 14.1c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8Zm5.6 0c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8Z"/>
+        </svg>
+        <span>Discord: _zhang_0.6.2.6_</span>
+      </span>
+      <a class="social-link" href="https://www.instagram.com/_zhang_0.6.2.6_" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2Zm0 2A3.8 3.8 0 0 0 4 7.8v8.4A3.8 3.8 0 0 0 7.8 20h8.4a3.8 3.8 0 0 0 3.8-3.8V7.8A3.8 3.8 0 0 0 16.2 4H7.8Zm4.2 3.3a4.7 4.7 0 1 1 0 9.4 4.7 4.7 0 0 1 0-9.4Zm0 2a2.7 2.7 0 1 0 0 5.4 2.7 2.7 0 0 0 0-5.4Zm5-2.4a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2Z"/>
+        </svg>
+        <span>Instagram</span>
+      </a>
+    </div>
+    <p class="copyright">© 2026 By Willie Zhang. All Rights Reserved.</p>
   </footer>
 
-  <!-- ====== JavaScript ====== -->
+  <script src="script.js"></script>
+  <!-- Lightbox2 JavaScript -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
-  <script>
-    // 手機選單開關
-    const toggle = document.getElementById('menuToggle');
-    const panel = document.getElementById('navPanel');
-    toggle.addEventListener('click', () => {
-      panel.classList.toggle('is-open');
-    });
-  </script>
 </body>
 </html>
