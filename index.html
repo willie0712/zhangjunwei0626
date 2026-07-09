@@ -1,805 +1,192 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Zhang Jun Wei | 攝影・剪輯・創作</title>
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  
-  :root {
-    --bg-start: #0a1220;
-    --bg-end: #050a12;
-    --card-bg: rgba(15, 25, 40, 0.7);
-    --text: #f0f3fa;
-    --text-sec: #dddddd;
-    --accent: #4cc3ff;
-    --like: #ffb3b3;
-    --like-active: #ff6b6b;
-  }
-
-  body {
-    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
-    background: radial-gradient(circle at 20% 30%, var(--bg-start), var(--bg-end));
-    color: var(--text);
-    line-height: 1.5;
-    font-size: 18px;
-    cursor: none;
-  }
-
-  /* 自訂游標 - 顏色寫死確保顯示 */
-  .custom-cursor-glow {
-    width: 40px; height: 40px; border: 2px solid #4cc3ff; border-radius: 50%;
-    position: fixed; pointer-events: none; z-index: 9999; transition: 0.08s linear;
-    transform: translate(-50%, -50%); background: rgba(76,195,255,0.15); backdrop-filter: blur(4px);
-  }
-  .custom-cursor-dot {
-    width: 6px; height: 6px; background: #4cc3ff; border-radius: 50%;
-    position: fixed; pointer-events: none; z-index: 10000; transition: 0.05s ease;
-    transform: translate(-50%, -50%);
-  }
-  @media (max-width: 768px) { body { cursor: auto; } .custom-cursor-glow, .custom-cursor-dot { display: none; } }
-
-  #loading {
-    position: fixed; inset: 0; background: #050a12;
-    display: flex; align-items: center; justify-content: center;
-    flex-direction: column; gap: 1.5rem; z-index: 9999;
-    transition: opacity 0.8s ease;
-  }
-  .logo-animation { text-align: center; animation: logoFloat 1.2s ease-in-out infinite alternate; }
-  @keyframes logoFloat { 0% { transform: translateY(0px); } 100% { transform: translateY(-10px); } }
-  .logo-svg { width: 100px; height: 100px; filter: drop-shadow(0 0 15px rgba(76,195,255,0.5)); }
-  .loading-text { font-size: 1.2rem; letter-spacing: 4px; color: #4cc3ff; font-family: monospace; opacity: 0; animation: textFade 0.8s ease 0.5s forwards; }
-  @keyframes textFade { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
-  .progress-container { width: 280px; height: 3px; background: rgba(76,195,255,0.2); border-radius: 10px; overflow: hidden; }
-  .progress-bar { width: 0%; height: 100%; background: #4cc3ff; transition: width 0.15s linear; }
-  .loading-percent { font-size: 0.9rem; color: #7ab3cc; font-family: monospace; }
-
-  .navbar {
-    position: fixed; top: 0; left: 0; right: 0;
-    background: rgba(10, 18, 28, 0.8); backdrop-filter: blur(20px);
-    z-index: 1000; padding: 0.8rem 1.5rem;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-  }
-  .nav-inner { max-width: 1300px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-  .logo { font-size: 1.2rem; font-weight: 600; background: linear-gradient(135deg, #fff, #4cc3ff); background-clip: text; -webkit-background-clip: text; color: transparent; }
-  .nav-links a { color: #dddddd; text-decoration: none; margin-left: 1.5rem; font-size: 0.9rem; transition: 0.2s; cursor: pointer; }
-  .nav-links a:hover { color: #4cc3ff; }
-  
-  /* 部落格按钮样式 */
-  .blog-nav-btn {
-    background: rgba(76, 195, 255, 0.15);
-    border: 1px solid rgba(76, 195, 255, 0.4);
-    color: #4cc3ff;
-    padding: 0.3rem 1rem;
-    border-radius: 40px;
-    font-size: 0.85rem;
-    transition: all 0.3s ease;
-  }
-  .blog-nav-btn:hover {
-    background: #4cc3ff;
-    color: #0a1420;
-    border-color: #4cc3ff;
-  }
-
-  .lang-switch {
-    position: fixed; top: 5rem; right: 1.5rem;
-    display: flex; gap: 0.5rem; z-index: 1000;
-  }
-  .lang-btn {
-    background: rgba(30,59,85,0.6); backdrop-filter: blur(12px);
-    border: 0.5px solid rgba(255,255,255,0.2);
-    color: #dddddd; padding: 0.3rem 0.7rem;
-    border-radius: 30px; font-size: 0.7rem; cursor: pointer;
-  }
-  .lang-btn.active { background: #4cc3ff; color: #0a1420; }
-
-  .theme-toggle {
-    position: fixed; bottom: 2rem; left: 1.5rem;
-    background: rgba(30,59,85,0.6); backdrop-filter: blur(12px);
-    width: 44px; height: 44px; border-radius: 30px;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; z-index: 99; font-size: 1.3rem;
-  }
-
-  .hero {
-    min-height: 100vh; display: flex; align-items: center; justify-content: space-between;
-    flex-wrap: wrap; gap: 3rem; padding: 8rem 1.5rem 4rem;
-    max-width: 1300px; margin: 0 auto;
-  }
-  .hero h1 { font-size: clamp(2.5rem, 8vw, 5rem); background: linear-gradient(135deg, #fff, #4cc3ff); background-clip: text; -webkit-background-clip: text; color: transparent; }
-  .hero .tagline { font-size: 1.1rem; border-left: 3px solid #4cc3ff; padding-left: 1rem; display: inline-block; white-space: pre-line; }
-  .hero-stats { display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
-  .stat-item { background: rgba(255,255,255,0.05); padding: 0.5rem 1.2rem; border-radius: 60px; font-size: 0.85rem; }
-  .hero-img img { width: 100%; max-width: 280px; border-radius: 2rem; }
-
-  section, .card-block {
-    max-width: 1300px; margin: 2rem auto; padding: 2rem;
-    background: rgba(15,25,40,0.6); backdrop-filter: blur(12px);
-    border-radius: 1.5rem; border: 0.5px solid rgba(255,255,255,0.1);
-  }
-  h2 { font-size: 1.8rem; margin-bottom: 1.5rem; text-align: center; }
-  h2 span { background: linear-gradient(120deg, #fff, #4cc3ff); background-clip: text; -webkit-background-clip: text; color: transparent; }
-
-  .about-card { display: flex; flex-wrap: wrap; gap: 0.8rem; justify-content: center; }
-  .info-row { background: rgba(0,0,0,0.25); padding: 0.6rem 1.2rem; border-radius: 60px; font-size: 0.9rem; }
-
-  .skill-item { margin-bottom: 1.2rem; }
-  .skill-header { display: flex; justify-content: space-between; margin-bottom: 6px; }
-  .skill-bar-bg { background: rgba(255,255,255,0.1); border-radius: 20px; height: 8px; }
-  .skill-bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #4cc3ff, #a0e0ff); border-radius: 20px; transition: width 1.2s; }
-
-  .filter-tags { display: flex; justify-content: center; gap: 0.8rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
-  .filter-tag { background: rgba(255,255,255,0.05); padding: 0.4rem 1.2rem; border-radius: 40px; font-size: 0.8rem; cursor: pointer; }
-  .filter-tag.active { background: #4cc3ff; color: #0a1420; }
-
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; }
-  .photo-item { border-radius: 1rem; overflow: hidden; background: rgba(0,0,0,0.3); position: relative; transition: 0.3s; }
-  .photo-item:hover { transform: translateY(-5px); }
-  .photo-item img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; transition: transform 0.6s; }
-  .photo-item:hover img { transform: scale(1.05); }
-  .photo-caption { text-align: center; padding: 8px; font-size: 0.75rem; background: rgba(0,0,0,0.5); }
-  .like-container {
-    position: absolute; bottom: 45px; right: 8px;
-    background: rgba(0,0,0,0.5); backdrop-filter: blur(8px);
-    padding: 4px 8px; border-radius: 40px;
-    display: flex; gap: 4px; opacity: 0; transition: opacity 0.3s;
-  }
-  .photo-item:hover .like-container { opacity: 0.9; }
-  .like-btn { background: none; border: none; color: #ffb3b3; font-size: 0.9rem; cursor: pointer; }
-  .like-btn.liked { color: #ff6b6b; }
-  .like-count { font-size: 0.75rem; color: #ffd966; min-width: 25px; }
-
-  .game-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.2rem; }
-  .game-card { background: rgba(30,44,62,0.6); backdrop-filter: blur(10px); padding: 1rem; border-radius: 1.2rem; transition: 0.3s; }
-  .game-card:hover { transform: translateY(-5px); background: rgba(76,195,255,0.2); }
-  .game-header { display: flex; gap: 1rem; align-items: center; margin-bottom: 0.8rem; }
-  .game-icon-img { width: 60px; height: 60px; object-fit: cover; border-radius: 14px; }
-  .game-name { font-size: 1.2rem; font-weight: 600; }
-  .game-tag { font-size: 0.7rem; opacity: 0.7; }
-  .game-stats { display: flex; justify-content: space-between; margin: 0.5rem 0; font-size: 0.8rem; }
-  .game-period { color: #4cc3ff; }
-  .game-rating { color: #ffd966; }
-
-  .game-area { text-align: center; }
-  .game-stats-panel {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 1.5rem; padding: 0.8rem 1.2rem;
-    background: rgba(0,0,0,0.3); border-radius: 60px;
-  }
-  .game-score, .game-timer { font-size: 1.3rem; font-weight: bold; }
-  .game-score span, .game-timer span { color: #4cc3ff; font-size: 1.8rem; }
-  .game-start-btn { background: #4cc3ff; border: none; padding: 0.6rem 1.5rem; border-radius: 40px; font-size: 1rem; font-weight: bold; color: #0a1420; cursor: pointer; transition: 0.2s; }
-  .game-start-btn:hover { transform: scale(1.05); }
-  .game-canvas { position: relative; width: 100%; height: 400px; background: rgba(0,0,0,0.3); border-radius: 1.5rem; overflow: hidden; cursor: pointer; }
-  .target {
-    position: absolute; width: 60px; height: 60px;
-    background: radial-gradient(circle, #4cc3ff, #2a6f8f);
-    border-radius: 50%; cursor: pointer; transition: 0.05s linear;
-    box-shadow: 0 0 15px #4cc3ff; animation: pulse 0.5s ease;
-  }
-  .target:hover { transform: scale(1.1); }
-  @keyframes pulse { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-  .game-message { margin-top: 1rem; font-size: 0.9rem; opacity: 0.8; }
-
-  .timeline-item { display: flex; gap: 1rem; padding: 0.8rem; background: rgba(255,255,255,0.03); border-radius: 1rem; border-left: 3px solid #4cc3ff; margin-bottom: 1rem; }
-  .timeline-year { font-weight: bold; color: #4cc3ff; min-width: 70px; }
-
-  .social-grid { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
-  .social-card { background: rgba(255,255,255,0.05); padding: 0.8rem 1.5rem; border-radius: 60px; text-decoration: none; color: #dddddd; transition: 0.2s; }
-  .social-card:hover { background: #4cc3ff; color: #0a1420; }
-
-  .contact-item { background: rgba(255,255,255,0.04); padding: 0.8rem 1rem; border-radius: 60px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 0.8rem; }
-  .contact-icon { font-size: 1.3rem; min-width: 32px; }
-  .write-email-btn, .copy-tip-btn { background: rgba(255,255,255,0.1); border: 0.5px solid rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 40px; font-size: 0.7rem; cursor: pointer; margin-left: auto; }
-  .write-email-btn:hover, .copy-tip-btn:hover { background: #4cc3ff; color: #0a1420; }
-
-  .cbox-iframe { width: 100%; height: 500px; border: none; border-radius: 1rem; }
-  .form-iframe-container iframe { width: 100%; height: 600px; border: none; border-radius: 1rem; }
-
-  footer { text-align: center; padding: 2rem; opacity: 0.6; }
-
-  @media (max-width: 768px) {
-    body { font-size: 16px; cursor: auto; }
-    .game-grid { grid-template-columns: 1fr; }
-    .hero { flex-direction: column-reverse; text-align: center; }
-    .hero-stats { justify-content: center; }
-    .nav-links a { margin-left: 1rem; font-size: 0.8rem; }
-    .game-canvas { height: 300px; }
-    .target { width: 50px; height: 50px; }
-    .custom-cursor-glow, .custom-cursor-dot { display: none; }
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Willie Zhang的部落格</title>
+  <link rel="icon" type="image/png" href="assets/willie.png">
+  <link rel="stylesheet" href="style.css">
+  <!-- Lightbox2 CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css">
 </head>
 <body>
 
-<div class="lang-switch">
-  <button class="lang-btn active" data-lang="zh">中文</button>
-  <button class="lang-btn" data-lang="en">English</button>
-  <button class="lang-btn" data-lang="ja">日本語</button>
-</div>
+  <!-- ====== 導航列 ====== -->
+  <header class="site-header">
+    <nav class="navbar">
+      <a class="brand" href="#">
+        <img src="assets/willie.png" alt="Willie avatar" width="40">
+        <span>Willie Zhang的部落格</span>
+      </a>
+      <button class="menu-toggle" id="menuToggle">☰</button>
+      <div class="nav-panel" id="navPanel">
+        <a href="#about">關於我</a>
+        <a href="#skills">我的專長</a>
+        <a href="#gallery">攝影作品</a>
+        <a href="#gaming">遊戲時光</a>
+        <a href="#goals">未來目標</a>
+        <a href="#contact">聯絡我</a>
+      </div>
+    </nav>
+  </header>
 
-<div class="theme-toggle" id="themeToggle">🌙</div>
-
-<!-- 自訂游標元素 -->
-<div class="custom-cursor-glow" id="customCursorGlow"></div>
-<div class="custom-cursor-dot" id="customCursorDot"></div>
-
-<div id="loading">
-  <div class="logo-animation">
-    <svg class="logo-svg" viewBox="0 0 100 100">
-      <defs><linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4cc3ff"/><stop offset="100%" stop-color="#a0e0ff"/></linearGradient></defs>
-      <rect x="20" y="30" width="60" height="45" rx="8" stroke="url(#logoGrad)" stroke-width="3" fill="none"/>
-      <circle cx="50" cy="52" r="14" stroke="url(#logoGrad)" stroke-width="3" fill="none"/>
-      <circle cx="65" cy="38" r="3" fill="url(#logoGrad)"/>
-      <rect x="35" y="25" width="8" height="5" rx="2" fill="url(#logoGrad)"/>
-    </svg>
-  </div>
-  <div class="loading-text">ZHANG JUN WEI</div>
-  <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
-  <div class="loading-percent" id="loadingPercent">0%</div>
-</div>
-
-<div class="navbar">
-  <div class="nav-inner">
-    <div class="logo">📷 Zhang Jun Wei</div>
-    <div class="nav-links">
-      <a href="#about">關於</a>
-      <a href="#skills">技能</a>
-      <a href="#photo">攝影</a>
-      <a href="#game">遊戲</a>
-      <a href="#contact">聯絡</a>
-      <a href="https://app.notion.com/p/All-about-Willie-blogs-379899f91a5480f4a6f8ea99919b58cc?source=copy_link" target="_blank" class="blog-nav-btn">✍️ BLOG</a>
-    </div>
-  </div>
-</div>
-
-<div class="hero">
-  <div class="hero-text">
-    <h1>Zhang Jun Wei</h1>
-    <div class="tagline" id="typewriter"></div>
-    <div class="hero-stats">
-      <div class="stat-item">📸 攝影 2+ 年</div>
-      <div class="stat-item">🎮 遊戲 4+ 年</div>
-      <div class="stat-item">🎬 動態剪輯</div>
-    </div>
-  </div>
-  <div class="hero-img"><img src="https://i.ibb.co/7d5rDrnR/image.png" alt="Zhang Jun Wei"></div>
-</div>
-
-<section id="about"><h2><span>📖 關於我</span></h2><div class="about-card">
-  <div class="info-row">📍 基隆 · 台灣</div>
-  <div class="info-row">🎓 二信高中</div>
-  <div class="info-row">📷 街拍 / 人像 / 紀實</div>
-  <div class="info-row">🎮 競速・沙盒・派對・射擊</div>
-  <div class="info-row">✂️ CapCut</div>
-  <div class="info-row">🎯 創造有故事感的影像</div>
-</div></section>
-
-<section id="skills"><h2><span>📊 技能</span></h2>
-  <div class="skill-item"><div class="skill-header"><span>📷 攝影</span><span>90%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" data-width="90"></div></div></div>
-  <div class="skill-item"><div class="skill-header"><span>✂️ 剪輯</span><span>30%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" data-width="30"></div></div></div>
-  <div class="skill-item"><div class="skill-header"><span>💡 創意</span><span>80%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" data-width="80"></div></div></div>
-</section>
-
-<div class="filter-tags">
-  <span class="filter-tag active" data-filter="all">📷 全部</span>
-  <span class="filter-tag" data-filter="street">🌆 街拍</span>
-  <span class="filter-tag" data-filter="landscape">🏞️ 風景</span>
-</div>
-
-<section id="photo"><h2><span>📷 攝影作品</span></h2><div class="grid" id="photoGrid"></div></section>
-
-<section id="school-trip-tamsui">
-  <h2><span>🎒 二信高中校外教學 · 淡水・北投</span></h2>
-  <div class="grid" id="tamsuiPhotoGrid"></div>
-  <p style="text-align:center; margin-top:16px; font-size:0.7rem; opacity:0.45;">🖱️ 點擊愛心幫我按讚！</p>
-</section>
-
-<section id="school-trip-yilan">
-  <h2><span>🚌 二信高中校外教學 · 宜蘭</span></h2>
-  <div class="grid" id="yilanPhotoGrid"></div>
-  <p style="text-align:center; margin-top:16px; font-size:0.7rem; opacity:0.45;">🖱️ 點擊愛心幫我按讚！</p>
-</section>
-
-<section id="game"><h2><span>🎮 熱玩遊戲</span></h2><div class="game-grid" id="gameGrid"></div></section>
-
-<section id="reaction-game">
-  <h2><span>⚡ 反應力挑戰 ⚡</span></h2>
-  <div class="game-area">
-    <div class="game-stats-panel">
-      <div class="game-score">🎯 得分 <span id="score">0</span></div>
-      <div class="game-timer">⏱️ 剩餘 <span id="timer">15</span> 秒</div>
-      <button class="game-start-btn" id="startGameBtn">▶ 開始遊戲</button>
-    </div>
-    <div class="game-canvas" id="gameCanvas"></div>
-    <div class="game-message" id="gameMessage">點擊「開始遊戲」挑戰你的反應力！</div>
-  </div>
-</section>
-
-<section><h2><span>📅 里程碑</span></h2>
-  <div class="timeline-item"><div class="timeline-year">2024</div><div><strong>開始攝影之路</strong><p>用 iPhone 11 開始記錄生活</p></div></div>
-  <div class="timeline-item"><div class="timeline-year">2025</div><div><strong>休學沉澱</strong><p>專注於攝影與創作</p></div></div>
-  <div class="timeline-item"><div class="timeline-year">2025</div><div><strong>遊戲創作起步</strong><p>從遊戲中獲得創作靈感</p></div></div>
-  <div class="timeline-item"><div class="timeline-year">2026</div><div><strong>個人網站上線</strong><p>分享攝影與創作</p></div></div>
-</section>
-
-<section><h2><span>🔗 追蹤我</span></h2><div class="social-grid">
-  <a href="https://instagram.com/_zhang_0.6.2.6_" target="_blank" class="social-card">📷 Instagram</a>
-</div></section>
-
-<section id="contact"><h2><span>📬 與我聯繫</span></h2>
-  <div class="contact-item"><span class="contact-icon">📧</span>chang.zhangjunwei0712@gmail.com<button class="write-email-btn" id="writeEmailBtn">✉️ 寫信</button></div>
-  <div class="contact-item"><span class="contact-icon">🎮</span>Discord: _zhang_0.6.2.6_<button class="copy-tip-btn" id="copyDiscordBtn">📋 複製ID</button></div>
-  <div class="contact-item"><span class="contact-icon">📷</span><a href="https://instagram.com/_zhang_0.6.2.6_" target="_blank" style="color:#ddd; text-decoration:none;">Instagram</a></div>
-  <div class="contact-item"><span class="contact-icon">💬</span><a href="https://wa.me/886922051439" target="_blank" style="color:#ddd; text-decoration:none;">WhatsApp</a></div>
-</section>
-
-<section><h2><span>💬 留言板</span></h2>
-  <iframe src="https://www3.cbox.ws/box/?boxid=3555494&boxtag=u9cwZO" class="cbox-iframe" allowtransparency="yes" allow="autoplay" frameborder="0"></iframe>
-  <p style="text-align:center; font-size:0.7rem; margin-top:0.5rem; opacity:0.6;">⚠️ 請謹慎留言</p>
-</section>
-
-<section><h2><span>📝 作品建議</span></h2>
-  <p style="margin-bottom:1rem; opacity:0.7;">💡 您的想法與建議，是我持續創作的動力！</p>
-  <div class="form-iframe-container">
-    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScv1Hfa2BIGZeTQWHoKZ8n_GObXLhnY6FjEEM-oKoDyEn8cpA/viewform?embedded=true" width="100%" height="600" frameborder="0">載入中…</iframe>
-  </div>
-</section>
-
-<footer>© 2026 Zhang Jun Wei</footer>
-
-<script>
-let progress = 0;
-const progressBar = document.getElementById('progressBar');
-const percentSpan = document.getElementById('loadingPercent');
-const loadingDiv = document.getElementById('loading');
-const interval = setInterval(() => {
-  if (progress < 100) { progress += Math.floor(Math.random() * 12) + 3; if (progress > 100) progress = 100; progressBar.style.width = progress + '%'; percentSpan.innerText = progress + '%'; }
-  if (progress >= 100) { clearInterval(interval); setTimeout(() => { loadingDiv.style.opacity = '0'; setTimeout(() => loadingDiv.remove(), 800); }, 200); }
-}, 70);
-setTimeout(() => { if (progress < 100) { clearInterval(interval); progressBar.style.width = '100%'; percentSpan.innerText = '100%'; setTimeout(() => { loadingDiv.style.opacity = '0'; setTimeout(() => loadingDiv.remove(), 800); }, 200); } }, 3500);
-
-const cursorGlow = document.getElementById('customCursorGlow');
-const cursorDot = document.getElementById('customCursorDot');
-if (window.innerWidth > 768) {
-  document.addEventListener('mousemove', (e) => {
-    if (cursorGlow) { cursorGlow.style.left = e.clientX + 'px'; cursorGlow.style.top = e.clientY + 'px'; }
-    if (cursorDot) { cursorDot.style.left = e.clientX + 'px'; cursorDot.style.top = e.clientY + 'px'; }
-  });
-  document.addEventListener('click', (e) => {
-    const ripple = document.createElement('div');
-    ripple.style.position = 'fixed';
-    ripple.style.left = e.clientX - 10 + 'px';
-    ripple.style.top = e.clientY - 10 + 'px';
-    ripple.style.width = '20px';
-    ripple.style.height = '20px';
-    ripple.style.borderRadius = '50%';
-    ripple.style.background = '#4cc3ff';
-    ripple.style.transform = 'scale(0)';
-    ripple.style.animation = 'rippleAnim 0.6s ease-out';
-    ripple.style.pointerEvents = 'none';
-    ripple.style.zIndex = '9998';
-    document.body.appendChild(ripple);
-    setTimeout(() => ripple.remove(), 600);
-  });
-  const style = document.createElement('style');
-  style.textContent = `@keyframes rippleAnim { 0% { transform: scale(0); opacity: 0.6; } 100% { transform: scale(4); opacity: 0; } }`;
-  document.head.appendChild(style);
-}
-
-const typewriterText = "17歲 · 鏡頭背後的敘事者\n攝影 | 剪輯 | 遊戲創作";
-const typewriterEl = document.getElementById('typewriter');
-let i = 0;
-function typeWriter() {
-  if (i < typewriterText.length) { typewriterEl.innerHTML += typewriterText.charAt(i); i++; setTimeout(typeWriter, 50); }
-}
-setTimeout(typeWriter, 500);
-
-function initTheme() {
-  const saved = localStorage.getItem('theme');
-  const toggle = document.getElementById('themeToggle');
-  if (saved === 'light') {
-    document.documentElement.style.setProperty('--bg-start', '#dce3ec');
-    document.documentElement.style.setProperty('--bg-end', '#c2cbd8');
-    document.documentElement.style.setProperty('--card-bg', 'rgba(255,255,255,0.8)');
-    document.documentElement.style.setProperty('--text', '#1a2c3e');
-    document.documentElement.style.setProperty('--text-sec', '#2c5a6e');
-    toggle.innerHTML = '☀️';
-  } else {
-    document.documentElement.style.setProperty('--bg-start', '#0a1220');
-    document.documentElement.style.setProperty('--bg-end', '#050a12');
-    document.documentElement.style.setProperty('--card-bg', 'rgba(15,25,40,0.7)');
-    document.documentElement.style.setProperty('--text', '#f0f3fa');
-    document.documentElement.style.setProperty('--text-sec', '#dddddd');
-    toggle.innerHTML = '🌙';
-  }
-  toggle.addEventListener('click', () => {
-    const current = localStorage.getItem('theme');
-    if (current === 'light') {
-      localStorage.setItem('theme', 'dark');
-      document.documentElement.style.setProperty('--bg-start', '#0a1220');
-      document.documentElement.style.setProperty('--bg-end', '#050a12');
-      document.documentElement.style.setProperty('--card-bg', 'rgba(15,25,40,0.7)');
-      document.documentElement.style.setProperty('--text', '#f0f3fa');
-      document.documentElement.style.setProperty('--text-sec', '#dddddd');
-      toggle.innerHTML = '🌙';
-    } else {
-      localStorage.setItem('theme', 'light');
-      document.documentElement.style.setProperty('--bg-start', '#dce3ec');
-      document.documentElement.style.setProperty('--bg-end', '#c2cbd8');
-      document.documentElement.style.setProperty('--card-bg', 'rgba(255,255,255,0.8)');
-      document.documentElement.style.setProperty('--text', '#1a2c3e');
-      document.documentElement.style.setProperty('--text-sec', '#2c5a6e');
-      toggle.innerHTML = '☀️';
-    }
-  });
-}
-initTheme();
-
-document.getElementById('copyDiscordBtn')?.addEventListener('click', () => {
-  navigator.clipboard.writeText('_zhang_0.6.2.6_').then(() => { alert('✓ Discord ID 已複製！'); }).catch(() => { alert('複製失敗，請手動複製：_zhang_0.6.2.6_'); });
-});
-document.getElementById('writeEmailBtn')?.addEventListener('click', () => { window.location.href = 'mailto:chang.zhangjunwei0712@gmail.com'; });
-
-let gameActive = false;
-let score = 0;
-let timeLeft = 15;
-let gameInterval = null;
-let targetTimeout = null;
-const canvas = document.getElementById('gameCanvas');
-const scoreSpan = document.getElementById('score');
-const timerSpan = document.getElementById('timer');
-const startBtn = document.getElementById('startGameBtn');
-const gameMessage = document.getElementById('gameMessage');
-
-function updateUI() { scoreSpan.innerText = score; timerSpan.innerText = timeLeft; }
-
-function createTarget() {
-  if (!gameActive) return;
-  const existingTarget = canvas.querySelector('.target');
-  if (existingTarget) existingTarget.remove();
-  const maxX = canvas.clientWidth - 70;
-  const maxY = canvas.clientHeight - 70;
-  if (maxX <= 0 || maxY <= 0) { setTimeout(createTarget, 100); return; }
-  const x = Math.random() * maxX;
-  const y = Math.random() * maxY;
-  const target = document.createElement('div');
-  target.className = 'target';
-  target.style.left = x + 'px';
-  target.style.top = y + 'px';
-  target.addEventListener('click', (e) => {
-    e.stopPropagation();
-    if (!gameActive) return;
-    score++;
-    updateUI();
-    target.remove();
-    if (gameActive) { if (targetTimeout) clearTimeout(targetTimeout); createTarget(); }
-  });
-  canvas.appendChild(target);
-  targetTimeout = setTimeout(() => { if (target.parentNode && gameActive) { target.remove(); createTarget(); } }, 2000);
-}
-
-function endGame() {
-  gameActive = false;
-  if (gameInterval) clearInterval(gameInterval);
-  if (targetTimeout) clearTimeout(targetTimeout);
-  const existingTarget = canvas.querySelector('.target');
-  if (existingTarget) existingTarget.remove();
-  gameMessage.innerHTML = `⏰ 遊戲結束！你的得分：${score} 分！點擊「開始遊戲」再玩一次 ✨`;
-  startBtn.disabled = false;
-  startBtn.style.opacity = '1';
-}
-
-function startGame() {
-  if (gameActive) return;
-  gameActive = true;
-  score = 0;
-  timeLeft = 15;
-  updateUI();
-  gameMessage.innerHTML = '⚡ 快點擊移動的圓圈！⚡';
-  startBtn.disabled = true;
-  startBtn.style.opacity = '0.6';
-  const existingTarget = canvas.querySelector('.target');
-  if (existingTarget) existingTarget.remove();
-  createTarget();
-  gameInterval = setInterval(() => {
-    if (!gameActive) return;
-    timeLeft--;
-    updateUI();
-    if (timeLeft <= 0) endGame();
-  }, 1000);
-}
-startBtn.addEventListener('click', startGame);
-
-const translations = {
-  zh: { nav_about: "關於", nav_skills: "技能", nav_photo: "攝影", nav_game: "遊戲", nav_contact: "聯絡" },
-  en: { nav_about: "About", nav_skills: "Skills", nav_photo: "Photography", nav_game: "Games", nav_contact: "Contact" },
-  ja: { nav_about: "について", nav_skills: "スキル", nav_photo: "写真", nav_game: "ゲーム", nav_contact: "連絡" }
-};
-
-function switchLanguage(lang) {
-  const navLinks = document.querySelectorAll('.nav-links a');
-  const keys = ['nav_about', 'nav_skills', 'nav_photo', 'nav_game', 'nav_contact'];
-  navLinks.forEach((link, i) => { if (translations[lang][keys[i]]) link.innerText = translations[lang][keys[i]]; });
-  document.querySelectorAll('.lang-btn').forEach(btn => {
-    if (btn.getAttribute('data-lang') === lang) btn.classList.add('active');
-    else btn.classList.remove('active');
-  });
-  localStorage.setItem('preferred_lang', lang);
-}
-
-document.querySelectorAll('.lang-btn').forEach(btn => {
-  btn.addEventListener('click', () => switchLanguage(btn.getAttribute('data-lang')));
-});
-const savedLang = localStorage.getItem('preferred_lang');
-if (savedLang) switchLanguage(savedLang);
-else switchLanguage('zh');
-
-// 攝影作品資料
-const photoUrls = [
-  "https://i.ibb.co/4g183MjF/image.jpg", "https://i.ibb.co/yF9jxFj1/image.jpg", "https://i.ibb.co/Fq8BzpQq/image.jpg", "https://i.ibb.co/TDVVKqrH/image.jpg",
-  "https://i.ibb.co/fV0VKky3/image.jpg", "https://i.ibb.co/Nk2Lr2q/image.jpg", "https://i.ibb.co/1DSnx1V/image.jpg", "https://i.ibb.co/Z1JM13ns/image.jpg",
-  "https://i.ibb.co/vvxHPTjC/image.jpg", "https://i.ibb.co/PZvQqvb9/image.jpg", "https://i.ibb.co/S4wm44m0/image.jpg", "https://i.ibb.co/MkzY2cdB/image.jpg",
-  "https://i.ibb.co/TDM0d7dZ/image.jpg", "https://i.ibb.co/m5hBMSQQ/image.jpg"
-];
-const photoCaptionsList = [
-  "福隆星巴克附近的販賣機", "跨海大橋", "跨海大橋-1", "福隆的海邊",
-  "高速公路", "眺望淡江大橋", "淡江大橋上的道路", "眺望夜景的淡江大橋",
-  "宜蘭蘇澳港", "宜蘭蘇澳海邊", "石門萵山梯田", "石門萵山梯田-1",
-  "金瓜石報時山眺望陰陽海", "金瓜石心洞"
-];
-const photoCategoriesMap = {
-  0: 'street', 1: 'street', 2: 'landscape', 3: 'street',
-  4: 'street', 5: 'landscape', 6: 'landscape', 7: 'street',
-  8: 'landscape', 9: 'landscape', 10: 'street', 11: 'landscape',
-  12: 'street', 13: 'landscape'
-};
-
-// 淡水北投
-const tamsuiPhotoUrls = [
-  "https://i.ibb.co/bRgMm4nh/IMG-7561.jpg", "https://i.ibb.co/hxjfTr8Y/IMG-7599.jpg", "https://i.ibb.co/KcdgrGfc/IMG-7600.jpg",
-  "https://i.ibb.co/6R26NWPj/IMG-7603.jpg", "https://i.ibb.co/qQQSnjz/IMG-7604.jpg", "https://i.ibb.co/qLstjF7p/IMG-7606.jpg",
-  "https://i.ibb.co/XxSXgT3r/IMG-7607.jpg", "https://i.ibb.co/jPnJzKrd/IMG-7622.jpg", "https://i.ibb.co/ZpwH7J3y/IMG-7627.jpg",
-  "https://i.ibb.co/wFG5hrfX/IMG-7628.jpg", "https://i.ibb.co/h1ZWr8S2/IMG-7630.jpg", "https://i.ibb.co/svNRgBCF/IMG-7631.jpg",
-  "https://i.ibb.co/Gvzn5K7v/IMG-7632.jpg", "https://i.ibb.co/4ZDMTyVj/IMG-7633.jpg", "https://i.ibb.co/qFFdxwkX/IMG-7634.jpg",
-  "https://i.ibb.co/m56fy2YB/IMG-7637.jpg", "https://i.ibb.co/bgfSWBQZ/IMG-7641.jpg", "https://i.ibb.co/XfWQSZYh/IMG-7647.jpg",
-  "https://i.ibb.co/pjNfH3GK/IMG-7648.jpg"
-];
-const tamsuiPhotoCaptions = [
-  "新北投火車站", "北投博物館古物", "北投博物館內的塌塌米", "北投博物館外的風景",
-  "北投湯淋浴區", "辦桌區", "北投博物館泡湯區展示區", "北投圖書館",
-  "北投圖書館內部", "北投圖書館外部建築物", "紅毛城軍事建築", "紅毛城",
-  "古人住宿區", "古人住宿區-1", "古人住宿區-2", "古人住宿區-3",
-  "古人住宿區-4", "古人住宿區-5", "古人住宿區-6"
-];
-
-// 宜蘭 69張照片
-const yilanPhotoUrls = [
-  "https://i.ibb.co/0yMBX6bY/IMG-8450.jpg", "https://i.ibb.co/B58Hg0F7/IMG-8451.jpg", "https://i.ibb.co/C5WZQDt3/IMG-8452.jpg",
-  "https://i.ibb.co/mVcJ08Bw/IMG-8453.jpg", "https://i.ibb.co/Zpw3hCQZ/IMG-8454.jpg", "https://i.ibb.co/vC4zmvmz/IMG-8455.jpg",
-  "https://i.ibb.co/rLJhgC1/IMG-8458.jpg", "https://i.ibb.co/qM1mryv6/IMG-8460.jpg", "https://i.ibb.co/TDH891B0/IMG-8461.jpg",
-  "https://i.ibb.co/MDHx7M0y/IMG-8462.jpg", "https://i.ibb.co/dw90bbZV/IMG-8463.jpg", "https://i.ibb.co/1t8R3Rzm/IMG-8464.jpg",
-  "https://i.ibb.co/TBm4Md3L/IMG-8466.jpg", "https://i.ibb.co/qTCc5Bw/IMG-8467.jpg", "https://i.ibb.co/vvVsNZdP/IMG-8470.jpg",
-  "https://i.ibb.co/5w7y06p/IMG-8471.jpg", "https://i.ibb.co/XxwVpC6q/IMG-8472.jpg", "https://i.ibb.co/4ZvSfsdF/IMG-8473.jpg",
-  "https://i.ibb.co/Vcmq5yZH/IMG-8474.jpg", "https://i.ibb.co/BKtGS3G4/IMG-8475.jpg", "https://i.ibb.co/cckm8MPN/IMG-8476.jpg",
-  "https://i.ibb.co/wrSkv4bL/IMG-8477.jpg", "https://i.ibb.co/KckjgQW7/IMG-8478.jpg", "https://i.ibb.co/xtNdv68d/IMG-8479.jpg",
-  "https://i.ibb.co/JF7W6p0C/IMG-8480.jpg", "https://i.ibb.co/0R9dj24Q/IMG-8481.jpg", "https://i.ibb.co/DDB7s3tF/IMG-8482.jpg",
-  "https://i.ibb.co/wrLc5JN3/IMG-8483.jpg", "https://i.ibb.co/hFzmFSD1/IMG-8484.jpg", "https://i.ibb.co/vxy78H1z/IMG-8485.jpg",
-  "https://i.ibb.co/hxXdFf8k/IMG-8486.jpg", "https://i.ibb.co/k2vkChvM/IMG-8487.jpg", "https://i.ibb.co/N2W7g7FT/IMG-8488.jpg",
-  "https://i.ibb.co/7JMbgHTD/IMG-8489.jpg", "https://i.ibb.co/Myyr3kvT/IMG-8490.jpg", "https://i.ibb.co/C5NWPWph/IMG-8491.jpg",
-  "https://i.ibb.co/nN6YmtNY/IMG-8492.jpg", "https://i.ibb.co/YFJNcKqg/IMG-8493.jpg", "https://i.ibb.co/93vhJxVg/IMG-8494.jpg",
-  "https://i.ibb.co/WvD8tqyr/IMG-8495.jpg", "https://i.ibb.co/RTm1sCgK/IMG-8496.jpg", "https://i.ibb.co/DgC54Wm7/IMG-8497.jpg",
-  "https://i.ibb.co/1Js8N0kc/IMG-8498.jpg", "https://i.ibb.co/NgwqgFtR/IMG-8499.jpg", "https://i.ibb.co/XfQxGhp3/IMG-8500.jpg",
-  "https://i.ibb.co/JwCh1tC9/IMG-8501.jpg", "https://i.ibb.co/h1nXgyzq/IMG-8502.jpg", "https://i.ibb.co/zHNDZ0mZ/IMG-8503.jpg",
-  "https://i.ibb.co/7tTXZHNK/IMG-8504.jpg", "https://i.ibb.co/1JtfLB6p/IMG-8505.jpg", "https://i.ibb.co/HfXmz8mt/IMG-8506.jpg",
-  "https://i.ibb.co/TD31pykM/IMG-8508.jpg", "https://i.ibb.co/kYGzb5W/IMG-8509.jpg", "https://i.ibb.co/LXmPT9nm/IMG-8510.jpg",
-  "https://i.ibb.co/prBGK387/IMG-8511.jpg", "https://i.ibb.co/8F9XDkL/IMG-8512.jpg", "https://i.ibb.co/0VhYY6vz/IMG-8519.jpg",
-  "https://i.ibb.co/TBrnkPmH/IMG-8522.jpg", "https://i.ibb.co/zT0jQVPm/IMG-8523.jpg", "https://i.ibb.co/XfLRNPQ8/IMG-8524.jpg",
-  "https://i.ibb.co/vxgcnDk5/IMG-8527.jpg", "https://i.ibb.co/LX2JCcz4/IMG-8528.jpg", "https://i.ibb.co/spRk88RS/IMG-8529.jpg",
-  "https://i.ibb.co/RpWNZ2qW/IMG-8530.jpg", "https://i.ibb.co/8nr9nNFQ/IMG-8541.jpg", "https://i.ibb.co/1YHkjXV3/IMG-8542.jpg",
-  "https://i.ibb.co/W45pzNrP/IMG-8543.jpg", "https://i.ibb.co/0VyNc9NX/IMG-8546.jpg", "https://i.ibb.co/5Xkt1ByB/IMG-8459.jpg"
-];
-
-// 遊戲資料
-const games = [
-  { name: "極速領域", tag: "競速", period: "2022-2026 (4年)", rating: 4.5, img: "https://i.ibb.co/Y7X3WYPP/image.jpg" },
-  { name: "Roblox", tag: "沙盒", period: "2019/12-2026/4 (約6年)", rating: 4.2, img: "https://i.ibb.co/4w3Pny0X/image.jpg" },
-  { name: "Minecraft", tag: "創造", period: "2022-2025 (3年)", rating: 5, img: "https://i.ibb.co/k29tzZvf/image.jpg" },
-  { name: "WePlay", tag: "派對", period: "2024/12-至今 (約2年)", rating: 4, img: "https://i.ibb.co/dwrTYxGD/image.jpg" },
-  { name: "Asphalt 9", tag: "競速", period: "約1年", rating: 4.3, img: "https://i.ibb.co/Ndy72jhS/image.jpg" },
-  { name: "Pixel Gun 3D", tag: "射擊", period: "約1年", rating: 4, img: "https://i.ibb.co/0RKZp4CW/image.jpg" }
-];
-
-function renderGames() {
-  const container = document.getElementById('gameGrid');
-  if (!container) return;
-  container.innerHTML = games.map(game => `
-    <div class="game-card">
-      <div class="game-header">
-        <img class="game-icon-img" src="${game.img}" alt="${game.name}">
-        <div class="game-info">
-          <div class="game-name">${game.name}</div>
-          <div class="game-tag">${game.tag}</div>
+  <!-- ====== 主視覺區 ====== -->
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <div class="hero-text">
+        <p class="eyebrow">📸 攝影生活 / 遊戲編年史 / 2026 新篇章</p>
+        <h1>Willie Zhang</h1>
+        <p class="tagline">基隆二信高中生，用鏡頭收藏雨港日常，也把熱血寫進自己的故事。</p>
+        <blockquote>「鏡頭記錄當下，熱血活在當下。」</blockquote>
+        <div class="hero-buttons">
+          <a class="btn-primary" href="#about">探索我的世界</a>
+          <a class="btn-ghost" href="https://www.instagram.com/_zhang_0.6.2.6_" target="_blank">追蹤 Instagram</a>
         </div>
       </div>
-      <div class="game-stats">
-        <span class="game-period">📅 ${game.period}</span>
-        <span class="game-rating">⭐ ${game.rating} / 5</span>
+      <div class="hero-image">
+        <img src="assets/willie.png" alt="Willie Zhang">
+        <div class="status-card">
+          <span>目前狀態</span>
+          <strong>2026 專注攝影、剪輯與生活成長</strong>
+        </div>
       </div>
     </div>
-  `).join('');
-}
-renderGames();
+  </section>
 
-let currentFilter = 'all';
-let photoLikes = JSON.parse(localStorage.getItem('photoLikes') || '{}');
-let photoUserLiked = JSON.parse(localStorage.getItem('photoUserLiked') || '{}');
-
-function renderPhotos() {
-  const container = document.getElementById('photoGrid');
-  if (!container) return;
-  const filteredIndices = photoUrls.map((_, idx) => idx).filter(idx => currentFilter === 'all' || photoCategoriesMap[idx] === currentFilter);
-  container.innerHTML = filteredIndices.map(idx => {
-    const likeCount = photoLikes[idx] || 0;
-    const liked = photoUserLiked[idx] || false;
-    return `
-      <div class="photo-item">
-        <img src="${photoUrls[idx]}" alt="${photoCaptionsList[idx]}" loading="lazy">
-        <div class="photo-caption">${photoCaptionsList[idx]}</div>
-        <div class="like-container">
-          <button class="like-btn ${liked ? 'liked' : ''}" data-idx="${idx}">❤️</button>
-          <span class="like-count" data-idx="${idx}">${likeCount}</span>
+  <!-- ====== 關於我 ====== -->
+  <section class="section" id="about">
+    <div class="container">
+      <h2>關於我</h2>
+      <div class="about-grid">
+        <p class="about-text">
+          今年 19 歲，目前就讀基隆二信高中。不得不誠實地說，我的脾氣有時候不太好，但如果你走進我的世界，就會發現我對朋友非常友善與義氣。我是一個熱愛用鏡頭記錄生活、在影像剪輯中尋找樂趣，同時也曾在遊戲世界裡瘋狂逐夢的熱血青年。
+        </p>
+        <div class="info-card">
+          <div><span>名字</span><strong>Willie Zhang</strong></div>
+          <div><span>所在地</span><strong>台灣基隆 / 二信高中</strong></div>
+          <div><span>Email</span><a href="mailto:chang.zhangjunwei0712@gmail.com">chang.zhangjunwei0712@gmail.com</a></div>
+          <div><span>Discord</span><strong>_zhang_0.6.2.6_</strong></div>
         </div>
       </div>
-    `;
-  }).join('');
-  attachLikeEvents();
-}
+    </div>
+  </section>
 
-function attachLikeEvents() {
-  document.querySelectorAll('.like-btn').forEach(btn => {
-    btn.removeEventListener('click', handleLike);
-    btn.addEventListener('click', handleLike);
-  });
-}
-
-function handleLike(e) {
-  e.stopPropagation();
-  const btn = e.currentTarget;
-  const idx = parseInt(btn.getAttribute('data-idx'));
-  if (photoUserLiked[idx]) {
-    photoLikes[idx]--;
-    photoUserLiked[idx] = false;
-    btn.classList.remove('liked');
-  } else {
-    photoLikes[idx]++;
-    photoUserLiked[idx] = true;
-    btn.classList.add('liked');
-  }
-  localStorage.setItem('photoLikes', JSON.stringify(photoLikes));
-  localStorage.setItem('photoUserLiked', JSON.stringify(photoUserLiked));
-  document.querySelectorAll(`.like-count[data-idx="${idx}"]`).forEach(span => span.innerText = photoLikes[idx]);
-}
-
-document.querySelectorAll('.filter-tag').forEach(tag => {
-  tag.addEventListener('click', () => {
-    document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
-    tag.classList.add('active');
-    currentFilter = tag.getAttribute('data-filter');
-    renderPhotos();
-  });
-});
-
-let tamsuiPhotoLikes = JSON.parse(localStorage.getItem('tamsuiPhotoLikes') || '{}');
-let tamsuiPhotoUserLiked = JSON.parse(localStorage.getItem('tamsuiPhotoUserLiked') || '{}');
-
-function renderTamsuiPhotos() {
-  const container = document.getElementById('tamsuiPhotoGrid');
-  if (!container) return;
-  container.innerHTML = tamsuiPhotoUrls.map((url, idx) => {
-    const likeCount = tamsuiPhotoLikes[idx] || 0;
-    const liked = tamsuiPhotoUserLiked[idx] || false;
-    const caption = tamsuiPhotoCaptions[idx] || `淡水北投 ${idx + 1}`;
-    return `
-      <div class="photo-item">
-        <img src="${url}" alt="${caption}" loading="lazy">
-        <div class="photo-caption">${caption}</div>
-        <div class="like-container">
-          <button class="tamsui-like-btn ${liked ? 'liked' : ''}" data-idx="${idx}">❤️</button>
-          <span class="tamsui-like-count" data-idx="${idx}">${likeCount}</span>
+  <!-- ====== 我的專長 ====== -->
+  <section class="section" id="skills">
+    <div class="container">
+      <h2>我的專長與攝影裝備</h2>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <img src="assets/cam.jpg" alt="攝影">
+          <h3>📷 攝影拍照</h3>
+          <p>熟練度高。喜歡捕捉街景、人像與生活瞬間。</p>
+          <div class="progress"><span style="width:88%"></span></div>
+        </div>
+        <div class="skill-card">
+          <h3>✂️ 影片剪輯</h3>
+          <p>初級階段。目前正在鑽研剪輯節奏與特效。</p>
+          <div class="progress"><span style="width:42%"></span></div>
+        </div>
+        <div class="skill-card">
+          <h3>📦 攝影裝備</h3>
+          <p>主要使用手機/相機進行日常拍攝，搭配 CapCut 進行初級剪輯。</p>
         </div>
       </div>
-    `;
-  }).join('');
-  attachTamsuiLikeEvents();
-}
+    </div>
+  </section>
 
-function attachTamsuiLikeEvents() {
-  document.querySelectorAll('.tamsui-like-btn').forEach(btn => {
-    btn.removeEventListener('click', handleTamsuiLike);
-    btn.addEventListener('click', handleTamsuiLike);
-  });
-}
+  <!-- ====== 攝影作品（網格 + 燈箱） ====== -->
+  <section class="section" id="gallery">
+    <div class="container">
+      <h2>📷 攝影作品</h2>
+      <p class="section-desc">點擊圖片可放大觀看</p>
+      <div class="photo-grid">
+        <a href="assets/photo-1.png" data-lightbox="gallery" data-title="基隆街景">
+          <img src="assets/photo-1.png" alt="攝影作品 1" loading="lazy">
+        </a>
+        <a href="assets/photo-2.png" data-lightbox="gallery" data-title="校園日常">
+          <img src="assets/photo-2.png" alt="攝影作品 2" loading="lazy">
+        </a>
+        <a href="assets/photo-3.png" data-lightbox="gallery" data-title="雨港印象">
+          <img src="assets/photo-3.png" alt="攝影作品 3" loading="lazy">
+        </a>
+        <a href="assets/photo-4.png" data-lightbox="gallery" data-title="生活隨拍">
+          <img src="assets/photo-4.png" alt="攝影作品 4" loading="lazy">
+        </a>
+        <a href="assets/photo-5.png" data-lightbox="gallery" data-title="校外教學 淡水">
+          <img src="assets/photo-5.png" alt="攝影作品 5" loading="lazy">
+        </a>
+        <a href="assets/photo-6.png" data-lightbox="gallery" data-title="校外教學 北投">
+          <img src="assets/photo-6.png" alt="攝影作品 6" loading="lazy">
+        </a>
+      </div>
+    </div>
+  </section>
 
-function handleTamsuiLike(e) {
-  e.stopPropagation();
-  const btn = e.currentTarget;
-  const idx = parseInt(btn.getAttribute('data-idx'));
-  if (tamsuiPhotoUserLiked[idx]) {
-    tamsuiPhotoLikes[idx]--;
-    tamsuiPhotoUserLiked[idx] = false;
-    btn.classList.remove('liked');
-  } else {
-    tamsuiPhotoLikes[idx]++;
-    tamsuiPhotoUserLiked[idx] = true;
-    btn.classList.add('liked');
-  }
-  localStorage.setItem('tamsuiPhotoLikes', JSON.stringify(tamsuiPhotoLikes));
-  localStorage.setItem('tamsuiPhotoUserLiked', JSON.stringify(tamsuiPhotoUserLiked));
-  document.querySelectorAll(`.tamsui-like-count[data-idx="${idx}"]`).forEach(span => span.innerText = tamsuiPhotoLikes[idx]);
-}
-
-let yilanPhotoLikes = JSON.parse(localStorage.getItem('yilanPhotoLikes') || '{}');
-let yilanPhotoUserLiked = JSON.parse(localStorage.getItem('yilanPhotoUserLiked') || '{}');
-
-function renderYilanPhotos() {
-  const container = document.getElementById('yilanPhotoGrid');
-  if (!container) return;
-  container.innerHTML = yilanPhotoUrls.map((url, idx) => {
-    const likeCount = yilanPhotoLikes[idx] || 0;
-    const liked = yilanPhotoUserLiked[idx] || false;
-    return `
-      <div class="photo-item">
-        <img src="${url}" alt="宜蘭之旅 ${idx+1}" loading="lazy">
-        <div class="like-container">
-          <button class="yilan-like-btn ${liked ? 'liked' : ''}" data-idx="${idx}">❤️</button>
-          <span class="yilan-like-count" data-idx="${idx}">${likeCount}</span>
+  <!-- ====== 遊戲時光 ====== -->
+  <section class="section" id="gaming">
+    <div class="container">
+      <h2>🎮 遊戲時光機（2022 - 2025）</h2>
+      <p class="notice">2026 年因生活重心調整，目前已停止遊戲生活</p>
+      <div class="game-grid">
+        <div class="game-card">
+          <img src="assets/speed-drifters.png" alt="極速領域">
+          <h3>極速領域</h3>
+          <p>追求極速甩尾的快感，享受在賽道上零點幾秒的博弈。</p>
+        </div>
+        <div class="game-card">
+          <img src="assets/roblox.png" alt="Roblox">
+          <h3>Roblox</h3>
+          <p>自由度極高的世界，和朋友們留下了超多搞笑和冒險的回憶。</p>
+        </div>
+        <div class="game-card">
+          <img src="assets/weplay.jpg" alt="WePlay">
+          <h3>WePlay</h3>
+          <p>不僅僅是玩遊戲，更是和朋友用語音打屁、聯絡感情的最佳基地。</p>
+        </div>
+        <div class="game-card">
+          <img src="assets/minecraft.jpg" alt="Minecraft">
+          <h3>Minecraft / Asphalt 9 / Pixel Gun 3D</h3>
+          <p>從方塊建築、瘋狂飆車到像素射擊，陪伴了我無數個熱血的夜晚。</p>
         </div>
       </div>
-    `;
-  }).join('');
-  attachYilanLikeEvents();
-}
+    </div>
+  </section>
 
-function attachYilanLikeEvents() {
-  document.querySelectorAll('.yilan-like-btn').forEach(btn => {
-    btn.removeEventListener('click', handleYilanLike);
-    btn.addEventListener('click', handleYilanLike);
-  });
-}
+  <!-- ====== 未來目標 ====== -->
+  <section class="section" id="goals">
+    <div class="container">
+      <h2>🎯 2026 全新篇章與未來目標</h2>
+      <div class="goal-list">
+        <div><span>01</span><h3>精進攝影與剪輯技術</h3><p>嘗試接案或製作個人短片。</p></div>
+        <div><span>02</span><h3>順利從二信高中畢業</h3><p>迎向 18 歲的成年挑戰。</p></div>
+        <div><span>03</span><h3>擴展人際關係</h3><p>對身邊友善的朋友們更好。</p></div>
+      </div>
+    </div>
+  </section>
 
-function handleYilanLike(e) {
-  e.stopPropagation();
-  const btn = e.currentTarget;
-  const idx = parseInt(btn.getAttribute('data-idx'));
-  if (yilanPhotoUserLiked[idx]) {
-    yilanPhotoLikes[idx]--;
-    yilanPhotoUserLiked[idx] = false;
-    btn.classList.remove('liked');
-  } else {
-    yilanPhotoLikes[idx]++;
-    yilanPhotoUserLiked[idx] = true;
-    btn.classList.add('liked');
-  }
-  localStorage.setItem('yilanPhotoLikes', JSON.stringify(yilanPhotoLikes));
-  localStorage.setItem('yilanPhotoUserLiked', JSON.stringify(yilanPhotoUserLiked));
-  document.querySelectorAll(`.yilan-like-count[data-idx="${idx}"]`).forEach(span => span.innerText = yilanPhotoLikes[idx]);
-}
+  <!-- ====== 頁尾 ====== -->
+  <footer class="footer" id="contact">
+    <div class="container">
+      <h2>📬 聯絡我</h2>
+      <p>Email: <a href="mailto:chang.zhangjunwei0712@gmail.com">chang.zhangjunwei0712@gmail.com</a></p>
+      <p>Discord: _zhang_0.6.2.6_</p>
+      <div class="socials">
+        <a href="https://www.instagram.com/_zhang_0.6.2.6_" target="_blank">Instagram</a>
+      </div>
+      <p class="copyright">© 2026 Willie Zhang. All Rights Reserved.</p>
+    </div>
+  </footer>
 
-const skillObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const fills = entry.target.querySelectorAll('.skill-bar-fill');
-      fills.forEach(fill => { const w = fill.getAttribute('data-width'); if (w) fill.style.width = w + '%'; });
-    }
-  });
-}, { threshold: 0.5 });
-document.querySelectorAll('#skills').forEach(el => skillObserver.observe(el));
-
-renderPhotos();
-renderTamsuiPhotos();
-renderYilanPhotos();
-</script>
+  <!-- ====== JavaScript ====== -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+  <script>
+    // 手機選單開關
+    const toggle = document.getElementById('menuToggle');
+    const panel = document.getElementById('navPanel');
+    toggle.addEventListener('click', () => {
+      panel.classList.toggle('is-open');
+    });
+  </script>
 </body>
 </html>
