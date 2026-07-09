@@ -16,7 +16,7 @@ const translations = {
     heroStatus: "2026 專注攝影、剪輯與生活成長",
     aboutEyebrow: "About Willie",
     aboutTitle: "關於我",
-    aboutText: "今年 18 歲，目前就讀基隆二信高中。不得不誠實地說，我的脾氣有時候不太好，但如果你走進我的世界，就會發現我對朋友非常友善與義氣。我是一個熱愛用鏡頭記錄生活、在影像剪輯中尋找樂趣，同時也曾在遊戲世界裡瘋狂逐夢的熱血青年。",
+    aboutText: "今年 18 歲，目前就讀基隆二信高中，挑戰 19 歲順利畢業！不得不誠實地說，我的脾氣有時候不太好，但如果你走進我的世界，就會發現我對朋友非常友善與義氣。我是一個熱愛用鏡頭記錄生活、在影像剪輯中尋找樂趣，同時也曾在遊戲世界裡瘋狂逐夢的熱血青年。",
     profileNameLabel: "名字 / 綽號",
     profileLocationLabel: "所在地",
     profileLocation: "台灣基隆 / 讀二信高中",
@@ -56,7 +56,7 @@ const translations = {
     goalOneTitle: "精進攝影與剪輯技術",
     goalOneDesc: "嘗試接案或製作個人短片。",
     goalTwoTitle: "順利從二信高中畢業",
-    goalTwoDesc: "迎向 19 歲的成年挑戰。",
+    goalTwoDesc: "挑戰 19 歲順利畢業！",
     goalThreeTitle: "擴展人際關係",
     goalThreeDesc: "對身邊友善的朋友們更好。",
     contactEyebrow: "Contact",
@@ -79,7 +79,7 @@ const translations = {
     heroStatus: "Focused on photography, editing, and personal growth in 2026",
     aboutEyebrow: "About Willie",
     aboutTitle: "About Me",
-    aboutText: "I'm 18 years old and currently studying at Erxin High School in Keelung. To be honest, I might have a temper sometimes, but once you get to know me, you'll find I'm extremely loyal and friendly to my friends. I'm a passionate guy who loves capturing life through the lens, finding joy in video editing, and chasing dreams in the gaming world.",
+    aboutText: "I'm 18 years old and currently studying at Erxin High School in Keelung, aiming to graduate smoothly at 19! To be honest, I might have a temper sometimes, but once you get to know me, you'll find I'm extremely loyal and friendly to my friends. I'm a passionate guy who loves capturing life through the lens, finding joy in video editing, and chasing dreams in the gaming world.",
     profileNameLabel: "Name / Nickname",
     profileLocationLabel: "Location",
     profileLocation: "Keelung, Taiwan / Erxin High School",
@@ -119,7 +119,7 @@ const translations = {
     goalOneTitle: "Master photography and video editing",
     goalOneDesc: "Try freelance work or create personal short films.",
     goalTwoTitle: "Graduate smoothly from Erxin High School",
-    goalTwoDesc: "Embrace the challenges of turning 19.",
+    goalTwoDesc: "Aiming to graduate smoothly at 19!",
     goalThreeTitle: "Expand my social circle",
     goalThreeDesc: "Be even better to the friendly people around me.",
     contactEyebrow: "Contact",
@@ -164,3 +164,24 @@ document.querySelectorAll(".nav-panel a").forEach((link) => {
 });
 
 applyLanguage(localStorage.getItem("willie-site-lang") || "zh");
+
+// ===== 背景音樂開關（預設開啟） =====
+const musicToggle = document.getElementById('musicToggle');
+const musicContainer = document.getElementById('musicContainer');
+let musicPlaying = true;
+
+if (musicToggle && musicContainer) {
+  musicToggle.addEventListener('click', function() {
+    musicPlaying = !musicPlaying;
+    
+    if (musicPlaying) {
+      musicContainer.style.display = 'block';
+      musicToggle.classList.add('playing');
+      musicToggle.innerHTML = '<span class="music-icon">🔊</span><span class="music-text">關閉音樂</span>';
+    } else {
+      musicContainer.style.display = 'none';
+      musicToggle.classList.remove('playing');
+      musicToggle.innerHTML = '<span class="music-icon">🔇</span><span class="music-text">播放音樂</span>';
+    }
+  });
+}
