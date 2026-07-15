@@ -7,7 +7,7 @@ const translations = {
     navGaming: "遊戲時光",
     navGoals: "未來目標",
     navContact: "聯絡我",
-    heroEyebrow: "📸 攝影 · 遊戲 · 2026 新篇章",
+    heroSubtitle: "📸 攝影 · 遊戲 · 2026 新篇章",
     heroTagline: "基隆二信高中生，用鏡頭收藏雨港日常，也把熱血寫進自己的故事。",
     heroQuote: "鏡頭記錄當下，熱血活在當下。",
     heroCta: "探索我的世界",
@@ -91,7 +91,7 @@ const translations = {
     navGaming: "Gaming",
     navGoals: "Future Goals",
     navContact: "Contact",
-    heroEyebrow: "📸 Photography · Gaming · 2026 New Chapter",
+    heroSubtitle: "📸 Photography · Gaming · 2026 New Chapter",
     heroTagline: "A student from Erxin High School in Keelung, capturing rainy city moments through the lens and writing passion into my own story.",
     heroQuote: "Capture the moment with the lens, live the moment with passion.",
     heroCta: "Explore My World",
@@ -184,7 +184,6 @@ function applyLanguage(lang) {
     }
   });
 
-  // 更新音樂按鈕文字
   const musicToggle = document.getElementById('musicToggle');
   if (musicToggle) {
     const isPlaying = musicToggle.classList.contains('playing');
@@ -218,7 +217,6 @@ document.querySelectorAll(".nav-panel a").forEach((link) => {
 
 applyLanguage(localStorage.getItem("willie-site-lang") || "zh");
 
-// ===== 背景音樂開關（預設關閉） =====
 const musicToggle = document.getElementById('musicToggle');
 const musicContainer = document.getElementById('musicContainer');
 let musicPlaying = false;
