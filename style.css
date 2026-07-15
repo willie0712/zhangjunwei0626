@@ -121,7 +121,7 @@ img {
 
 /* ===== 主視覺區 ===== */
 .hero {
-  padding: 100px 20px 60px;
+  padding: 140px 20px 60px;  /* 已修改：從 100px 改為 140px */
   background: rgba(11, 12, 16, 0.45);
   backdrop-filter: blur(4px);
 }
@@ -504,6 +504,20 @@ img {
 }
 
 /* ===== 遊戲時光 ===== */
+.game-platform-title {
+  max-width: 1100px;
+  margin: 30px auto 16px;
+  color: var(--cyan);
+  font-size: 1.3rem;
+  font-weight: 700;
+  padding-left: 14px;
+  border-left: 4px solid var(--cyan);
+}
+
+.game-platform-title:first-of-type {
+  margin-top: 0;
+}
+
 .game-list {
   max-width: 1100px;
   margin: 0 auto 40px;
@@ -955,7 +969,7 @@ img {
   }
 
   .hero {
-    padding-top: 80px;
+    padding-top: 120px;  /* 手機版也稍微往下移 */
   }
 
   .game-list-item {
