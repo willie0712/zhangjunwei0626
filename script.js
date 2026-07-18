@@ -240,12 +240,9 @@ if (musicToggle && musicContainer) {
   });
 }
 
-// ===== 資料夾展開/收合功能（使用事件監聽） =====
+// ===== 資料夾展開/收合功能（預設關閉） =====
 document.addEventListener('DOMContentLoaded', function() {
-  // 所有資料夾預設展開（如果你想預設收起，把下面這行註解掉）
-  document.querySelectorAll('.folder').forEach(function(folder) {
-    folder.classList.add('open');
-  });
+  // 預設全部關閉（不加入 open class）
 
   // 點擊標題切換展開/收合
   document.querySelectorAll('.folder-header').forEach(function(header) {
