@@ -434,7 +434,7 @@ function Home() {
         </section>
 
         <section id="contact" className="contact-section section-block">
-          <div className="page-width contact-grid"><div className="contact-mark reveal"><img src={logoMark} alt="" /><span>WZ / 2026</span></div><div className="contact-copy reveal reveal-delay-1"><SectionIndex>{copy.contactIndex}</SectionIndex><h2>{copy.contactTitle.split("\n").map((line) => <span key={line}>{line}</span>)}</h2><p>{copy.contactText}</p><a className="btn btn-primary" href="https://www.instagram.com/_zhang_0.6.2.6_/" target="_blank" rel="noreferrer">{copy.contactCta}<Instagram size={16} /></a></div></div>
+          <div className="page-width contact-grid"><div className="contact-mark reveal"><img src={logoMark} alt="" /><span>WZ / 2026</span></div><div className="contact-copy reveal reveal-delay-1"><SectionIndex>{copy.contactIndex}</SectionIndex><h2>{copy.contactTitle.split("\n").map((line) => <span key={line}>{line}</span>)}</h2><p>{copy.contactText}</p><a className="btn btn-primary" href="https://www.instagram.com/hayashi_970626/" target="_blank" rel="noreferrer">{copy.contactCta}<Instagram size={16} /></a></div></div>
         </section>
       </main>
 
