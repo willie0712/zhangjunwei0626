@@ -1,701 +1,530 @@
 /* =========================================================
    Willie Zhang — Photography & Life
    Complete script.js
-   原圖版：不使用縮圖
    ========================================================= */
 
+(() => {
+  "use strict";
 
-/* =========================================================
-   PHOTO DATA
-   ========================================================= */
+  /* =========================================================
+     PHOTO DATA
+     ========================================================= */
 
-const photoAlbums = {
+  const albums = [
+    {
+      id: "yilan",
+      number: "01",
+      title: "宜蘭一日遊（二信校外教學）",
+      description: "72 PHOTOS",
+      photos: [
+        "https://i.ibb.co/dsbnxwmd/IMG-8503-compressed.jpg",
+        "https://i.ibb.co/9kbLNm86/IMG-8502-compressed.jpg",
+        "https://i.ibb.co/gb4zJpYb/IMG-8504-compressed.jpg",
+        "https://i.ibb.co/nMN37B8S/IMG-8505-compressed.jpg",
+        "https://i.ibb.co/7xPCG316/IMG-8506-compressed.jpg",
+        "https://i.ibb.co/hJ2xmRSz/IMG-8508-compressed.jpg",
+        "https://i.ibb.co/4nxhJhgr/IMG-8509-compressed.jpg",
+        "https://i.ibb.co/ymSbzDps/IMG-8510-compressed.jpg",
+        "https://i.ibb.co/BHyQWgnD/IMG-8511-compressed.jpg",
+        "https://i.ibb.co/1f4LyHby/IMG-8512-compressed.jpg",
+        "https://i.ibb.co/9910gWcN/IMG-8519-compressed.jpg",
+        "https://i.ibb.co/gbXXnmqg/IMG-8521-compressed.jpg",
+        "https://i.ibb.co/Wv2wN6TC/IMG-8522-compressed.jpg",
+        "https://i.ibb.co/XZrbxfqX/IMG-8523-compressed.jpg",
+        "https://i.ibb.co/nqw8B0vZ/IMG-8524-compressed.jpg",
+        "https://i.ibb.co/0yrtWCGd/IMG-8525-compressed.jpg",
+        "https://i.ibb.co/Kxj0rNh2/IMG-8527-compressed.jpg",
+        "https://i.ibb.co/fRhqgjc/IMG-8528-compressed.jpg",
+        "https://i.ibb.co/k6J84ms9/IMG-8529-compressed.jpg",
+        "https://i.ibb.co/N6fV3hfb/IMG-8530-compressed.jpg",
+        "https://i.ibb.co/TM0xrf94/IMG-8541-compressed.jpg",
+        "https://i.ibb.co/9kb03PvX/IMG-8542-compressed.jpg",
+        "https://i.ibb.co/cSQfdJCw/IMG-8543-compressed.jpg",
+        "https://i.ibb.co/dw2z6CT2/IMG-8545-compressed.jpg",
+        "https://i.ibb.co/m5RZjCxk/IMG-8546-compressed.jpg",
+        "https://i.ibb.co/zThrSV0v/IMG-8450-compressed.jpg",
+        "https://i.ibb.co/5WLmqhqp/IMG-8451-compressed.jpg",
+        "https://i.ibb.co/QvcDZGfV/IMG-8452-compressed.jpg",
+        "https://i.ibb.co/Z6gMD2pC/IMG-8453-compressed.jpg",
+        "https://i.ibb.co/B2wn2qhD/IMG-8454-compressed.jpg",
+        "https://i.ibb.co/H38VYx1/IMG-8455-compressed.jpg",
+        "https://i.ibb.co/3yL72pQ3/IMG-8458-compressed.jpg",
+        "https://i.ibb.co/hhFF5Q1/IMG-8459-compressed.jpg",
+        "https://i.ibb.co/PZDNdv8F/IMG-8460-compressed.jpg",
+        "https://i.ibb.co/qLgrpJZ1/IMG-8461-compressed.jpg",
+        "https://i.ibb.co/1Gy62kjR/IMG-8462-compressed.jpg",
+        "https://i.ibb.co/TxJ9tcbW/IMG-8463-compressed.jpg",
+        "https://i.ibb.co/MDKpW25C/IMG-8466-compressed.jpg",
+        "https://i.ibb.co/JwPcVyyZ/IMG-8467-compressed.jpg",
+        "https://i.ibb.co/XrGLxDs0/IMG-8468-compressed.jpg",
+        "https://i.ibb.co/GvmR0wt5/IMG-8469-compressed.jpg",
+        "https://i.ibb.co/W4PVYTpc/IMG-8470-compressed.jpg",
+        "https://i.ibb.co/BHwngF4D/IMG-8471-compressed.jpg",
+        "https://i.ibb.co/KpTzWtkV/IMG-8472-compressed.jpg",
+        "https://i.ibb.co/4RMt258f/IMG-8473-compressed.jpg",
+        "https://i.ibb.co/20jWY8SF/IMG-8474-compressed.jpg",
+        "https://i.ibb.co/xKKvjhw6/IMG-8475-compressed.jpg",
+        "https://i.ibb.co/hFynK4b7/IMG-8476-compressed.jpg",
+        "https://i.ibb.co/3yGzjfw7/IMG-8477-compressed.jpg",
+        "https://i.ibb.co/fYvMFhr9/IMG-8478-compressed.jpg",
+        "https://i.ibb.co/qfqTqWY/IMG-8479-compressed.jpg",
+        "https://i.ibb.co/23V8nkyf/IMG-8481-compressed.jpg",
+        "https://i.ibb.co/zhbrpLBN/IMG-8482-compressed.jpg",
+        "https://i.ibb.co/pBWvQnfc/IMG-8483-compressed.jpg",
+        "https://i.ibb.co/G48MhtYd/IMG-8484-compressed.jpg",
+        "https://i.ibb.co/FbGCY5b8/IMG-8485-compressed.jpg",
+        "https://i.ibb.co/gMMmNYcp/IMG-8486-compressed.jpg",
+        "https://i.ibb.co/dJJNDsM6/IMG-8487-compressed.jpg",
+        "https://i.ibb.co/Kz8pBD6J/IMG-8488-compressed.jpg",
+        "https://i.ibb.co/V0GwqTJ9/IMG-8489-compressed.jpg",
+        "https://i.ibb.co/0Vfz6Xr4/IMG-8490-compressed.jpg",
+        "https://i.ibb.co/35b7YR9g/IMG-8491-compressed.jpg",
+        "https://i.ibb.co/fY7Jx5fw/IMG-8492-compressed.jpg",
+        "https://i.ibb.co/bjkwNjCL/IMG-8493-compressed.jpg",
+        "https://i.ibb.co/Z6qWjfsx/IMG-8494-compressed.jpg",
+        "https://i.ibb.co/YFK22z99/IMG-8495-compressed.jpg",
+        "https://i.ibb.co/tMTtHMc7/IMG-8496-compressed.jpg",
+        "https://i.ibb.co/tMpSPkMt/IMG-8497-compressed.jpg",
+        "https://i.ibb.co/rG4BY2Hw/IMG-8498-compressed.jpg",
+        "https://i.ibb.co/DP4ZHmg3/IMG-8499-compressed.jpg",
+        "https://i.ibb.co/YFc982yP/IMG-8500-compressed.jpg",
+        "https://i.ibb.co/4nkCP9RZ/IMG-8501-compressed.jpg"
+      ]
+    },
 
-  yilan: {
-    title: "宜蘭一日遊（二信校外教學）",
-    titleEN: "Yilan Day Trip",
-    photos: [
-      "https://i.ibb.co/nNNdw4vN/IMG-8481.jpg",
-      "https://i.ibb.co/VYh5my4y/IMG-8479.jpg",
-      "https://i.ibb.co/ZpnRtxXf/IMG-8482.jpg",
-      "https://i.ibb.co/Qj3rgVbk/IMG-8483.jpg",
-      "https://i.ibb.co/dsMvnfgK/IMG-8484.jpg",
-      "https://i.ibb.co/hRk0HzKj/IMG-8485.jpg",
-      "https://i.ibb.co/JwC1XnS4/IMG-8486.jpg",
-      "https://i.ibb.co/kgTVZTHh/IMG-8487.jpg",
-      "https://i.ibb.co/4RF0jQ36/IMG-8488.jpg",
-      "https://i.ibb.co/qMpgP6fs/IMG-8489.jpg",
-      "https://i.ibb.co/qMvT8RKZ/IMG-8490.jpg",
-      "https://i.ibb.co/sdxMrpr0/IMG-8491.jpg",
-      "https://i.ibb.co/TDkHQ7Jy/IMG-8492.jpg",
-      "https://i.ibb.co/qFs7jjZ6/IMG-8493.jpg",
-      "https://i.ibb.co/21p2xk2r/IMG-8494.jpg",
-      "https://i.ibb.co/1G31Sqpz/IMG-8495.jpg",
-      "https://i.ibb.co/vxKZLvKM/IMG-8496.jpg",
-      "https://i.ibb.co/YBLH7VXy/IMG-8497.jpg",
-      "https://i.ibb.co/d0KKgc8h/IMG-8498.jpg",
-      "https://i.ibb.co/jZQXjRH5/IMG-8499.jpg",
-      "https://i.ibb.co/7dmHLGw2/IMG-8500.jpg",
-      "https://i.ibb.co/LzThF0Qd/IMG-8501.jpg",
-      "https://i.ibb.co/XfXNdGJK/IMG-8502.jpg",
-      "https://i.ibb.co/dJtpW5Qq/IMG-8503.jpg",
-      "https://i.ibb.co/Fk0SXxjD/IMG-8504.jpg",
-      "https://i.ibb.co/hF2RnFxc/IMG-8505.jpg",
-      "https://i.ibb.co/3mrw18H9/IMG-8506.jpg",
-      "https://i.ibb.co/SDwgjP4N/IMG-8508.jpg",
-      "https://i.ibb.co/QvZd3msw/IMG-8509.jpg",
-      "https://i.ibb.co/rqgBWfF/IMG-8510.jpg",
-      "https://i.ibb.co/YFjjghjY/IMG-8511.jpg",
-      "https://i.ibb.co/WNSLGzmt/IMG-8512.jpg",
-      "https://i.ibb.co/29KdP53/IMG-8519.jpg",
-      "https://i.ibb.co/VcTpfvtC/IMG-8521.jpg",
-      "https://i.ibb.co/5m4JQz2/IMG-8522.jpg",
-      "https://i.ibb.co/BHsj3CRx/IMG-8523.jpg",
-      "https://i.ibb.co/S4mckCP1/IMG-8524.jpg",
-      "https://i.ibb.co/dwGjdXHB/IMG-8525.jpg",
-      "https://i.ibb.co/1fg0ytDH/IMG-8527.jpg",
-      "https://i.ibb.co/Pzj8rGBP/IMG-8528.jpg",
-      "https://i.ibb.co/S7Xq03Pt/IMG-8529.jpg",
-      "https://i.ibb.co/xqd6yxsc/IMG-8530.jpg",
-      "https://i.ibb.co/6cMLSS8K/IMG-8541.jpg",
-      "https://i.ibb.co/mC4SqxY9/IMG-8542.jpg",
-      "https://i.ibb.co/mCdQ568y/IMG-8543.jpg",
-      "https://i.ibb.co/d4LMXXJG/IMG-8545.jpg",
-      "https://i.ibb.co/Lhh2k9ch/IMG-8546.jpg",
-      "https://i.ibb.co/Pb2Gp2P/IMG-8450.jpg",
-      "https://i.ibb.co/cKRkL4vW/IMG-8451.jpg",
-      "https://i.ibb.co/20Dc0Smt/IMG-8452.jpg",
-      "https://i.ibb.co/DHR1psSz/IMG-8453.jpg",
-      "https://i.ibb.co/23tYnw1C/IMG-8454.jpg",
-      "https://i.ibb.co/HTm3YFsx/IMG-8455.jpg",
-      "https://i.ibb.co/kgy4DmcY/IMG-8458.jpg",
-      "https://i.ibb.co/JjtrQSkT/IMG-8459.jpg",
-      "https://i.ibb.co/fdY5rf3v/IMG-8460.jpg",
-      "https://i.ibb.co/WWpYdJxp/IMG-8461.jpg",
-      "https://i.ibb.co/bYL1Twc/IMG-8462.jpg",
-      "https://i.ibb.co/7NW4xc8h/IMG-8463.jpg",
-      "https://i.ibb.co/RkFF4PzK/IMG-8466.jpg",
-      "https://i.ibb.co/Z1756m5F/IMG-8467.jpg",
-      "https://i.ibb.co/99ZhCXD2/IMG-8468.jpg",
-      "https://i.ibb.co/tw1FmMc4/IMG-8469.jpg",
-      "https://i.ibb.co/qFrnFGkV/IMG-8470.jpg",
-      "https://i.ibb.co/GvG19v4D/IMG-8471.jpg",
-      "https://i.ibb.co/pB1354Mg/IMG-8472.jpg",
-      "https://i.ibb.co/Wjy4NKN/IMG-8473.jpg",
-      "https://i.ibb.co/5h2G2jwS/IMG-8474.jpg",
-      "https://i.ibb.co/6c5Jb5mC/IMG-8475.jpg",
-      "https://i.ibb.co/YTpyd6jP/IMG-8476.jpg",
-      "https://i.ibb.co/spfc1vgm/IMG-8477.jpg",
-      "https://i.ibb.co/84LwsPb7/IMG-8478.jpg"
-    ]
-  },
+    {
+      id: "after-school",
+      number: "02",
+      title: "休學後的照片",
+      description: "55 PHOTOS",
+      photos: [
+        "https://i.ibb.co/SDFZ3thL/IMG-2203.jpg",
+        "https://i.ibb.co/hJ52VS2y/IMG-2191.jpg",
+        "https://i.ibb.co/9HZ7DbbG/IMG-2204.jpg",
+        "https://i.ibb.co/KzqBcsZc/IMG-2234.jpg",
+        "https://i.ibb.co/nMxp4C52/IMG-2237.jpg",
+        "https://i.ibb.co/hQrGxGL/IMG-2266.jpg",
+        "https://i.ibb.co/k2vgMJc7/IMG-2283.jpg",
+        "https://i.ibb.co/xKdcrBch/IMG-2288.jpg",
+        "https://i.ibb.co/bjdC8Qp6/IMG001.jpg",
+        "https://i.ibb.co/nqYGBMgs/IMG-2291.jpg",
+        "https://i.ibb.co/3mQP2X5W/IMG002.jpg",
+        "https://i.ibb.co/m5yrHd22/IMG003.jpg",
+        "https://i.ibb.co/0VhL8W7D/IMG004.jpg",
+        "https://i.ibb.co/RRJrJ85/IMG005.jpg",
+        "https://i.ibb.co/zTBZG5xX/IMG006.jpg",
+        "https://i.ibb.co/pjpTtyj9/IMG007.jpg",
+        "https://i.ibb.co/pj4RGXwT/IMG008.jpg",
+        "https://i.ibb.co/ds5xQ2hV/IMG009.jpg",
+        "https://i.ibb.co/zTY5M19g/IMG0010.jpg",
+        "https://i.ibb.co/fYWhqK4m/IMG0011.jpg",
+        "https://i.ibb.co/8g8Csrr4/IMG0012.jpg",
+        "https://i.ibb.co/YvjQqSD/IMG0013.jpg",
+        "https://i.ibb.co/k6hG0q9G/IMG0014.jpg",
+        "https://i.ibb.co/bMZhtZZt/IMG0015.jpg",
+        "https://i.ibb.co/jPwYjqzc/IMG0016.jpg",
+        "https://i.ibb.co/5gKPVtrQ/IMG-1413.jpg",
+        "https://i.ibb.co/fz9RNd2p/IMG-1414.jpg",
+        "https://i.ibb.co/BVK5ygdK/IMG-1419.jpg",
+        "https://i.ibb.co/BKtHz7p4/IMG-1422.jpg",
+        "https://i.ibb.co/1tXY0JPk/IMG-1423.jpg",
+        "https://i.ibb.co/qYSS5WLw/IMG-1424.jpg",
+        "https://i.ibb.co/KcC5rzDM/IMG-1426.jpg",
+        "https://i.ibb.co/jPPGys2D/IMG-1428.jpg",
+        "https://i.ibb.co/whmksfKH/IMG-1429.jpg",
+        "https://i.ibb.co/DX9dh30/IMG-1430.jpg",
+        "https://i.ibb.co/RT0Btg6S/IMG-1431.jpg",
+        "https://i.ibb.co/5g3sjv1Z/IMG-1432.jpg",
+        "https://i.ibb.co/mVpnLQcL/IMG-1604.jpg",
+        "https://i.ibb.co/rGPzwds1/IMG-1606.jpg",
+        "https://i.ibb.co/V0b1Vh3W/IMG-1637.jpg",
+        "https://i.ibb.co/kVgTxdpx/IMG-1638.jpg",
+        "https://i.ibb.co/m53ht0zW/IMG-1641.jpg",
+        "https://i.ibb.co/3YMFdPfN/IMG-1639.jpg",
+        "https://i.ibb.co/p64m0qXw/IMG-1642.jpg",
+        "https://i.ibb.co/HLhHNDZ5/IMG-1772.jpg",
+        "https://i.ibb.co/dsghtDNy/IMG-1773.jpg",
+        "https://i.ibb.co/1YL1fg9W/IMG-1798.jpg",
+        "https://i.ibb.co/nqHwjgmC/IMG-2144.jpg",
+        "https://i.ibb.co/Wv2brHdY/IMG-2145.jpg",
+        "https://i.ibb.co/BK4th8Hk/IMG-2146.jpg",
+        "https://i.ibb.co/TM4vq7tN/IMG-2147.jpg",
+        "https://i.ibb.co/WhnTtd7/IMG-2148.jpg",
+        "https://i.ibb.co/0jF0f37R/IMG-2153.jpg",
+        "https://i.ibb.co/V083bKdN/IMG-2174.jpg",
+        "https://i.ibb.co/HpHXS3qN/IMG-2190.jpg"
+      ]
+    },
 
-  after: {
-    title: "休學後的照片",
-    titleEN: "Photos After Leaving School",
-    photos: [
-      "https://i.ibb.co/SDFZ3thL/IMG-2203.jpg",
-      "https://i.ibb.co/hJ52VS2y/IMG-2191.jpg",
-      "https://i.ibb.co/9HZ7DbbG/IMG-2204.jpg",
-      "https://i.ibb.co/KzqBcsZc/IMG-2234.jpg",
-      "https://i.ibb.co/nMxp4C52/IMG-2237.jpg",
-      "https://i.ibb.co/hQrGxGL/IMG-2266.jpg",
-      "https://i.ibb.co/k2vgMJc7/IMG-2283.jpg",
-      "https://i.ibb.co/xKdcrBch/IMG-2288.jpg",
-      "https://i.ibb.co/bjdC8Qp6/IMG001.jpg",
-      "https://i.ibb.co/nqYGBMgs/IMG-2291.jpg",
-      "https://i.ibb.co/3mQP2X5W/IMG002.jpg",
-      "https://i.ibb.co/m5yrHd22/IMG003.jpg",
-      "https://i.ibb.co/0VhL8W7D/IMG004.jpg",
-      "https://i.ibb.co/RRJrJ85/IMG005.jpg",
-      "https://i.ibb.co/zTBZG5xX/IMG006.jpg",
-      "https://i.ibb.co/pjpTtyj9/IMG007.jpg",
-      "https://i.ibb.co/pj4RGXwT/IMG008.jpg",
-      "https://i.ibb.co/ds5xQ2hV/IMG009.jpg",
-      "https://i.ibb.co/zTY5M19g/IMG0010.jpg",
-      "https://i.ibb.co/fYWhqK4m/IMG0011.jpg",
-      "https://i.ibb.co/8g8Csrr4/IMG0012.jpg",
-      "https://i.ibb.co/YvjQqSD/IMG0013.jpg",
-      "https://i.ibb.co/k6hG0q9G/IMG0014.jpg",
-      "https://i.ibb.co/bMZhtZZt/IMG0015.jpg",
-      "https://i.ibb.co/jPwYjqzc/IMG0016.jpg",
-      "https://i.ibb.co/5gKPVtrQ/IMG-1413.jpg",
-      "https://i.ibb.co/fz9RNd2p/IMG-1414.jpg",
-      "https://i.ibb.co/BVK5ygdK/IMG-1419.jpg",
-      "https://i.ibb.co/BKtHz7p4/IMG-1422.jpg",
-      "https://i.ibb.co/1tXY0JPk/IMG-1423.jpg",
-      "https://i.ibb.co/qYSS5WLw/IMG-1424.jpg",
-      "https://i.ibb.co/KcC5rzDM/IMG-1426.jpg",
-      "https://i.ibb.co/jPPGys2D/IMG-1428.jpg",
-      "https://i.ibb.co/whmksfKH/IMG-1429.jpg",
-      "https://i.ibb.co/DX9dh30/IMG-1430.jpg",
-      "https://i.ibb.co/RT0Btg6S/IMG-1431.jpg",
-      "https://i.ibb.co/5g3sjv1Z/IMG-1432.jpg",
-      "https://i.ibb.co/mVpnLQcL/IMG-1604.jpg",
-      "https://i.ibb.co/rGPzwds1/IMG-1606.jpg",
-      "https://i.ibb.co/V0b1Vh3W/IMG-1637.jpg",
-      "https://i.ibb.co/kVgTxdpx/IMG-1638.jpg",
-      "https://i.ibb.co/m53ht0zW/IMG-1641.jpg",
-      "https://i.ibb.co/3YMFdPfN/IMG-1639.jpg",
-      "https://i.ibb.co/p64m0qXw/IMG-1642.jpg",
-      "https://i.ibb.co/HLhHNDZ5/IMG-1772.jpg",
-      "https://i.ibb.co/dsghtDNy/IMG-1773.jpg",
-      "https://i.ibb.co/1YL1fg9W/IMG-1798.jpg",
-      "https://i.ibb.co/nqHwjgmC/IMG-2144.jpg",
-      "https://i.ibb.co/Wv2brHdY/IMG-2145.jpg",
-      "https://i.ibb.co/BK4th8Hk/IMG-2146.jpg",
-      "https://i.ibb.co/TM4vq7tN/IMG-2147.jpg",
-      "https://i.ibb.co/WhnTtd7/IMG-2148.jpg",
-      "https://i.ibb.co/0jF0f37R/IMG-2153.jpg",
-      "https://i.ibb.co/V083bKdN/IMG-2174.jpg",
-      "https://i.ibb.co/HpHXS3qN/IMG-2190.jpg"
-    ]
-  },
+    {
+      id: "beitou-danshui",
+      number: "03",
+      title: "北投淡水一日遊",
+      description: "20 PHOTOS",
+      photos: [
+        "https://i.ibb.co/Lhvvbrqb/IMG-7604.jpg",
+        "https://i.ibb.co/x8HPp3m6/IMG-7606.jpg",
+        "https://i.ibb.co/mF4h6F4J/IMG-7607.jpg",
+        "https://i.ibb.co/PvqZYGrL/IMG-7622.jpg",
+        "https://i.ibb.co/DPzKmTLQ/IMG-7627.jpg",
+        "https://i.ibb.co/35f9gvZs/IMG-7628.jpg",
+        "https://i.ibb.co/rPZ59SW/IMG-7643.jpg",
+        "https://i.ibb.co/k2PNwv7c/IMG-7646.jpg",
+        "https://i.ibb.co/N2QnMSfw/IMG-7649.jpg",
+        "https://i.ibb.co/nNdcc1N9/IMG-7650.jpg",
+        "https://i.ibb.co/PZBqtDMm/IMG-7651.jpg",
+        "https://i.ibb.co/gbkHtxLG/IMG-7652.jpg",
+        "https://i.ibb.co/zHRRJhx9/IMG-7653.jpg",
+        "https://i.ibb.co/LDtdcrhL/IMG-7654.jpg",
+        "https://i.ibb.co/dJMkn4fj/IMG-7655.jpg",
+        "https://i.ibb.co/WW4x1B6F/IMG-7561.jpg",
+        "https://i.ibb.co/N6F8c36V/IMG-7598.jpg",
+        "https://i.ibb.co/zVHvk8yz/IMG-7599.jpg",
+        "https://i.ibb.co/27PZNSMD/IMG-7600.jpg",
+        "https://i.ibb.co/4RQ2PBTZ/IMG-7603.jpg"
+      ]
+    }
+  ];
 
-  tamsui: {
-    title: "北投淡水一日遊",
-    titleEN: "Beitou & Tamsui Day Trip",
-    photos: [
-      "https://i.ibb.co/Lhvvbrqb/IMG-7604.jpg",
-      "https://i.ibb.co/x8HPp3m6/IMG-7606.jpg",
-      "https://i.ibb.co/mF4h6F4J/IMG-7607.jpg",
-      "https://i.ibb.co/PvqZYGrL/IMG-7622.jpg",
-      "https://i.ibb.co/DPzKmTLQ/IMG-7627.jpg",
-      "https://i.ibb.co/35f9gvZs/IMG-7628.jpg",
-      "https://i.ibb.co/rPZ59SW/IMG-7643.jpg",
-      "https://i.ibb.co/k2PNwv7c/IMG-7646.jpg",
-      "https://i.ibb.co/N2QnMSfw/IMG-7649.jpg",
-      "https://i.ibb.co/nNdcc1N9/IMG-7650.jpg",
-      "https://i.ibb.co/PZBqtDMm/IMG-7651.jpg",
-      "https://i.ibb.co/gbkHtxLG/IMG-7652.jpg",
-      "https://i.ibb.co/zHRRJhx9/IMG-7653.jpg",
-      "https://i.ibb.co/LDtdcrhL/IMG-7654.jpg",
-      "https://i.ibb.co/dJMkn4fj/IMG-7655.jpg",
-      "https://i.ibb.co/WW4x1B6F/IMG-7561.jpg",
-      "https://i.ibb.co/N6F8c36V/IMG-7598.jpg",
-      "https://i.ibb.co/zVHvk8yz/IMG-7599.jpg",
-      "https://i.ibb.co/27PZNSMD/IMG-7600.jpg",
-      "https://i.ibb.co/4RQ2PBTZ/IMG-7603.jpg"
-    ]
-  }
+  /* =========================================================
+     DOM
+     ========================================================= */
 
-};
+  const $ = (selector, parent = document) => {
+    return parent.querySelector(selector);
+  };
 
+  const $$ = (selector, parent = document) => {
+    return [...parent.querySelectorAll(selector)];
+  };
 
-/* =========================================================
-   GLOBAL STATE
-   ========================================================= */
+  const pageLoader = $("#pageLoader");
+  const albumsGrid = $("#albumsGrid");
+  const photoView = $("#photoView");
+  const photoViewTitle = $("#photoViewTitle");
+  const photoCounter = $("#photoCounter");
+  const photoGrid = $("#photoGrid");
+  const backButton = $("#backButton");
 
-let currentAlbum = null;
-let currentPhoto = 0;
+  const lightbox = $("#lightbox");
+  const lightboxImg = $("#lightboxImg");
+  const lightboxTitle = $("#lightboxTitle");
+  const lightboxCounter = $("#lightboxCounter");
+  const closeButton = $("#close");
+  const prevButton = $("#prev");
+  const nextButton = $("#next");
 
+  const themeButton = $("#themeBtn");
+  const langButton = $("#langBtn");
+  const menuButton = $("#menuBtn");
+  const mobileMenu = $("#mobileMenu");
+  const progress = $("#progress");
+  const cursorGlow = $(".cursor-glow");
 
-/* =========================================================
-   WILLIE LOADING
-   ========================================================= */
+  /* =========================================================
+     STATE
+     ========================================================= */
 
-(function initFastLoader() {
+  let currentAlbum = null;
+  let currentPhotoIndex = 0;
 
-  function hideLoader() {
+  /* =========================================================
+     PAGE LOADER
+     
+     IMPORTANT:
+     Do NOT use window.load here.
+     The page should stop showing "Willie" without waiting
+     for all ImgBB images to finish loading.
+     ========================================================= */
 
-    const loader =
-      document.querySelector("#pageLoader");
-
-    if (!loader) return;
-
-    loader.classList.add("done");
-
+  document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
-      loader.style.display = "none";
-      loader.setAttribute("aria-hidden", "true");
-    }, 550);
+      if (pageLoader) {
+        pageLoader.classList.add("done");
+      }
+    }, 300);
+  });
 
-  }
+  /* =========================================================
+     ALBUMS
+     
+     Album cards are intentionally TEXT ONLY.
+     No thumbnails / cover images.
+     ========================================================= */
 
-  if (document.readyState === "loading") {
+  function renderAlbums() {
+    if (!albumsGrid) return;
 
-    document.addEventListener(
-      "DOMContentLoaded",
-      () => setTimeout(hideLoader, 300),
-      { once: true }
-    );
+    albumsGrid.innerHTML = "";
 
-  } else {
+    albums.forEach((album) => {
+      const card = document.createElement("article");
 
-    setTimeout(hideLoader, 300);
-
-  }
-
-  setTimeout(hideLoader, 1500);
-
-})();
-
-
-/* =========================================================
-   GALLERY ELEMENTS
-   ========================================================= */
-
-let albumsGrid = null;
-let photoView = null;
-let photoGrid = null;
-let photoViewTitle = null;
-let photoCounter = null;
-let backButton = null;
-
-let lightbox = null;
-let lightboxImg = null;
-let lightboxCounter = null;
-
-
-/* =========================================================
-   INITIALIZE GALLERY
-   ========================================================= */
-
-function initializeGallery() {
-
-  albumsGrid =
-    document.querySelector("#albumsGrid");
-
-  photoView =
-    document.querySelector("#photoView");
-
-  photoGrid =
-    document.querySelector("#photoGrid");
-
-  photoViewTitle =
-    document.querySelector("#photoViewTitle");
-
-  photoCounter =
-    document.querySelector("#photoCounter");
-
-  backButton =
-    document.querySelector("#backButton");
-
-  lightbox =
-    document.querySelector("#lightbox");
-
-  lightboxImg =
-    document.querySelector("#lightboxImg");
-
-  lightboxCounter =
-    document.querySelector("#lightboxCounter");
-
-  if (!albumsGrid) {
-    console.warn("找不到 #albumsGrid");
-    return;
-  }
-
-  renderAlbums();
-
-}
-
-
-/* =========================================================
-   RENDER ALBUM CARDS
-   ========================================================= */
-
-function renderAlbums() {
-
-  if (!albumsGrid) return;
-
-  albumsGrid.innerHTML = "";
-
-  const language =
-    localStorage.getItem("willie-language") || "en";
-
-  Object.entries(photoAlbums).forEach(
-    ([albumId, album], index) => {
-
-      const card =
-        document.createElement("button");
-
-      card.type = "button";
       card.className = "album-card";
-      card.dataset.album = albumId;
+      card.dataset.albumId = album.id;
+      card.setAttribute("role", "button");
+      card.setAttribute("tabindex", "0");
+      card.setAttribute("aria-label", `Open ${album.title}`);
 
-      /*
-       * 相簿卡片不建立任何縮圖 URL。
-       * 封面直接使用第一張原圖。
-       */
+      card.innerHTML = `
+        <span class="album-number">${album.number}</span>
+        <h3>${album.title}</h3>
+        <p>${album.description}</p>
+      `;
 
-      const cover =
-        document.createElement("div");
+      card.addEventListener("click", () => {
+        openAlbum(album.id);
+      });
 
-      cover.className = "album-cover";
-
-      const image =
-        document.createElement("img");
-
-      image.src = album.photos[0];
-
-      image.alt =
-        language === "zh"
-          ? album.title
-          : album.titleEN;
-
-      image.decoding = "async";
-
-      cover.appendChild(image);
-
-      const content =
-        document.createElement("div");
-
-      content.className =
-        "album-card-content";
-
-      const number =
-        document.createElement("span");
-
-      number.className =
-        "album-number";
-
-      number.textContent =
-        String(index + 1).padStart(2, "0");
-
-      const title =
-        document.createElement("h3");
-
-      title.textContent =
-        language === "zh"
-          ? album.title
-          : album.titleEN;
-
-      const count =
-        document.createElement("span");
-
-      count.className =
-        "album-count";
-
-      count.textContent =
-        `${album.photos.length} ${
-          language === "zh"
-            ? "張照片"
-            : "PHOTOS"
-        }`;
-
-      content.appendChild(number);
-      content.appendChild(title);
-      content.appendChild(count);
-
-      card.appendChild(cover);
-      card.appendChild(content);
-
-      card.addEventListener(
-        "click",
-        () => openAlbum(albumId)
-      );
+      card.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openAlbum(album.id);
+        }
+      });
 
       albumsGrid.appendChild(card);
+    });
+  }
 
+  /* =========================================================
+     OPEN ALBUM
+     ========================================================= */
+
+  function openAlbum(albumId) {
+    const album = albums.find((item) => item.id === albumId);
+
+    if (!album) return;
+
+    currentAlbum = album;
+    currentPhotoIndex = 0;
+
+    if (albumsGrid) {
+      albumsGrid.hidden = true;
     }
-  );
 
-}
+    if (photoView) {
+      photoView.hidden = false;
+    }
 
+    if (photoViewTitle) {
+      photoViewTitle.textContent = album.title;
+    }
 
-/* =========================================================
-   OPEN ALBUM
-   ========================================================= */
+    if (photoCounter) {
+      photoCounter.textContent = `${album.photos.length} PHOTOS`;
+    }
 
-function openAlbum(albumId) {
+    renderPhotoGrid();
 
-  const album =
-    photoAlbums[albumId];
+    const gallery = $("#gallery");
 
-  if (
-    !album ||
-    !photoView ||
-    !photoGrid
-  ) {
-    return;
+    if (gallery) {
+      requestAnimationFrame(() => {
+        gallery.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      });
+    }
   }
 
-  currentAlbum = albumId;
-  currentPhoto = 0;
+  /* =========================================================
+     CLOSE ALBUM
+     ========================================================= */
 
-  photoGrid.innerHTML = "";
+  function closeAlbum() {
+    currentAlbum = null;
+    currentPhotoIndex = 0;
 
-  const language =
-    localStorage.getItem("willie-language") || "en";
+    if (photoView) {
+      photoView.hidden = true;
+    }
 
-  if (photoViewTitle) {
+    if (albumsGrid) {
+      albumsGrid.hidden = false;
+    }
 
-    photoViewTitle.textContent =
-      language === "zh"
-        ? album.title
-        : album.titleEN;
+    const gallery = $("#gallery");
 
+    if (gallery) {
+      requestAnimationFrame(() => {
+        gallery.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      });
+    }
   }
 
-  if (photoCounter) {
+  /* =========================================================
+     PHOTO GRID
+     
+     Uses direct ImgBB URLs.
+     No thumbnail URL.
+     ========================================================= */
 
-    photoCounter.textContent =
-      `${album.photos.length} ${
-        language === "zh"
-          ? "張照片"
-          : "PHOTOS"
-      }`;
+  function renderPhotoGrid() {
+    if (!photoGrid || !currentAlbum) return;
 
-  }
+    photoGrid.innerHTML = "";
 
-  /*
-   * =======================================================
-   * 原圖模式
-   *
-   * 這裡不使用：
-   * - thumbnail
-   * - thumb
-   * - resize
-   * - width=
-   * - height=
-   * - ImgBB 縮圖網址
-   *
-   * img.src 永遠就是原始 ImgBB URL。
-   * =======================================================
-   */
+    const fragment = document.createDocumentFragment();
 
-  album.photos.forEach(
-    (url, index) => {
+    currentAlbum.photos.forEach((src, index) => {
+      const tile = document.createElement("button");
 
-      const tile =
-        document.createElement("div");
+      tile.type = "button";
+      tile.className = "photo-tile";
+      tile.dataset.index = index;
+      tile.setAttribute(
+        "aria-label",
+        `${currentAlbum.title} — Photo ${index + 1}`
+      );
 
-      tile.className =
-        "photo-tile";
+      const img = document.createElement("img");
 
-      const img =
-        document.createElement("img");
-
-      img.src = url;
-
-      img.alt =
-        `${album.titleEN} ${index + 1}`;
-
+      img.src = src;
+      img.alt = `${currentAlbum.title} ${index + 1}`;
+      img.loading = "lazy";
       img.decoding = "async";
 
       tile.appendChild(img);
 
-      tile.addEventListener(
-        "click",
-        () => openLightbox(index)
-      );
+      tile.addEventListener("click", () => {
+        openLightbox(index);
+      });
 
-      photoGrid.appendChild(tile);
-
-    }
-  );
-
-  const albumView =
-    document.querySelector(".album-view");
-
-  if (albumView) {
-    albumView.hidden = true;
-  }
-
-  photoView.hidden = false;
-
-  setTimeout(() => {
-
-    photoView.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
+      fragment.appendChild(tile);
     });
 
-  }, 30);
-
-}
-
-
-/* =========================================================
-   CLOSE ALBUM
-   ========================================================= */
-
-function closeAlbum() {
-
-  if (!photoView) return;
-
-  photoView.hidden = true;
-
-  const albumView =
-    document.querySelector(".album-view");
-
-  if (albumView) {
-    albumView.hidden = false;
+    photoGrid.appendChild(fragment);
   }
 
-  currentAlbum = null;
-  currentPhoto = 0;
+  /* =========================================================
+     LIGHTBOX
+     ========================================================= */
 
-}
+  function openLightbox(index) {
+    if (!currentAlbum) return;
 
+    if (
+      index < 0 ||
+      index >= currentAlbum.photos.length
+    ) {
+      return;
+    }
 
-/* =========================================================
-   OPEN LIGHTBOX
-   ========================================================= */
+    currentPhotoIndex = index;
 
-function openLightbox(index) {
+    updateLightbox();
 
-  if (!currentAlbum) return;
+    if (lightbox) {
+      lightbox.classList.add("show");
+      lightbox.setAttribute("aria-hidden", "false");
+    }
 
-  const photos =
-    photoAlbums[currentAlbum].photos;
+    document.body.classList.add("lightbox-open");
 
-  if (!photos[index]) return;
-
-  currentPhoto = index;
-
-  if (!lightbox) {
-
-    window.open(
-      photos[index],
-      "_blank",
-      "noopener,noreferrer"
-    );
-
-    return;
-
+    if (closeButton) {
+      closeButton.focus();
+    }
   }
 
-  if (!lightboxImg) {
+  function closeLightbox() {
+    if (lightbox) {
+      lightbox.classList.remove("show");
+      lightbox.setAttribute("aria-hidden", "true");
+    }
 
-    lightboxImg =
-      lightbox.querySelector("#lightboxImg") ||
-      lightbox.querySelector("img");
-
+    document.body.classList.remove("lightbox-open");
   }
 
-  if (!lightboxImg) return;
+  function updateLightbox() {
+    if (!currentAlbum) return;
 
-  /*
-   * Lightbox 也直接使用原圖。
-   */
+    const src = currentAlbum.photos[currentPhotoIndex];
 
-  lightboxImg.src =
-    photos[index];
+    if (lightboxImg) {
+      lightboxImg.src = src;
+      lightboxImg.alt =
+        `${currentAlbum.title} ${currentPhotoIndex + 1}`;
 
-  lightboxImg.alt =
-    `${photoAlbums[currentAlbum].titleEN} ${index + 1}`;
+      lightboxImg.loading = "eager";
+      lightboxImg.decoding = "async";
+    }
 
-  lightboxImg.decoding =
-    "async";
+    if (lightboxTitle) {
+      lightboxTitle.textContent = currentAlbum.title;
+    }
 
-  lightbox.classList.add("show");
-
-  lightbox.setAttribute(
-    "aria-hidden",
-    "false"
-  );
-
-  document.body.classList.add(
-    "lightbox-open"
-  );
-
-  updateLightboxCounter();
-
-}
-
-
-/* =========================================================
-   CLOSE LIGHTBOX
-   ========================================================= */
-
-function closeLightbox() {
-
-  if (!lightbox) return;
-
-  lightbox.classList.remove("show");
-
-  lightbox.setAttribute(
-    "aria-hidden",
-    "true"
-  );
-
-  document.body.classList.remove(
-    "lightbox-open"
-  );
-
-}
-
-
-/* =========================================================
-   NEXT PHOTO
-   ========================================================= */
-
-function nextPhoto() {
-
-  if (!currentAlbum) return;
-
-  const photos =
-    photoAlbums[currentAlbum].photos;
-
-  if (!photos.length) return;
-
-  currentPhoto =
-    (currentPhoto + 1) %
-    photos.length;
-
-  openLightbox(currentPhoto);
-
-}
-
-
-/* =========================================================
-   PREVIOUS PHOTO
-   ========================================================= */
-
-function previousPhoto() {
-
-  if (!currentAlbum) return;
-
-  const photos =
-    photoAlbums[currentAlbum].photos;
-
-  if (!photos.length) return;
-
-  currentPhoto =
-    (
-      currentPhoto -
-      1 +
-      photos.length
-    ) %
-    photos.length;
-
-  openLightbox(currentPhoto);
-
-}
-
-
-/* =========================================================
-   LIGHTBOX COUNTER
-   ========================================================= */
-
-function updateLightboxCounter() {
-
-  if (
-    !currentAlbum ||
-    !lightboxCounter
-  ) {
-    return;
+    if (lightboxCounter) {
+      lightboxCounter.textContent =
+        `${currentPhotoIndex + 1} / ${currentAlbum.photos.length}`;
+    }
   }
 
-  const total =
-    photoAlbums[currentAlbum]
-      .photos.length;
+  /* =========================================================
+     LIGHTBOX NAVIGATION
+     ========================================================= */
 
-  lightboxCounter.textContent =
-    `${currentPhoto + 1} / ${total}`;
+  function showNextPhoto() {
+    if (!currentAlbum) return;
 
-}
+    currentPhotoIndex =
+      (currentPhotoIndex + 1) %
+      currentAlbum.photos.length;
 
+    updateLightbox();
+  }
 
-/* =========================================================
-   KEYBOARD
-   ========================================================= */
+  function showPreviousPhoto() {
+    if (!currentAlbum) return;
 
-document.addEventListener(
-  "keydown",
-  event => {
+    currentPhotoIndex =
+      (currentPhotoIndex - 1 + currentAlbum.photos.length) %
+      currentAlbum.photos.length;
 
+    updateLightbox();
+  }
+
+  /* =========================================================
+     BUTTON EVENTS
+     ========================================================= */
+
+  if (backButton) {
+    backButton.addEventListener("click", closeAlbum);
+  }
+
+  if (closeButton) {
+    closeButton.addEventListener("click", closeLightbox);
+  }
+
+  if (nextButton) {
+    nextButton.addEventListener("click", showNextPhoto);
+  }
+
+  if (prevButton) {
+    prevButton.addEventListener("click", showPreviousPhoto);
+  }
+
+  /* =========================================================
+     CLICK OUTSIDE LIGHTBOX IMAGE
+     ========================================================= */
+
+  if (lightbox) {
+    lightbox.addEventListener("click", (event) => {
+      if (event.target === lightbox) {
+        closeLightbox();
+      }
+    });
+  }
+
+  /* =========================================================
+     KEYBOARD
+     ========================================================= */
+
+  document.addEventListener("keydown", (event) => {
     if (
       !lightbox ||
       !lightbox.classList.contains("show")
@@ -703,596 +532,332 @@ document.addEventListener(
       return;
     }
 
-    if (event.key === "Escape") {
-      closeLightbox();
+    switch (event.key) {
+      case "Escape":
+        closeLightbox();
+        break;
+
+      case "ArrowRight":
+        showNextPhoto();
+        break;
+
+      case "ArrowLeft":
+        showPreviousPhoto();
+        break;
     }
+  });
 
-    if (event.key === "ArrowRight") {
-      nextPhoto();
-    }
+  /* =========================================================
+     TOUCH / SWIPE
+     ========================================================= */
 
-    if (event.key === "ArrowLeft") {
-      previousPhoto();
-    }
+  let touchStartX = 0;
+  let touchStartY = 0;
 
-  }
-);
+  if (lightbox) {
+    lightbox.addEventListener(
+      "touchstart",
+      (event) => {
+        const touch = event.changedTouches[0];
 
-
-/* =========================================================
-   LANGUAGE
-   ========================================================= */
-
-function setLanguage(language) {
-
-  if (
-    language !== "en" &&
-    language !== "zh"
-  ) {
-    language = "en";
-  }
-
-  localStorage.setItem(
-    "willie-language",
-    language
-  );
-
-  document.documentElement.lang =
-    language === "zh"
-      ? "zh-TW"
-      : "en";
-
-  document
-    .querySelectorAll(
-      "[data-en][data-zh]"
-    )
-    .forEach(element => {
-
-      element.textContent =
-        language === "zh"
-          ? element.dataset.zh
-          : element.dataset.en;
-
-    });
-
-  const text = {
-
-    about:
-      language === "zh"
-        ? "關於我"
-        : "About",
-
-    life:
-      language === "zh"
-        ? "生活"
-        : "Life",
-
-    photography:
-      language === "zh"
-        ? "攝影"
-        : "Photography",
-
-    games:
-      language === "zh"
-        ? "遊戲"
-        : "Games",
-
-    map:
-      language === "zh"
-        ? "地圖"
-        : "Places",
-
-    future:
-      language === "zh"
-        ? "未來"
-        : "Future",
-
-    contact:
-      language === "zh"
-        ? "聯絡"
-        : "Contact",
-
-    gallery:
-      language === "zh"
-        ? "攝影"
-        : "Photography"
-
-  };
-
-  document
-    .querySelectorAll(
-      "[data-i18n]"
-    )
-    .forEach(element => {
-
-      const key =
-        element.dataset.i18n;
-
-      if (text[key]) {
-        element.textContent =
-          text[key];
-      }
-
-    });
-
-  const languageButton =
-    document.querySelector("#langBtn");
-
-  if (languageButton) {
-
-    languageButton.textContent =
-      language === "en"
-        ? "中文"
-        : "EN";
-
-  }
-
-  if (albumsGrid) {
-    renderAlbums();
-  }
-
-  if (
-    currentAlbum &&
-    photoViewTitle
-  ) {
-
-    const album =
-      photoAlbums[currentAlbum];
-
-    if (album) {
-
-      photoViewTitle.textContent =
-        language === "zh"
-          ? album.title
-          : album.titleEN;
-
-    }
-
-  }
-
-}
-
-
-/* =========================================================
-   THEME
-   ========================================================= */
-
-function setTheme(theme) {
-
-  if (theme !== "dark" && theme !== "light") {
-    theme = "light";
-  }
-
-  /*
-   * CSS 使用 body.dark，
-   * 所以這裡同步套用 class。
-   */
-
-  document.body.classList.toggle(
-    "dark",
-    theme === "dark"
-  );
-
-  document.documentElement
-    .setAttribute(
-      "data-theme",
-      theme
+        touchStartX = touch.clientX;
+        touchStartY = touch.clientY;
+      },
+      { passive: true }
     );
 
-  localStorage.setItem(
-    "willie-theme",
-    theme
-  );
+    lightbox.addEventListener(
+      "touchend",
+      (event) => {
+        const touch = event.changedTouches[0];
 
-}
+        const diffX = touch.clientX - touchStartX;
+        const diffY = touch.clientY - touchStartY;
 
+        if (Math.abs(diffX) < 50) return;
 
-/* =========================================================
-   DOM READY
-   ========================================================= */
+        if (Math.abs(diffX) <= Math.abs(diffY)) return;
 
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
-
-    /* =====================================================
-       GALLERY
-       ===================================================== */
-
-    initializeGallery();
-
-
-    /* =====================================================
-       LIGHTBOX BUTTONS
-       ===================================================== */
-
-    const closeButton =
-      document.querySelector("#close") ||
-      document.querySelector(".lightbox-close");
-
-    const nextButton =
-      document.querySelector("#next") ||
-      document.querySelector(".lightbox-next");
-
-    const previousButton =
-      document.querySelector("#prev") ||
-      document.querySelector(".lightbox-prev");
-
-    if (closeButton) {
-
-      closeButton.addEventListener(
-        "click",
-        closeLightbox
-      );
-
-    }
-
-    if (nextButton) {
-
-      nextButton.addEventListener(
-        "click",
-        nextPhoto
-      );
-
-    }
-
-    if (previousButton) {
-
-      previousButton.addEventListener(
-        "click",
-        previousPhoto
-      );
-
-    }
-
-    if (lightbox) {
-
-      lightbox.addEventListener(
-        "click",
-        event => {
-
-          if (
-            event.target === lightbox
-          ) {
-
-            closeLightbox();
-
-          }
-
+        if (diffX < 0) {
+          showNextPhoto();
+        } else {
+          showPreviousPhoto();
         }
-      );
+      },
+      { passive: true }
+    );
+  }
 
-    }
+  /* =========================================================
+     THEME
+     ========================================================= */
 
+  function applyTheme(theme) {
+    const isDark = theme === "dark";
 
-    /* =====================================================
-       BACK BUTTON
-       ===================================================== */
-
-    if (backButton) {
-
-      backButton.addEventListener(
-        "click",
-        closeAlbum
-      );
-
-    }
-
-
-    /* =====================================================
-       LANGUAGE BUTTON
-       ===================================================== */
-
-    const languageButton =
-      document.querySelector("#langBtn");
-
-    if (languageButton) {
-
-      languageButton.addEventListener(
-        "click",
-        () => {
-
-          const current =
-            localStorage.getItem(
-              "willie-language"
-            ) || "en";
-
-          setLanguage(
-            current === "en"
-              ? "zh"
-              : "en"
-          );
-
-        }
-      );
-
-    }
-
-
-    /* =====================================================
-       THEME BUTTON
-       ===================================================== */
-
-    const themeButton =
-      document.querySelector("#themeBtn");
-
-    const savedTheme =
-      localStorage.getItem(
-        "willie-theme"
-      );
-
-    if (savedTheme) {
-
-      setTheme(
-        savedTheme
-      );
-
-    } else {
-
-      const dark =
-        window.matchMedia &&
-        window.matchMedia(
-          "(prefers-color-scheme: dark)"
-        ).matches;
-
-      setTheme(
-        dark
-          ? "dark"
-          : "light"
-      );
-
-    }
+    document.body.classList.toggle("dark", isDark);
 
     if (themeButton) {
-
-      themeButton.addEventListener(
-        "click",
-        () => {
-
-          const current =
-            document.body.classList.contains(
-              "dark"
-            )
-              ? "dark"
-              : "light";
-
-          setTheme(
-            current === "dark"
-              ? "light"
-              : "dark"
-          );
-
-        }
+      themeButton.setAttribute(
+        "aria-label",
+        isDark ? "Switch to light mode" : "Switch to dark mode"
       );
 
+      themeButton.textContent = isDark ? "☼" : "◐";
     }
 
+    try {
+      localStorage.setItem("willie-theme", theme);
+    } catch (error) {
+      // Ignore localStorage errors.
+    }
+  }
 
-    /* =====================================================
-       MOBILE MENU
-       ===================================================== */
+  function initializeTheme() {
+    let savedTheme = null;
 
-    const menuButton =
-      document.querySelector("#menuBtn");
-
-    const mobileMenu =
-      document.querySelector("#mobileMenu");
-
-    if (
-      menuButton &&
-      mobileMenu
-    ) {
-
-      menuButton.addEventListener(
-        "click",
-        () => {
-
-          menuButton.classList.toggle(
-            "active"
-          );
-
-          mobileMenu.classList.toggle(
-            "open"
-          );
-
-        }
-      );
-
-      mobileMenu
-        .querySelectorAll("a")
-        .forEach(link => {
-
-          link.addEventListener(
-            "click",
-            () => {
-
-              menuButton.classList.remove(
-                "active"
-              );
-
-              mobileMenu.classList.remove(
-                "open"
-              );
-
-            }
-          );
-
-        });
-
+    try {
+      savedTheme = localStorage.getItem("willie-theme");
+    } catch (error) {
+      savedTheme = null;
     }
 
+    if (savedTheme === "dark" || savedTheme === "light") {
+      applyTheme(savedTheme);
+      return;
+    }
 
-    /* =====================================================
-       SCROLL PROGRESS
-       ===================================================== */
+    const prefersDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
 
-    const progress =
-      document.querySelector("#progress");
+    applyTheme(prefersDark ? "dark" : "light");
+  }
 
-    if (progress) {
+  if (themeButton) {
+    themeButton.addEventListener("click", () => {
+      const isDark =
+        document.body.classList.contains("dark");
 
-      function updateProgress() {
+      applyTheme(isDark ? "light" : "dark");
+    });
+  }
 
-        const top =
-          window.scrollY || 0;
+  /* =========================================================
+     LANGUAGE BUTTON
+     
+     Keeps the current site's simple language behavior.
+     ========================================================= */
 
-        const height =
-          document.documentElement.scrollHeight -
-          window.innerHeight;
+  let isEnglish = false;
 
-        const percentage =
-          height > 0
-            ? (top / height) * 100
-            : 0;
-
-        progress.style.width =
-          `${percentage}%`;
-
+  function updateLanguage() {
+    const translations = {
+      zh: {
+        gallery: "相簿",
+        about: "關於我",
+        contact: "聯絡",
+        back: "← 返回相簿"
+      },
+      en: {
+        gallery: "Gallery",
+        about: "About",
+        contact: "Contact",
+        back: "← Back to albums"
       }
+    };
 
-      window.addEventListener(
-        "scroll",
-        updateProgress,
-        {
-          passive: true
-        }
-      );
+    const lang = isEnglish
+      ? translations.en
+      : translations.zh;
 
-      updateProgress();
-
-    }
-
-
-    /* =====================================================
-       CURSOR GLOW
-       ===================================================== */
-
-    const glow =
-      document.querySelector(
-        ".cursor-glow"
-      );
-
-    if (glow) {
-
-      if (
-        window.matchMedia &&
-        window.matchMedia(
-          "(pointer: coarse)"
-        ).matches
-      ) {
-
-        glow.style.display =
-          "none";
-
-      } else {
-
-        window.addEventListener(
-          "pointermove",
-          event => {
-
-            glow.style.transform =
-              `translate3d(
-                ${event.clientX}px,
-                ${event.clientY}px,
-                0
-              )`;
-
-          },
-          {
-            passive: true
-          }
-        );
-
-      }
-
-    }
-
-
-    /* =====================================================
-       INITIAL LANGUAGE
-       ===================================================== */
-
-    setLanguage(
-      localStorage.getItem(
-        "willie-language"
-      ) || "en"
+    const galleryLink = document.querySelector(
+      'a[href="#gallery"]'
     );
 
-  }
-);
+    const aboutLink = document.querySelector(
+      'a[href="#about"]'
+    );
 
+    const contactLink = document.querySelector(
+      'a[href="#contact"]'
+    );
 
-/* =========================================================
-   IMAGE ERROR FALLBACK
-   ========================================================= */
-
-document.addEventListener(
-  "error",
-  event => {
-
-    const image =
-      event.target;
-
-    if (
-      image &&
-      image.tagName === "IMG"
-    ) {
-
-      const tile =
-        image.closest(".photo-tile");
-
-      if (tile) {
-
-        tile.classList.add(
-          "photo-error"
-        );
-
-      } else {
-
-        image.style.visibility =
-          "hidden";
-
-      }
-
+    if (galleryLink) {
+      galleryLink.textContent = lang.gallery;
     }
 
-  },
-  true
-);
+    if (aboutLink) {
+      aboutLink.textContent = lang.about;
+    }
 
+    if (contactLink) {
+      contactLink.textContent = lang.contact;
+    }
 
-/* =========================================================
-   EXPORT
-   ========================================================= */
+    if (backButton) {
+      backButton.textContent = lang.back;
+    }
 
-window.photoAlbums =
-  photoAlbums;
+    if (langButton) {
+      langButton.textContent = isEnglish ? "中" : "EN";
+    }
 
-window.openAlbum =
-  openAlbum;
+    document.documentElement.lang =
+      isEnglish ? "en" : "zh-TW";
+  }
 
-window.closeAlbum =
-  closeAlbum;
+  if (langButton) {
+    langButton.addEventListener("click", () => {
+      isEnglish = !isEnglish;
+      updateLanguage();
+    });
+  }
 
-window.openLightbox =
-  openLightbox;
+  /* =========================================================
+     MOBILE MENU
+     ========================================================= */
 
-window.closeLightbox =
-  closeLightbox;
+  function closeMobileMenu() {
+    if (!mobileMenu) return;
 
-window.nextPhoto =
-  nextPhoto;
+    mobileMenu.classList.remove("open");
 
-window.previousPhoto =
-  previousPhoto;
+    if (menuButton) {
+      menuButton.setAttribute("aria-expanded", "false");
+    }
+  }
 
-window.setLanguage =
-  setLanguage;
+  function toggleMobileMenu() {
+    if (!mobileMenu) return;
 
-window.setTheme =
-  setTheme;
+    const isOpen =
+      mobileMenu.classList.toggle("open");
 
+    if (menuButton) {
+      menuButton.setAttribute(
+        "aria-expanded",
+        String(isOpen)
+      );
+    }
+  }
 
-/* =========================================================
-   END
-   ========================================================= */
+  if (menuButton) {
+    menuButton.addEventListener(
+      "click",
+      toggleMobileMenu
+    );
+  }
+
+  $$(".mobile-menu a").forEach((link) => {
+    link.addEventListener("click", () => {
+      closeMobileMenu();
+    });
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!mobileMenu || !menuButton) return;
+
+    const target = event.target;
+
+    if (
+      mobileMenu.classList.contains("open") &&
+      !mobileMenu.contains(target) &&
+      !menuButton.contains(target)
+    ) {
+      closeMobileMenu();
+    }
+  });
+
+  /* =========================================================
+     SCROLL PROGRESS
+     ========================================================= */
+
+  function updateScrollProgress() {
+    if (!progress) return;
+
+    const scrollTop =
+      window.scrollY ||
+      document.documentElement.scrollTop;
+
+    const documentHeight =
+      document.documentElement.scrollHeight -
+      window.innerHeight;
+
+    if (documentHeight <= 0) {
+      progress.style.width = "0%";
+      return;
+    }
+
+    const percentage =
+      (scrollTop / documentHeight) * 100;
+
+    progress.style.width =
+      `${Math.min(100, Math.max(0, percentage))}%`;
+  }
+
+  window.addEventListener(
+    "scroll",
+    updateScrollProgress,
+    { passive: true }
+  );
+
+  window.addEventListener(
+    "resize",
+    updateScrollProgress,
+    { passive: true }
+  );
+
+  /* =========================================================
+     CURSOR GLOW
+     ========================================================= */
+
+  if (cursorGlow) {
+    let cursorFrame = null;
+    let mouseX = 0;
+    let mouseY = 0;
+
+    document.addEventListener(
+      "mousemove",
+      (event) => {
+        mouseX = event.clientX;
+        mouseY = event.clientY;
+
+        if (cursorFrame) return;
+
+        cursorFrame = requestAnimationFrame(() => {
+          cursorGlow.style.left = `${mouseX}px`;
+          cursorGlow.style.top = `${mouseY}px`;
+
+          cursorFrame = null;
+        });
+      },
+      { passive: true }
+    );
+  }
+
+  /* =========================================================
+     IMAGE ERROR HANDLING
+     ========================================================= */
+
+  document.addEventListener("error", (event) => {
+    const target = event.target;
+
+    if (
+      target instanceof HTMLImageElement &&
+      target.closest(".photo-tile")
+    ) {
+      target.style.opacity = "0.25";
+    }
+  }, true);
+
+  /* =========================================================
+     INITIALIZE
+     ========================================================= */
+
+  renderAlbums();
+  initializeTheme();
+  updateLanguage();
+  updateScrollProgress();
+
+})();
