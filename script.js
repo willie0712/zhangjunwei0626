@@ -89,7 +89,6 @@ const photoAlbums = {
     ]
   },
 
-
   after: {
     title: "休學後的照片",
     titleEN: "Photos After Leaving School",
@@ -152,7 +151,6 @@ const photoAlbums = {
     ]
   },
 
-
   tamsui: {
     title: "北投淡水一日遊",
     titleEN: "Beitou & Tamsui Day Trip",
@@ -179,7 +177,6 @@ const photoAlbums = {
       "https://i.ibb.co/4RQ2PBTZ/IMG-7603.jpg"
     ]
   }
-
 };
 
 
@@ -193,18 +190,13 @@ let currentPhoto = 0;
 
 /* =========================================================
    WILLIE LOADING
-   不等待圖片、不等待 window.load
    ========================================================= */
 
 (function initFastLoader() {
 
   function hideLoader() {
 
-    const loader =
-      document.querySelector("#pageLoader") ||
-      document.querySelector(".page-loader") ||
-      document.querySelector("#loader") ||
-      document.querySelector(".loader");
+    const loader = document.querySelector("#pageLoader");
 
     if (!loader) return;
 
@@ -216,20 +208,11 @@ let currentPhoto = 0;
     }, 250);
   }
 
-  /*
-   * DOM 一完成就開始計時
-   * 不等待照片
-   * 不等待背景圖片
-   * 不等待 window.load
-   */
-
   if (document.readyState === "loading") {
 
     document.addEventListener(
       "DOMContentLoaded",
-      () => {
-        setTimeout(hideLoader, 300);
-      },
+      () => setTimeout(hideLoader, 300),
       { once: true }
     );
 
@@ -239,141 +222,253 @@ let currentPhoto = 0;
 
   }
 
-  /*
-   * 最後保險：
-   * 即使其他程式出錯，Loading 最多約 1.5 秒
-   */
-
   setTimeout(hideLoader, 1500);
 
 })();
 
 
 /* =========================================================
-   GALLERY ELEMENT
+   DOM ELEMENTS
    ========================================================= */
 
-function findGalleryGrid() {
+let albumsGrid;
+let photoView;
+let photoGrid;
+let photoViewTitle;
+let photoCounter;
+let backButton;
+let lightbox;
+let lightboxImg;
+let lightboxCounter;
 
-  return (
-    document.querySelector("#galleryGrid") ||
-    document.querySelector("#photoGrid") ||
-    document.querySelector(".gallery-grid") ||
-    document.querySelector(".photo-grid")
+
+/* =========================================================
+   INITIALIZE GALLERY
+   ========================================================= */
+
+function initializeGallery() {
+
+  albumsGrid = document.querySelector("#albumsGrid");
+  photoView = document.querySelector("#photoView");
+  photoGrid = document.querySelector("#photoGrid");
+  photoViewTitle = document.querySelector("#photoViewTitle");
+  photoCounter = document.querySelector("#photoCounter");
+  backButton = document.querySelector("#backButton");
+
+  lightbox = document.querySelector("#lightbox");
+  lightboxImg = document.querySelector("#lightboxImg");
+  lightboxCounter = document.querySelector("#lightboxCounter");
+
+  if (!albumsGrid) {
+    console.warn("找不到 #albumsGrid");
+    return;
+  }
+
+  renderAlbums();
+
+}
+
+
+/* =========================================================
+   RENDER ALBUMS
+   ========================================================= */
+
+function renderAlbums() {
+
+  albumsGrid.innerHTML = "";
+
+  const language =
+    localStorage.getItem("willie-language") || "en";
+
+  Object.entries(photoAlbums).forEach(
+    ([albumId, album]) => {
+
+      const card = document.createElement("button");
+
+      card.type = "button";
+      card.className = "album-card";
+      card.dataset.album = albumId;
+
+      const cover = document.createElement("div");
+      cover.className = "album-cover";
+
+      const image = document.createElement("img");
+
+      image.src = album.photos[0];
+      image.alt =
+        language === "zh"
+          ? album.title
+          : album.titleEN;
+
+      image.loading = "lazy";
+      image.decoding = "async";
+
+      cover.appendChild(image);
+
+      const content = document.createElement("div");
+      content.className = "album-card-content";
+
+      const number = document.createElement("span");
+      number.className = "album-number";
+
+      number.textContent =
+        String(
+          Object.keys(photoAlbums).indexOf(albumId) + 1
+        ).padStart(2, "0");
+
+      const title = document.createElement("h3");
+
+      title.textContent =
+        language === "zh"
+          ? album.title
+          : album.titleEN;
+
+      const count = document.createElement("span");
+      count.className = "album-count";
+
+      count.textContent =
+        `${album.photos.length} ${language === "zh" ? "張照片" : "PHOTOS"}`;
+
+      content.appendChild(number);
+      content.appendChild(title);
+      content.appendChild(count);
+
+      card.appendChild(cover);
+      card.appendChild(content);
+
+      card.addEventListener(
+        "click",
+        () => openAlbum(albumId)
+      );
+
+      albumsGrid.appendChild(card);
+
+    }
   );
 
 }
 
 
 /* =========================================================
-   ALBUM OPEN
+   OPEN ALBUM
    ========================================================= */
 
 function openAlbum(albumId) {
 
   const album = photoAlbums[albumId];
 
-  if (!album) return;
+  if (!album || !photoView || !photoGrid) {
+    return;
+  }
 
   currentAlbum = albumId;
   currentPhoto = 0;
 
-  const grid = findGalleryGrid();
+  photoGrid.innerHTML = "";
 
-  if (!grid) {
-    console.warn("找不到照片 Grid");
-    return;
-  }
+  const language =
+    localStorage.getItem("willie-language") || "en";
 
-  grid.innerHTML = "";
+  if (photoViewTitle) {
 
-  album.photos.forEach((url, index) => {
-
-    const button =
-      document.createElement("button");
-
-    button.type = "button";
-    button.className = "gallery-photo";
-
-    const img =
-      document.createElement("img");
-
-    img.src = url;
-
-    img.alt =
-      `${album.titleEN} ${index + 1}`;
-
-    /*
-     * 照片延遲載入
-     */
-    img.loading = "lazy";
-
-    img.decoding = "async";
-
-    /*
-     * 前四張優先
-     */
-    if (index < 4) {
-      img.fetchPriority = "high";
-    } else {
-      img.fetchPriority = "low";
-    }
-
-    button.appendChild(img);
-
-    button.addEventListener(
-      "click",
-      () => openLightbox(index)
-    );
-
-    grid.appendChild(button);
-
-  });
-
-
-  /* 更新標題 */
-
-  const title =
-    document.querySelector("#galleryTitle") ||
-    document.querySelector(".gallery-title");
-
-  if (title) {
-
-    const language =
-      localStorage.getItem("willie-language") ||
-      "en";
-
-    title.textContent =
+    photoViewTitle.textContent =
       language === "zh"
         ? album.title
         : album.titleEN;
 
   }
 
+  if (photoCounter) {
 
-  /* 顯示相簿 */
+    photoCounter.textContent =
+      `0 / ${album.photos.length}`;
 
-  const albumSection =
-    document.querySelector("#photoAlbum") ||
-    document.querySelector(".photo-album");
-
-  if (albumSection) {
-    albumSection.classList.add("active");
   }
+
+  /*
+   * 建立全部照片
+   * 使用瀏覽器原生 lazy loading
+   */
+
+  album.photos.forEach(
+    (url, index) => {
+
+      const button =
+        document.createElement("button");
+
+      button.type = "button";
+      button.className = "gallery-photo";
+
+      const img =
+        document.createElement("img");
+
+      img.src = url;
+
+      img.alt =
+        `${album.titleEN} ${index + 1}`;
+
+      img.loading = "lazy";
+      img.decoding = "async";
+
+      if (index < 6) {
+        img.fetchPriority = "high";
+      } else {
+        img.fetchPriority = "auto";
+      }
+
+      button.appendChild(img);
+
+      button.addEventListener(
+        "click",
+        () => openLightbox(index)
+      );
+
+      photoGrid.appendChild(button);
+
+    }
+  );
+
+
+  /*
+   * 顯示照片頁
+   */
+
+  const albumView =
+    document.querySelector(".album-view");
+
+  if (albumView) {
+    albumView.hidden = true;
+  }
+
+  photoView.hidden = false;
+
+  photoView.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
 
 }
 
 
 /* =========================================================
-   LIGHTBOX
+   CLOSE ALBUM
    ========================================================= */
 
-function getLightbox() {
+function closeAlbum() {
 
-  return (
-    document.querySelector("#lightbox") ||
-    document.querySelector(".lightbox")
-  );
+  if (!photoView) return;
+
+  photoView.hidden = true;
+
+  const albumView =
+    document.querySelector(".album-view");
+
+  if (albumView) {
+    albumView.hidden = false;
+  }
+
+  currentAlbum = null;
+  currentPhoto = 0;
 
 }
 
@@ -393,55 +488,40 @@ function openLightbox(index) {
 
   currentPhoto = index;
 
-  const lightbox =
-    getLightbox();
-
-  /*
-   * 如果網站沒有 Lightbox
-   * 就直接開啟原圖
-   */
-
   if (!lightbox) {
-
     window.open(
       photos[index],
       "_blank",
       "noopener,noreferrer"
     );
-
     return;
   }
 
+  if (!lightboxImg) {
+    lightboxImg =
+      lightbox.querySelector("#lightboxImg") ||
+      lightbox.querySelector("img");
+  }
 
-  const image =
-    lightbox.querySelector("img") ||
-    document.querySelector("#lightboxImage");
-
-  if (!image) return;
-
+  if (!lightboxImg) return;
 
   /*
-   * 點擊時才載入完整原圖
+   * 只有使用者點擊時才載入完整原圖
    */
 
-  image.src =
-    photos[index];
+  lightboxImg.src = photos[index];
+  lightboxImg.loading = "eager";
+  lightboxImg.decoding = "async";
 
-  image.loading =
-    "eager";
-
-  image.decoding =
-    "async";
-
+  lightboxImg.alt =
+    `${photoAlbums[currentAlbum].titleEN} ${index + 1}`;
 
   lightbox.classList.add("active");
+  lightbox.setAttribute("aria-hidden", "false");
 
-  document.body.classList.add(
-    "lightbox-open"
-  );
+  document.body.classList.add("lightbox-open");
 
-
-  updateCounter();
+  updateLightboxCounter();
 
 }
 
@@ -452,18 +532,12 @@ function openLightbox(index) {
 
 function closeLightbox() {
 
-  const lightbox =
-    getLightbox();
-
   if (!lightbox) return;
 
-  lightbox.classList.remove(
-    "active"
-  );
+  lightbox.classList.remove("active");
+  lightbox.setAttribute("aria-hidden", "true");
 
-  document.body.classList.remove(
-    "lightbox-open"
-  );
+  document.body.classList.remove("lightbox-open");
 
 }
 
@@ -482,12 +556,9 @@ function nextPhoto() {
   if (!photos.length) return;
 
   currentPhoto =
-    (currentPhoto + 1) %
-    photos.length;
+    (currentPhoto + 1) % photos.length;
 
-  openLightbox(
-    currentPhoto
-  );
+  openLightbox(currentPhoto);
 
 }
 
@@ -510,40 +581,47 @@ function previousPhoto() {
       currentPhoto -
       1 +
       photos.length
-    ) %
-    photos.length;
+    ) % photos.length;
 
-  openLightbox(
-    currentPhoto
-  );
+  openLightbox(currentPhoto);
 
 }
 
 
 /* =========================================================
-   COUNTER
+   LIGHTBOX COUNTER
    ========================================================= */
 
-function updateCounter() {
+function updateLightboxCounter() {
 
-  if (!currentAlbum) return;
-
-  const counter =
-    document.querySelector(
-      "#lightboxCounter"
-    ) ||
-    document.querySelector(
-      ".lightbox-counter"
-    );
-
-  if (!counter) return;
+  if (!currentAlbum || !lightboxCounter) {
+    return;
+  }
 
   const total =
-    photoAlbums[currentAlbum]
-      .photos.length;
+    photoAlbums[currentAlbum].photos.length;
 
-  counter.textContent =
+  lightboxCounter.textContent =
     `${currentPhoto + 1} / ${total}`;
+
+}
+
+
+/* =========================================================
+   PHOTO VIEW COUNTER
+   ========================================================= */
+
+function updatePhotoCounter() {
+
+  if (!currentAlbum || !photoCounter) {
+    return;
+  }
+
+  const total =
+    photoAlbums[currentAlbum].photos.length;
+
+  photoCounter.textContent =
+    `${total} ${localStorage.getItem("willie-language") === "zh" ? "張照片" : "PHOTOS"}`;
 
 }
 
@@ -556,43 +634,23 @@ document.addEventListener(
   "keydown",
   event => {
 
-    const lightbox =
-      getLightbox();
-
     if (
       !lightbox ||
-      !lightbox.classList.contains(
-        "active"
-      )
+      !lightbox.classList.contains("active")
     ) {
       return;
     }
 
-
-    if (
-      event.key === "Escape"
-    ) {
-
+    if (event.key === "Escape") {
       closeLightbox();
-
     }
 
-
-    if (
-      event.key === "ArrowRight"
-    ) {
-
+    if (event.key === "ArrowRight") {
       nextPhoto();
-
     }
 
-
-    if (
-      event.key === "ArrowLeft"
-    ) {
-
+    if (event.key === "ArrowLeft") {
       previousPhoto();
-
     }
 
   }
@@ -600,130 +658,298 @@ document.addEventListener(
 
 
 /* =========================================================
-   LIGHTBOX BUTTONS
+   DOM READY
    ========================================================= */
 
 document.addEventListener(
   "DOMContentLoaded",
   () => {
 
-    const lightbox =
-      getLightbox();
-
-    if (!lightbox) return;
+    initializeGallery();
 
 
-    const close =
-      lightbox.querySelector(
-        ".lightbox-close"
-      ) ||
-      document.querySelector(
-        "#lightboxClose"
-      );
+    /* -----------------------------------------------------
+       LIGHTBOX BUTTONS
+       ----------------------------------------------------- */
+
+    const closeButton =
+      document.querySelector("#close") ||
+      document.querySelector(".lightbox-close");
+
+    const nextButton =
+      document.querySelector("#next") ||
+      document.querySelector(".lightbox-next");
+
+    const previousButton =
+      document.querySelector("#prev") ||
+      document.querySelector(".lightbox-prev");
 
 
-    const next =
-      lightbox.querySelector(
-        ".lightbox-next"
-      ) ||
-      document.querySelector(
-        "#lightboxNext"
-      );
-
-
-    const previous =
-      lightbox.querySelector(
-        ".lightbox-prev"
-      ) ||
-      document.querySelector(
-        "#lightboxPrev"
-      );
-
-
-    if (close) {
-
-      close.addEventListener(
+    if (closeButton) {
+      closeButton.addEventListener(
         "click",
         closeLightbox
       );
-
     }
 
-
-    if (next) {
-
-      next.addEventListener(
+    if (nextButton) {
+      nextButton.addEventListener(
         "click",
         nextPhoto
       );
+    }
 
+    if (previousButton) {
+      previousButton.addEventListener(
+        "click",
+        previousPhoto
+      );
     }
 
 
-    if (previous) {
+    if (lightbox) {
 
-      previous.addEventListener(
+      lightbox.addEventListener(
         "click",
-        previousPhoto
+        event => {
+
+          if (event.target === lightbox) {
+            closeLightbox();
+          }
+
+        }
       );
 
     }
 
 
-    lightbox.addEventListener(
-      "click",
-      event => {
+    /* -----------------------------------------------------
+       BACK BUTTON
+       ----------------------------------------------------- */
 
-        if (
-          event.target === lightbox
-        ) {
+    if (backButton) {
 
-          closeLightbox();
+      backButton.addEventListener(
+        "click",
+        closeAlbum
+      );
+
+    }
+
+
+    /* -----------------------------------------------------
+       LANGUAGE BUTTON
+       ----------------------------------------------------- */
+
+    const languageButton =
+      document.querySelector("#langBtn") ||
+      document.querySelector("#languageToggle") ||
+      document.querySelector(".language-toggle");
+
+    if (languageButton) {
+
+      languageButton.addEventListener(
+        "click",
+        () => {
+
+          const current =
+            localStorage.getItem("willie-language") || "en";
+
+          setLanguage(
+            current === "en"
+              ? "zh"
+              : "en"
+          );
 
         }
+      );
 
-      }
-    );
-
-  }
-);
+    }
 
 
-/* =========================================================
-   ALBUM BUTTONS
-   ========================================================= */
+    /* -----------------------------------------------------
+       THEME BUTTON
+       ----------------------------------------------------- */
 
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
+    const themeButton =
+      document.querySelector("#themeBtn") ||
+      document.querySelector("#themeToggle") ||
+      document.querySelector(".theme-toggle");
 
-    document
-      .querySelectorAll(
-        "[data-album]"
-      )
-      .forEach(button => {
+    const savedTheme =
+      localStorage.getItem("willie-theme");
 
-        button.addEventListener(
-          "click",
-          () => {
+    if (savedTheme) {
 
-            const albumId =
-              button.dataset.album;
+      setTheme(savedTheme);
 
-            if (
-              photoAlbums[albumId]
-            ) {
+    } else {
 
-              openAlbum(
-                albumId
-              );
+      const dark =
+        window.matchMedia &&
+        window.matchMedia(
+          "(prefers-color-scheme: dark)"
+        ).matches;
+
+      setTheme(
+        dark
+          ? "dark"
+          : "light"
+      );
+
+    }
+
+
+    if (themeButton) {
+
+      themeButton.addEventListener(
+        "click",
+        () => {
+
+          const current =
+            document.documentElement
+              .getAttribute("data-theme");
+
+          setTheme(
+            current === "dark"
+              ? "light"
+              : "dark"
+          );
+
+        }
+      );
+
+    }
+
+
+    /* -----------------------------------------------------
+       MOBILE MENU
+       ----------------------------------------------------- */
+
+    const menuButton =
+      document.querySelector("#menuBtn") ||
+      document.querySelector("#menuToggle") ||
+      document.querySelector(".menu-toggle");
+
+    const mobileMenu =
+      document.querySelector("#mobileMenu") ||
+      document.querySelector(".mobile-menu");
+
+    if (menuButton && mobileMenu) {
+
+      menuButton.addEventListener(
+        "click",
+        () => {
+
+          menuButton.classList.toggle("active");
+          mobileMenu.classList.toggle("active");
+
+        }
+      );
+
+      mobileMenu
+        .querySelectorAll("a")
+        .forEach(link => {
+
+          link.addEventListener(
+            "click",
+            () => {
+
+              menuButton.classList.remove("active");
+              mobileMenu.classList.remove("active");
 
             }
+          );
 
-          }
+        });
+
+    }
+
+
+    /* -----------------------------------------------------
+       SCROLL PROGRESS
+       ----------------------------------------------------- */
+
+    const progress =
+      document.querySelector("#progress");
+
+    if (progress) {
+
+      function updateProgress() {
+
+        const top =
+          window.scrollY || 0;
+
+        const height =
+          document.documentElement.scrollHeight -
+          window.innerHeight;
+
+        const percentage =
+          height > 0
+            ? (top / height) * 100
+            : 0;
+
+        progress.style.width =
+          `${percentage}%`;
+
+      }
+
+      window.addEventListener(
+        "scroll",
+        updateProgress,
+        { passive: true }
+      );
+
+      updateProgress();
+
+    }
+
+
+    /* -----------------------------------------------------
+       CURSOR GLOW
+       ----------------------------------------------------- */
+
+    const glow =
+      document.querySelector(".cursor-glow");
+
+    if (glow) {
+
+      if (
+        window.matchMedia &&
+        window.matchMedia("(pointer: coarse)").matches
+      ) {
+
+        glow.style.display = "none";
+
+      } else {
+
+        window.addEventListener(
+          "pointermove",
+          event => {
+
+            glow.style.transform =
+              `translate3d(
+                ${event.clientX}px,
+                ${event.clientY}px,
+                0
+              )`;
+
+          },
+          { passive: true }
         );
 
-      });
+      }
+
+    }
+
+
+    /* -----------------------------------------------------
+       INITIAL LANGUAGE
+       ----------------------------------------------------- */
+
+    setLanguage(
+      localStorage.getItem("willie-language") || "en"
+    );
 
   }
 );
@@ -742,12 +968,10 @@ function setLanguage(language) {
     language = "en";
   }
 
-
   localStorage.setItem(
     "willie-language",
     language
   );
-
 
   document.documentElement.lang =
     language === "zh"
@@ -760,9 +984,7 @@ function setLanguage(language) {
    */
 
   document
-    .querySelectorAll(
-      "[data-en][data-zh]"
-    )
+    .querySelectorAll("[data-en][data-zh]")
     .forEach(element => {
 
       element.textContent =
@@ -823,35 +1045,28 @@ function setLanguage(language) {
 
 
   document
-    .querySelectorAll(
-      "[data-i18n]"
-    )
+    .querySelectorAll("[data-i18n]")
     .forEach(element => {
 
       const key =
         element.dataset.i18n;
 
       if (text[key]) {
-
         element.textContent =
           text[key];
-
       }
 
     });
 
 
   /*
-   * 語言按鈕
+   * HTML 裡實際的語言按鈕是 #langBtn
    */
 
   const languageButton =
-    document.querySelector(
-      "#languageToggle"
-    ) ||
-    document.querySelector(
-      ".language-toggle"
-    );
+    document.querySelector("#langBtn") ||
+    document.querySelector("#languageToggle") ||
+    document.querySelector(".language-toggle");
 
   if (languageButton) {
 
@@ -864,26 +1079,28 @@ function setLanguage(language) {
 
 
   /*
+   * 重新建立相簿卡片
+   * 讓相簿名稱同步切換
+   */
+
+  if (albumsGrid) {
+    renderAlbums();
+  }
+
+
+  /*
    * 如果目前正在看相簿
    * 同步更新相簿名稱
    */
 
-  if (currentAlbum) {
+  if (currentAlbum && photoViewTitle) {
 
     const album =
       photoAlbums[currentAlbum];
 
-    const title =
-      document.querySelector(
-        "#galleryTitle"
-      ) ||
-      document.querySelector(
-        ".gallery-title"
-      );
+    if (album) {
 
-    if (title && album) {
-
-      title.textContent =
+      photoViewTitle.textContent =
         language === "zh"
           ? album.title
           : album.titleEN;
@@ -896,64 +1113,15 @@ function setLanguage(language) {
 
 
 /* =========================================================
-   LANGUAGE BUTTON
-   ========================================================= */
-
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
-
-    const button =
-      document.querySelector(
-        "#languageToggle"
-      ) ||
-      document.querySelector(
-        ".language-toggle"
-      );
-
-    if (!button) return;
-
-
-    button.addEventListener(
-      "click",
-      () => {
-
-        const current =
-          localStorage.getItem(
-            "willie-language"
-          ) || "en";
-
-        setLanguage(
-          current === "en"
-            ? "zh"
-            : "en"
-        );
-
-      }
-    );
-
-
-    setLanguage(
-      localStorage.getItem(
-        "willie-language"
-      ) || "en"
-    );
-
-  }
-);
-
-
-/* =========================================================
    THEME
    ========================================================= */
 
 function setTheme(theme) {
 
-  document.documentElement
-    .setAttribute(
-      "data-theme",
-      theme
-    );
+  document.documentElement.setAttribute(
+    "data-theme",
+    theme
+  );
 
   localStorage.setItem(
     "willie-theme",
@@ -961,310 +1129,6 @@ function setTheme(theme) {
   );
 
 }
-
-
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
-
-    const saved =
-      localStorage.getItem(
-        "willie-theme"
-      );
-
-
-    if (saved) {
-
-      setTheme(saved);
-
-    } else {
-
-      const dark =
-        window.matchMedia &&
-        window.matchMedia(
-          "(prefers-color-scheme: dark)"
-        ).matches;
-
-      setTheme(
-        dark
-          ? "dark"
-          : "light"
-      );
-
-    }
-
-
-    const button =
-      document.querySelector(
-        "#themeToggle"
-      ) ||
-      document.querySelector(
-        ".theme-toggle"
-      );
-
-
-    if (!button) return;
-
-
-    button.addEventListener(
-      "click",
-      () => {
-
-        const current =
-          document.documentElement
-            .getAttribute(
-              "data-theme"
-            );
-
-        setTheme(
-          current === "dark"
-            ? "light"
-            : "dark"
-        );
-
-      }
-    );
-
-  }
-);
-
-
-/* =========================================================
-   MOBILE MENU
-   ========================================================= */
-
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
-
-    const button =
-      document.querySelector(
-        "#menuToggle"
-      ) ||
-      document.querySelector(
-        ".menu-toggle"
-      );
-
-    const menu =
-      document.querySelector(
-        "#mobileMenu"
-      ) ||
-      document.querySelector(
-        ".mobile-menu"
-      );
-
-
-    if (!button || !menu) {
-      return;
-    }
-
-
-    button.addEventListener(
-      "click",
-      () => {
-
-        button.classList.toggle(
-          "active"
-        );
-
-        menu.classList.toggle(
-          "active"
-        );
-
-      }
-    );
-
-
-    menu
-      .querySelectorAll("a")
-      .forEach(link => {
-
-        link.addEventListener(
-          "click",
-          () => {
-
-            button.classList.remove(
-              "active"
-            );
-
-            menu.classList.remove(
-              "active"
-            );
-
-          }
-        );
-
-      });
-
-  }
-);
-
-
-/* =========================================================
-   SCROLL PROGRESS
-   ========================================================= */
-
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
-
-    const progress =
-      document.querySelector(
-        "#scrollProgress"
-      ) ||
-      document.querySelector(
-        ".scroll-progress"
-      );
-
-
-    if (!progress) return;
-
-
-    function updateProgress() {
-
-      const top =
-        window.scrollY || 0;
-
-      const height =
-        document.documentElement
-          .scrollHeight -
-        window.innerHeight;
-
-
-      const percentage =
-        height > 0
-          ? (
-              top / height
-            ) * 100
-          : 0;
-
-
-      progress.style.width =
-        `${percentage}%`;
-
-    }
-
-
-    window.addEventListener(
-      "scroll",
-      updateProgress,
-      {
-        passive: true
-      }
-    );
-
-
-    updateProgress();
-
-  }
-);
-
-
-/* =========================================================
-   CURSOR GLOW
-   ========================================================= */
-
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
-
-    const glow =
-      document.querySelector(
-        "#cursorGlow"
-      ) ||
-      document.querySelector(
-        ".cursor-glow"
-      );
-
-
-    if (!glow) return;
-
-
-    if (
-      window.matchMedia &&
-      window.matchMedia(
-        "(pointer: coarse)"
-      ).matches
-    ) {
-
-      glow.style.display =
-        "none";
-
-      return;
-
-    }
-
-
-    window.addEventListener(
-      "pointermove",
-      event => {
-
-        glow.style.transform =
-          `translate3d(
-            ${event.clientX}px,
-            ${event.clientY}px,
-            0
-          )`;
-
-      },
-      {
-        passive: true
-      }
-    );
-
-  }
-);
-
-
-/* =========================================================
-   BACK BUTTON
-   ========================================================= */
-
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
-
-    const button =
-      document.querySelector(
-        "#albumBack"
-      ) ||
-      document.querySelector(
-        ".album-back"
-      );
-
-
-    if (!button) return;
-
-
-    button.addEventListener(
-      "click",
-      () => {
-
-        const section =
-          document.querySelector(
-            "#photoAlbum"
-          ) ||
-          document.querySelector(
-            ".photo-album"
-          );
-
-
-        if (section) {
-
-          section.classList.remove(
-            "active"
-          );
-
-        }
-
-
-        currentAlbum = null;
-
-      }
-    );
-
-  }
-);
 
 
 /* =========================================================
@@ -1278,15 +1142,13 @@ document.addEventListener(
     const image =
       event.target;
 
-
     if (
       image &&
       image.tagName === "IMG"
     ) {
 
       /*
-       * 不顯示錯誤文字。
-       * 保持網站版面乾淨。
+       * 圖片載入失敗時不顯示錯誤文字
        */
 
       image.style.visibility =
@@ -1308,6 +1170,9 @@ window.photoAlbums =
 
 window.openAlbum =
   openAlbum;
+
+window.closeAlbum =
+  closeAlbum;
 
 window.openLightbox =
   openLightbox;
