@@ -1,6 +1,7 @@
 /* =========================================================
    Willie Zhang — Photography & Life
    Complete script.js
+   原圖版：不使用縮圖
    ========================================================= */
 
 
@@ -177,6 +178,7 @@ const photoAlbums = {
       "https://i.ibb.co/4RQ2PBTZ/IMG-7603.jpg"
     ]
   }
+
 };
 
 
@@ -206,6 +208,7 @@ let currentPhoto = 0;
       loader.style.display = "none";
       loader.setAttribute("aria-hidden", "true");
     }, 250);
+
   }
 
   if (document.readyState === "loading") {
@@ -228,18 +231,19 @@ let currentPhoto = 0;
 
 
 /* =========================================================
-   DOM ELEMENTS
+   GALLERY ELEMENTS
    ========================================================= */
 
-let albumsGrid;
-let photoView;
-let photoGrid;
-let photoViewTitle;
-let photoCounter;
-let backButton;
-let lightbox;
-let lightboxImg;
-let lightboxCounter;
+let albumsGrid = null;
+let photoView = null;
+let photoGrid = null;
+let photoViewTitle = null;
+let photoCounter = null;
+let backButton = null;
+
+let lightbox = null;
+let lightboxImg = null;
+let lightboxCounter = null;
 
 
 /* =========================================================
@@ -248,16 +252,33 @@ let lightboxCounter;
 
 function initializeGallery() {
 
-  albumsGrid = document.querySelector("#albumsGrid");
-  photoView = document.querySelector("#photoView");
-  photoGrid = document.querySelector("#photoGrid");
-  photoViewTitle = document.querySelector("#photoViewTitle");
-  photoCounter = document.querySelector("#photoCounter");
-  backButton = document.querySelector("#backButton");
+  albumsGrid =
+    document.querySelector("#albumsGrid");
 
-  lightbox = document.querySelector("#lightbox");
-  lightboxImg = document.querySelector("#lightboxImg");
-  lightboxCounter = document.querySelector("#lightboxCounter");
+  photoView =
+    document.querySelector("#photoView");
+
+  photoGrid =
+    document.querySelector("#photoGrid");
+
+  photoViewTitle =
+    document.querySelector("#photoViewTitle");
+
+  photoCounter =
+    document.querySelector("#photoCounter");
+
+  backButton =
+    document.querySelector("#backButton");
+
+  lightbox =
+    document.querySelector("#lightbox");
+
+  lightboxImg =
+    document.querySelector("#lightboxImg");
+
+  lightboxCounter =
+    document.querySelector("#lightboxCounter");
+
 
   if (!albumsGrid) {
     console.warn("找不到 #albumsGrid");
@@ -270,10 +291,12 @@ function initializeGallery() {
 
 
 /* =========================================================
-   RENDER ALBUMS
+   RENDER ALBUM CARDS
    ========================================================= */
 
 function renderAlbums() {
+
+  if (!albumsGrid) return;
 
   albumsGrid.innerHTML = "";
 
@@ -281,53 +304,87 @@ function renderAlbums() {
     localStorage.getItem("willie-language") || "en";
 
   Object.entries(photoAlbums).forEach(
-    ([albumId, album]) => {
+    ([albumId, album], index) => {
 
-      const card = document.createElement("button");
+      const card =
+        document.createElement("button");
 
       card.type = "button";
       card.className = "album-card";
       card.dataset.album = albumId;
 
-      const cover = document.createElement("div");
+
+      /* 相簿封面 */
+
+      const cover =
+        document.createElement("div");
+
       cover.className = "album-cover";
 
-      const image = document.createElement("img");
 
-      image.src = album.photos[0];
+      const image =
+        document.createElement("img");
+
+      /*
+       * 直接使用 ImgBB 原圖
+       * 不使用任何縮圖
+       */
+
+      image.src =
+        album.photos[0];
+
       image.alt =
         language === "zh"
           ? album.title
           : album.titleEN;
 
-      image.loading = "lazy";
       image.decoding = "async";
+
 
       cover.appendChild(image);
 
-      const content = document.createElement("div");
-      content.className = "album-card-content";
 
-      const number = document.createElement("span");
-      number.className = "album-number";
+      /* 相簿文字 */
+
+      const content =
+        document.createElement("div");
+
+      content.className =
+        "album-card-content";
+
+
+      const number =
+        document.createElement("span");
+
+      number.className =
+        "album-number";
 
       number.textContent =
-        String(
-          Object.keys(photoAlbums).indexOf(albumId) + 1
-        ).padStart(2, "0");
+        String(index + 1).padStart(2, "0");
 
-      const title = document.createElement("h3");
+
+      const title =
+        document.createElement("h3");
 
       title.textContent =
         language === "zh"
           ? album.title
           : album.titleEN;
 
-      const count = document.createElement("span");
-      count.className = "album-count";
+
+      const count =
+        document.createElement("span");
+
+      count.className =
+        "album-count";
 
       count.textContent =
-        `${album.photos.length} ${language === "zh" ? "張照片" : "PHOTOS"}`;
+        `${album.photos.length} ${
+          language === "zh"
+            ? "張照片"
+            : "PHOTOS"
+        }`;
+
 
       content.appendChild(number);
       content.appendChild(title);
@@ -336,10 +393,12 @@ function renderAlbums() {
       card.appendChild(cover);
       card.appendChild(content);
 
+
       card.addEventListener(
         "click",
         () => openAlbum(albumId)
       );
+
 
       albumsGrid.appendChild(card);
 
@@ -355,19 +414,31 @@ function renderAlbums() {
 
 function openAlbum(albumId) {
 
-  const album = photoAlbums[albumId];
+  const album =
+    photoAlbums[albumId];
 
-  if (!album || !photoView || !photoGrid) {
+  if (
+    !album ||
+    !photoView ||
+    !photoGrid
+  ) {
     return;
   }
 
-  currentAlbum = albumId;
-  currentPhoto = 0;
+
+  currentAlbum =
+    albumId;
+
+  currentPhoto =
+    0;
+
 
   photoGrid.innerHTML = "";
 
+
   const language =
     localStorage.getItem("willie-language") || "en";
+
 
   if (photoViewTitle) {
 
@@ -378,16 +449,25 @@ function openAlbum(albumId) {
 
   }
 
+
   if (photoCounter) {
 
     photoCounter.textContent =
-      `0 / ${album.photos.length}`;
+      `${album.photos.length} ${
+        language === "zh"
+          ? "張照片"
+          : "PHOTOS"
+      }`;
 
   }
 
+
   /*
-   * 建立全部照片
-   * 使用瀏覽器原生 lazy loading
+   * 建立照片
+   *
+   * 注意：
+   * 這裡完全不使用縮圖。
+   * img.src 就是原始 ImgBB URL。
    */
 
   album.photos.forEach(
@@ -396,32 +476,38 @@ function openAlbum(albumId) {
       const button =
         document.createElement("button");
 
-      button.type = "button";
-      button.className = "gallery-photo";
+      button.type =
+        "button";
+
+      button.className =
+        "gallery-photo";
+
 
       const img =
         document.createElement("img");
 
-      img.src = url;
+      img.src =
+        url;
 
       img.alt =
         `${album.titleEN} ${index + 1}`;
 
-      img.loading = "lazy";
-      img.decoding = "async";
+      img.decoding =
+        "async";
 
-      if (index < 6) {
-        img.fetchPriority = "high";
-      } else {
-        img.fetchPriority = "auto";
-      }
+
+      /*
+       * 直接顯示原圖
+       */
 
       button.appendChild(img);
+
 
       button.addEventListener(
         "click",
         () => openLightbox(index)
       );
+
 
       photoGrid.appendChild(button);
 
@@ -430,22 +516,40 @@ function openAlbum(albumId) {
 
 
   /*
-   * 顯示照片頁
+   * 相簿列表隱藏
    */
 
   const albumView =
     document.querySelector(".album-view");
 
   if (albumView) {
-    albumView.hidden = true;
+
+    albumView.hidden =
+      true;
+
   }
 
-  photoView.hidden = false;
 
-  photoView.scrollIntoView({
-    behavior: "smooth",
-    block: "start"
-  });
+  /*
+   * 真正顯示照片欄位
+   */
+
+  photoView.hidden =
+    false;
+
+
+  /*
+   * 捲到照片區
+   */
+
+  setTimeout(() => {
+
+    photoView.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+
+  }, 30);
 
 }
 
@@ -458,17 +562,27 @@ function closeAlbum() {
 
   if (!photoView) return;
 
-  photoView.hidden = true;
+
+  photoView.hidden =
+    true;
+
 
   const albumView =
     document.querySelector(".album-view");
 
   if (albumView) {
-    albumView.hidden = false;
+
+    albumView.hidden =
+      false;
+
   }
 
-  currentAlbum = null;
-  currentPhoto = 0;
+
+  currentAlbum =
+    null;
+
+  currentPhoto =
+    0;
 
 }
 
@@ -481,45 +595,71 @@ function openLightbox(index) {
 
   if (!currentAlbum) return;
 
+
   const photos =
     photoAlbums[currentAlbum].photos;
 
+
   if (!photos[index]) return;
 
-  currentPhoto = index;
+
+  currentPhoto =
+    index;
+
 
   if (!lightbox) {
+
     window.open(
       photos[index],
       "_blank",
       "noopener,noreferrer"
     );
+
     return;
+
   }
 
+
   if (!lightboxImg) {
+
     lightboxImg =
       lightbox.querySelector("#lightboxImg") ||
       lightbox.querySelector("img");
+
   }
+
 
   if (!lightboxImg) return;
 
+
   /*
-   * 只有使用者點擊時才載入完整原圖
+   * Lightbox 同樣直接使用原圖
    */
 
-  lightboxImg.src = photos[index];
-  lightboxImg.loading = "eager";
-  lightboxImg.decoding = "async";
+  lightboxImg.src =
+    photos[index];
+
+  lightboxImg.decoding =
+    "async";
 
   lightboxImg.alt =
     `${photoAlbums[currentAlbum].titleEN} ${index + 1}`;
 
-  lightbox.classList.add("active");
-  lightbox.setAttribute("aria-hidden", "false");
 
-  document.body.classList.add("lightbox-open");
+  lightbox.classList.add(
+    "active"
+  );
+
+  lightbox.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+
+  document.body.classList.add(
+    "lightbox-open"
+  );
+
 
   updateLightboxCounter();
 
@@ -534,10 +674,20 @@ function closeLightbox() {
 
   if (!lightbox) return;
 
-  lightbox.classList.remove("active");
-  lightbox.setAttribute("aria-hidden", "true");
 
-  document.body.classList.remove("lightbox-open");
+  lightbox.classList.remove(
+    "active"
+  );
+
+  lightbox.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+
+  document.body.classList.remove(
+    "lightbox-open"
+  );
 
 }
 
@@ -550,15 +700,22 @@ function nextPhoto() {
 
   if (!currentAlbum) return;
 
+
   const photos =
     photoAlbums[currentAlbum].photos;
 
+
   if (!photos.length) return;
 
-  currentPhoto =
-    (currentPhoto + 1) % photos.length;
 
-  openLightbox(currentPhoto);
+  currentPhoto =
+    (currentPhoto + 1) %
+    photos.length;
+
+
+  openLightbox(
+    currentPhoto
+  );
 
 }
 
@@ -571,19 +728,26 @@ function previousPhoto() {
 
   if (!currentAlbum) return;
 
+
   const photos =
     photoAlbums[currentAlbum].photos;
 
+
   if (!photos.length) return;
+
 
   currentPhoto =
     (
       currentPhoto -
       1 +
       photos.length
-    ) % photos.length;
+    ) %
+    photos.length;
 
-  openLightbox(currentPhoto);
+
+  openLightbox(
+    currentPhoto
+  );
 
 }
 
@@ -594,34 +758,21 @@ function previousPhoto() {
 
 function updateLightboxCounter() {
 
-  if (!currentAlbum || !lightboxCounter) {
+  if (
+    !currentAlbum ||
+    !lightboxCounter
+  ) {
     return;
   }
 
+
   const total =
-    photoAlbums[currentAlbum].photos.length;
+    photoAlbums[currentAlbum]
+      .photos.length;
+
 
   lightboxCounter.textContent =
     `${currentPhoto + 1} / ${total}`;
-
-}
-
-
-/* =========================================================
-   PHOTO VIEW COUNTER
-   ========================================================= */
-
-function updatePhotoCounter() {
-
-  if (!currentAlbum || !photoCounter) {
-    return;
-  }
-
-  const total =
-    photoAlbums[currentAlbum].photos.length;
-
-  photoCounter.textContent =
-    `${total} ${localStorage.getItem("willie-language") === "zh" ? "張照片" : "PHOTOS"}`;
 
 }
 
@@ -641,315 +792,26 @@ document.addEventListener(
       return;
     }
 
+
     if (event.key === "Escape") {
+
       closeLightbox();
+
     }
+
 
     if (event.key === "ArrowRight") {
+
       nextPhoto();
+
     }
+
 
     if (event.key === "ArrowLeft") {
+
       previousPhoto();
-    }
-
-  }
-);
-
-
-/* =========================================================
-   DOM READY
-   ========================================================= */
-
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
-
-    initializeGallery();
-
-
-    /* -----------------------------------------------------
-       LIGHTBOX BUTTONS
-       ----------------------------------------------------- */
-
-    const closeButton =
-      document.querySelector("#close") ||
-      document.querySelector(".lightbox-close");
-
-    const nextButton =
-      document.querySelector("#next") ||
-      document.querySelector(".lightbox-next");
-
-    const previousButton =
-      document.querySelector("#prev") ||
-      document.querySelector(".lightbox-prev");
-
-
-    if (closeButton) {
-      closeButton.addEventListener(
-        "click",
-        closeLightbox
-      );
-    }
-
-    if (nextButton) {
-      nextButton.addEventListener(
-        "click",
-        nextPhoto
-      );
-    }
-
-    if (previousButton) {
-      previousButton.addEventListener(
-        "click",
-        previousPhoto
-      );
-    }
-
-
-    if (lightbox) {
-
-      lightbox.addEventListener(
-        "click",
-        event => {
-
-          if (event.target === lightbox) {
-            closeLightbox();
-          }
-
-        }
-      );
 
     }
-
-
-    /* -----------------------------------------------------
-       BACK BUTTON
-       ----------------------------------------------------- */
-
-    if (backButton) {
-
-      backButton.addEventListener(
-        "click",
-        closeAlbum
-      );
-
-    }
-
-
-    /* -----------------------------------------------------
-       LANGUAGE BUTTON
-       ----------------------------------------------------- */
-
-    const languageButton =
-      document.querySelector("#langBtn") ||
-      document.querySelector("#languageToggle") ||
-      document.querySelector(".language-toggle");
-
-    if (languageButton) {
-
-      languageButton.addEventListener(
-        "click",
-        () => {
-
-          const current =
-            localStorage.getItem("willie-language") || "en";
-
-          setLanguage(
-            current === "en"
-              ? "zh"
-              : "en"
-          );
-
-        }
-      );
-
-    }
-
-
-    /* -----------------------------------------------------
-       THEME BUTTON
-       ----------------------------------------------------- */
-
-    const themeButton =
-      document.querySelector("#themeBtn") ||
-      document.querySelector("#themeToggle") ||
-      document.querySelector(".theme-toggle");
-
-    const savedTheme =
-      localStorage.getItem("willie-theme");
-
-    if (savedTheme) {
-
-      setTheme(savedTheme);
-
-    } else {
-
-      const dark =
-        window.matchMedia &&
-        window.matchMedia(
-          "(prefers-color-scheme: dark)"
-        ).matches;
-
-      setTheme(
-        dark
-          ? "dark"
-          : "light"
-      );
-
-    }
-
-
-    if (themeButton) {
-
-      themeButton.addEventListener(
-        "click",
-        () => {
-
-          const current =
-            document.documentElement
-              .getAttribute("data-theme");
-
-          setTheme(
-            current === "dark"
-              ? "light"
-              : "dark"
-          );
-
-        }
-      );
-
-    }
-
-
-    /* -----------------------------------------------------
-       MOBILE MENU
-       ----------------------------------------------------- */
-
-    const menuButton =
-      document.querySelector("#menuBtn") ||
-      document.querySelector("#menuToggle") ||
-      document.querySelector(".menu-toggle");
-
-    const mobileMenu =
-      document.querySelector("#mobileMenu") ||
-      document.querySelector(".mobile-menu");
-
-    if (menuButton && mobileMenu) {
-
-      menuButton.addEventListener(
-        "click",
-        () => {
-
-          menuButton.classList.toggle("active");
-          mobileMenu.classList.toggle("active");
-
-        }
-      );
-
-      mobileMenu
-        .querySelectorAll("a")
-        .forEach(link => {
-
-          link.addEventListener(
-            "click",
-            () => {
-
-              menuButton.classList.remove("active");
-              mobileMenu.classList.remove("active");
-
-            }
-          );
-
-        });
-
-    }
-
-
-    /* -----------------------------------------------------
-       SCROLL PROGRESS
-       ----------------------------------------------------- */
-
-    const progress =
-      document.querySelector("#progress");
-
-    if (progress) {
-
-      function updateProgress() {
-
-        const top =
-          window.scrollY || 0;
-
-        const height =
-          document.documentElement.scrollHeight -
-          window.innerHeight;
-
-        const percentage =
-          height > 0
-            ? (top / height) * 100
-            : 0;
-
-        progress.style.width =
-          `${percentage}%`;
-
-      }
-
-      window.addEventListener(
-        "scroll",
-        updateProgress,
-        { passive: true }
-      );
-
-      updateProgress();
-
-    }
-
-
-    /* -----------------------------------------------------
-       CURSOR GLOW
-       ----------------------------------------------------- */
-
-    const glow =
-      document.querySelector(".cursor-glow");
-
-    if (glow) {
-
-      if (
-        window.matchMedia &&
-        window.matchMedia("(pointer: coarse)").matches
-      ) {
-
-        glow.style.display = "none";
-
-      } else {
-
-        window.addEventListener(
-          "pointermove",
-          event => {
-
-            glow.style.transform =
-              `translate3d(
-                ${event.clientX}px,
-                ${event.clientY}px,
-                0
-              )`;
-
-          },
-          { passive: true }
-        );
-
-      }
-
-    }
-
-
-    /* -----------------------------------------------------
-       INITIAL LANGUAGE
-       ----------------------------------------------------- */
-
-    setLanguage(
-      localStorage.getItem("willie-language") || "en"
-    );
 
   }
 );
@@ -968,10 +830,12 @@ function setLanguage(language) {
     language = "en";
   }
 
+
   localStorage.setItem(
     "willie-language",
     language
   );
+
 
   document.documentElement.lang =
     language === "zh"
@@ -979,12 +843,10 @@ function setLanguage(language) {
       : "en";
 
 
-  /*
-   * data-en / data-zh
-   */
-
   document
-    .querySelectorAll("[data-en][data-zh]")
+    .querySelectorAll(
+      "[data-en][data-zh]"
+    )
     .forEach(element => {
 
       element.textContent =
@@ -994,10 +856,6 @@ function setLanguage(language) {
 
     });
 
-
-  /*
-   * data-i18n
-   */
 
   const text = {
 
@@ -1045,28 +903,29 @@ function setLanguage(language) {
 
 
   document
-    .querySelectorAll("[data-i18n]")
+    .querySelectorAll(
+      "[data-i18n]"
+    )
     .forEach(element => {
 
       const key =
         element.dataset.i18n;
 
       if (text[key]) {
+
         element.textContent =
           text[key];
+
       }
 
     });
 
 
-  /*
-   * HTML 裡實際的語言按鈕是 #langBtn
-   */
-
   const languageButton =
     document.querySelector("#langBtn") ||
     document.querySelector("#languageToggle") ||
     document.querySelector(".language-toggle");
+
 
   if (languageButton) {
 
@@ -1078,22 +937,17 @@ function setLanguage(language) {
   }
 
 
-  /*
-   * 重新建立相簿卡片
-   * 讓相簿名稱同步切換
-   */
-
   if (albumsGrid) {
+
     renderAlbums();
+
   }
 
 
-  /*
-   * 如果目前正在看相簿
-   * 同步更新相簿名稱
-   */
-
-  if (currentAlbum && photoViewTitle) {
+  if (
+    currentAlbum &&
+    photoViewTitle
+  ) {
 
     const album =
       photoAlbums[currentAlbum];
@@ -1118,10 +972,11 @@ function setLanguage(language) {
 
 function setTheme(theme) {
 
-  document.documentElement.setAttribute(
-    "data-theme",
-    theme
-  );
+  document.documentElement
+    .setAttribute(
+      "data-theme",
+      theme
+    );
 
   localStorage.setItem(
     "willie-theme",
@@ -1132,7 +987,371 @@ function setTheme(theme) {
 
 
 /* =========================================================
-   IMAGE FALLBACK
+   DOM READY
+   ========================================================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+
+    /* Gallery */
+
+    initializeGallery();
+
+
+    /* -----------------------------------------------------
+       LIGHTBOX BUTTONS
+       ----------------------------------------------------- */
+
+    const closeButton =
+      document.querySelector("#close") ||
+      document.querySelector(".lightbox-close");
+
+    const nextButton =
+      document.querySelector("#next") ||
+      document.querySelector(".lightbox-next");
+
+    const previousButton =
+      document.querySelector("#prev") ||
+      document.querySelector(".lightbox-prev");
+
+
+    if (closeButton) {
+
+      closeButton.addEventListener(
+        "click",
+        closeLightbox
+      );
+
+    }
+
+
+    if (nextButton) {
+
+      nextButton.addEventListener(
+        "click",
+        nextPhoto
+      );
+
+    }
+
+
+    if (previousButton) {
+
+      previousButton.addEventListener(
+        "click",
+        previousPhoto
+      );
+
+    }
+
+
+    if (lightbox) {
+
+      lightbox.addEventListener(
+        "click",
+        event => {
+
+          if (
+            event.target === lightbox
+          ) {
+
+            closeLightbox();
+
+          }
+
+        }
+      );
+
+    }
+
+
+    /* -----------------------------------------------------
+       BACK BUTTON
+       ----------------------------------------------------- */
+
+    if (backButton) {
+
+      backButton.addEventListener(
+        "click",
+        closeAlbum
+      );
+
+    }
+
+
+    /* -----------------------------------------------------
+       LANGUAGE BUTTON
+       ----------------------------------------------------- */
+
+    const languageButton =
+      document.querySelector("#langBtn") ||
+      document.querySelector("#languageToggle") ||
+      document.querySelector(".language-toggle");
+
+
+    if (languageButton) {
+
+      languageButton.addEventListener(
+        "click",
+        () => {
+
+          const current =
+            localStorage.getItem(
+              "willie-language"
+            ) || "en";
+
+
+          setLanguage(
+            current === "en"
+              ? "zh"
+              : "en"
+          );
+
+        }
+      );
+
+    }
+
+
+    /* -----------------------------------------------------
+       THEME BUTTON
+       ----------------------------------------------------- */
+
+    const themeButton =
+      document.querySelector("#themeBtn") ||
+      document.querySelector("#themeToggle") ||
+      document.querySelector(".theme-toggle");
+
+
+    const savedTheme =
+      localStorage.getItem(
+        "willie-theme"
+      );
+
+
+    if (savedTheme) {
+
+      setTheme(
+        savedTheme
+      );
+
+    } else {
+
+      const dark =
+        window.matchMedia &&
+        window.matchMedia(
+          "(prefers-color-scheme: dark)"
+        ).matches;
+
+
+      setTheme(
+        dark
+          ? "dark"
+          : "light"
+      );
+
+    }
+
+
+    if (themeButton) {
+
+      themeButton.addEventListener(
+        "click",
+        () => {
+
+          const current =
+            document.documentElement
+              .getAttribute(
+                "data-theme"
+              );
+
+
+          setTheme(
+            current === "dark"
+              ? "light"
+              : "dark"
+          );
+
+        }
+      );
+
+    }
+
+
+    /* -----------------------------------------------------
+       MOBILE MENU
+       ----------------------------------------------------- */
+
+    const menuButton =
+      document.querySelector("#menuBtn") ||
+      document.querySelector("#menuToggle") ||
+      document.querySelector(".menu-toggle");
+
+
+    const mobileMenu =
+      document.querySelector("#mobileMenu") ||
+      document.querySelector(".mobile-menu");
+
+
+    if (
+      menuButton &&
+      mobileMenu
+    ) {
+
+      menuButton.addEventListener(
+        "click",
+        () => {
+
+          menuButton.classList.toggle(
+            "active"
+          );
+
+          mobileMenu.classList.toggle(
+            "active"
+          );
+
+        }
+      );
+
+
+      mobileMenu
+        .querySelectorAll("a")
+        .forEach(link => {
+
+          link.addEventListener(
+            "click",
+            () => {
+
+              menuButton.classList.remove(
+                "active"
+              );
+
+              mobileMenu.classList.remove(
+                "active"
+              );
+
+            }
+          );
+
+        });
+
+    }
+
+
+    /* -----------------------------------------------------
+       SCROLL PROGRESS
+       ----------------------------------------------------- */
+
+    const progress =
+      document.querySelector(
+        "#progress"
+      );
+
+
+    if (progress) {
+
+      function updateProgress() {
+
+        const top =
+          window.scrollY || 0;
+
+
+        const height =
+          document.documentElement
+            .scrollHeight -
+          window.innerHeight;
+
+
+        const percentage =
+          height > 0
+            ? (top / height) * 100
+            : 0;
+
+
+        progress.style.width =
+          `${percentage}%`;
+
+      }
+
+
+      window.addEventListener(
+        "scroll",
+        updateProgress,
+        {
+          passive: true
+        }
+      );
+
+
+      updateProgress();
+
+    }
+
+
+    /* -----------------------------------------------------
+       CURSOR GLOW
+       ----------------------------------------------------- */
+
+    const glow =
+      document.querySelector(
+        ".cursor-glow"
+      );
+
+
+    if (glow) {
+
+      if (
+        window.matchMedia &&
+        window.matchMedia(
+          "(pointer: coarse)"
+        ).matches
+      ) {
+
+        glow.style.display =
+          "none";
+
+      } else {
+
+        window.addEventListener(
+          "pointermove",
+          event => {
+
+            glow.style.transform =
+              `translate3d(
+                ${event.clientX}px,
+                ${event.clientY}px,
+                0
+              )`;
+
+          },
+          {
+            passive: true
+          }
+        );
+
+      }
+
+    }
+
+
+    /* -----------------------------------------------------
+       INITIAL LANGUAGE
+       ----------------------------------------------------- */
+
+    setLanguage(
+      localStorage.getItem(
+        "willie-language"
+      ) || "en"
+    );
+
+  }
+);
+
+
+/* =========================================================
+   IMAGE ERROR FALLBACK
    ========================================================= */
 
 document.addEventListener(
@@ -1142,14 +1361,11 @@ document.addEventListener(
     const image =
       event.target;
 
+
     if (
       image &&
       image.tagName === "IMG"
     ) {
-
-      /*
-       * 圖片載入失敗時不顯示錯誤文字
-       */
 
       image.style.visibility =
         "hidden";
