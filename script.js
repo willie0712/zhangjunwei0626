@@ -1,9 +1,15 @@
 /* =========================================================
-   PHOTO GALLERY
-   Willie Zhang — Memory Archive
+   Willie Zhang — Photography & Life
+   Complete script.js
+   ========================================================= */
+
+
+/* =========================================================
+   PHOTO DATA
    ========================================================= */
 
 const photoAlbums = {
+
   yilan: {
     title: "宜蘭一日遊（二信校外教學）",
     titleEN: "Yilan Day Trip",
@@ -83,6 +89,7 @@ const photoAlbums = {
     ]
   },
 
+
   after: {
     title: "休學後的照片",
     titleEN: "Photos After Leaving School",
@@ -145,6 +152,7 @@ const photoAlbums = {
     ]
   },
 
+
   tamsui: {
     title: "北投淡水一日遊",
     titleEN: "Beitou & Tamsui Day Trip",
@@ -171,145 +179,230 @@ const photoAlbums = {
       "https://i.ibb.co/4RQ2PBTZ/IMG-7603.jpg"
     ]
   }
+
 };
 
 
 /* =========================================================
-   Gallery state
+   GLOBAL STATE
    ========================================================= */
 
-let activeAlbum = null;
-let activePhoto = 0;
+let currentAlbum = null;
+let currentPhoto = 0;
 
 
 /* =========================================================
-   Find gallery elements
+   WILLIE LOADING
+   不等待圖片、不等待 window.load
    ========================================================= */
 
-function getGallery() {
+(function initFastLoader() {
+
+  function hideLoader() {
+
+    const loader =
+      document.querySelector("#pageLoader") ||
+      document.querySelector(".page-loader") ||
+      document.querySelector("#loader") ||
+      document.querySelector(".loader");
+
+    if (!loader) return;
+
+    loader.classList.add("hidden");
+
+    setTimeout(() => {
+      loader.style.display = "none";
+      loader.setAttribute("aria-hidden", "true");
+    }, 250);
+  }
+
+  /*
+   * DOM 一完成就開始計時
+   * 不等待照片
+   * 不等待背景圖片
+   * 不等待 window.load
+   */
+
+  if (document.readyState === "loading") {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      () => {
+        setTimeout(hideLoader, 300);
+      },
+      { once: true }
+    );
+
+  } else {
+
+    setTimeout(hideLoader, 300);
+
+  }
+
+  /*
+   * 最後保險：
+   * 即使其他程式出錯，Loading 最多約 1.5 秒
+   */
+
+  setTimeout(hideLoader, 1500);
+
+})();
+
+
+/* =========================================================
+   GALLERY ELEMENT
+   ========================================================= */
+
+function findGalleryGrid() {
+
   return (
     document.querySelector("#galleryGrid") ||
     document.querySelector("#photoGrid") ||
     document.querySelector(".gallery-grid") ||
     document.querySelector(".photo-grid")
   );
-}
 
-function getLightbox() {
-  return (
-    document.querySelector("#lightbox") ||
-    document.querySelector(".lightbox")
-  );
 }
 
 
 /* =========================================================
-   Open album
+   ALBUM OPEN
    ========================================================= */
 
-function openPhotoAlbum(albumId) {
+function openAlbum(albumId) {
+
   const album = photoAlbums[albumId];
 
   if (!album) return;
 
-  activeAlbum = albumId;
-  activePhoto = 0;
+  currentAlbum = albumId;
+  currentPhoto = 0;
 
-  const gallery = getGallery();
+  const grid = findGalleryGrid();
 
-  if (!gallery) {
+  if (!grid) {
     console.warn("找不到照片 Grid");
     return;
   }
 
-  gallery.innerHTML = "";
+  grid.innerHTML = "";
 
   album.photos.forEach((url, index) => {
-    const item = document.createElement("button");
 
-    item.type = "button";
-    item.className = "gallery-photo";
-    item.setAttribute("aria-label", `Open photo ${index + 1}`);
+    const button =
+      document.createElement("button");
 
-    /*
-     * Lazy loading:
-     * 不會一次要求瀏覽器下載全部照片。
-     */
-    const image = document.createElement("img");
+    button.type = "button";
+    button.className = "gallery-photo";
 
-    image.src = url;
-    image.alt = `${album.titleEN} ${index + 1}`;
-    image.loading = "lazy";
-    image.decoding = "async";
+    const img =
+      document.createElement("img");
+
+    img.src = url;
+
+    img.alt =
+      `${album.titleEN} ${index + 1}`;
 
     /*
-     * 前幾張優先顯示，下面的照片交給瀏覽器
-     * 隨著捲動自動載入。
+     * 照片延遲載入
      */
-    if (index > 3) {
-      image.fetchPriority = "low";
+    img.loading = "lazy";
+
+    img.decoding = "async";
+
+    /*
+     * 前四張優先
+     */
+    if (index < 4) {
+      img.fetchPriority = "high";
+    } else {
+      img.fetchPriority = "low";
     }
 
-    item.appendChild(image);
+    button.appendChild(img);
 
-    item.addEventListener("click", () => {
-      openPhotoLightbox(index);
-    });
+    button.addEventListener(
+      "click",
+      () => openLightbox(index)
+    );
 
-    gallery.appendChild(item);
+    grid.appendChild(button);
+
   });
 
-  /*
-   * 更新相簿名稱
-   */
+
+  /* 更新標題 */
+
   const title =
     document.querySelector("#galleryTitle") ||
     document.querySelector(".gallery-title");
 
   if (title) {
-    const lang =
-      localStorage.getItem("willie-language") || "en";
+
+    const language =
+      localStorage.getItem("willie-language") ||
+      "en";
 
     title.textContent =
-      lang === "zh"
+      language === "zh"
         ? album.title
         : album.titleEN;
+
   }
 
-  /*
-   * 顯示照片區
-   */
-  const section =
+
+  /* 顯示相簿 */
+
+  const albumSection =
     document.querySelector("#photoAlbum") ||
     document.querySelector(".photo-album");
 
-  if (section) {
-    section.classList.add("active");
+  if (albumSection) {
+    albumSection.classList.add("active");
   }
+
 }
 
 
 /* =========================================================
-   Open full-resolution image
+   LIGHTBOX
    ========================================================= */
 
-function openPhotoLightbox(index) {
-  if (!activeAlbum) return;
+function getLightbox() {
+
+  return (
+    document.querySelector("#lightbox") ||
+    document.querySelector(".lightbox")
+  );
+
+}
+
+
+/* =========================================================
+   OPEN LIGHTBOX
+   ========================================================= */
+
+function openLightbox(index) {
+
+  if (!currentAlbum) return;
 
   const photos =
-    photoAlbums[activeAlbum].photos;
+    photoAlbums[currentAlbum].photos;
 
   if (!photos[index]) return;
 
-  activePhoto = index;
+  currentPhoto = index;
 
-  const lightbox = getLightbox();
+  const lightbox =
+    getLightbox();
+
+  /*
+   * 如果網站沒有 Lightbox
+   * 就直接開啟原圖
+   */
 
   if (!lightbox) {
-    /*
-     * 如果網站原本沒有 Lightbox，
-     * 直接開啟原圖。
-     */
+
     window.open(
       photos[index],
       "_blank",
@@ -319,202 +412,908 @@ function openPhotoLightbox(index) {
     return;
   }
 
+
   const image =
     lightbox.querySelector("img") ||
     document.querySelector("#lightboxImage");
 
   if (!image) return;
 
-  /*
-   * 這裡才使用原始高畫質圖片。
-   */
-  image.src = photos[index];
 
-  image.loading = "eager";
-  image.decoding = "async";
+  /*
+   * 點擊時才載入完整原圖
+   */
+
+  image.src =
+    photos[index];
+
+  image.loading =
+    "eager";
+
+  image.decoding =
+    "async";
+
 
   lightbox.classList.add("active");
 
-  document.body.classList.add("lightbox-open");
+  document.body.classList.add(
+    "lightbox-open"
+  );
 
-  updatePhotoCounter();
+
+  updateCounter();
+
 }
 
 
 /* =========================================================
-   Close
+   CLOSE LIGHTBOX
    ========================================================= */
 
-function closePhotoLightbox() {
-  const lightbox = getLightbox();
+function closeLightbox() {
+
+  const lightbox =
+    getLightbox();
 
   if (!lightbox) return;
 
-  lightbox.classList.remove("active");
+  lightbox.classList.remove(
+    "active"
+  );
 
-  document.body.classList.remove("lightbox-open");
+  document.body.classList.remove(
+    "lightbox-open"
+  );
+
 }
 
 
 /* =========================================================
-   Next / Previous
+   NEXT PHOTO
    ========================================================= */
 
 function nextPhoto() {
-  if (!activeAlbum) return;
+
+  if (!currentAlbum) return;
 
   const photos =
-    photoAlbums[activeAlbum].photos;
+    photoAlbums[currentAlbum].photos;
 
-  activePhoto =
-    (activePhoto + 1) % photos.length;
+  if (!photos.length) return;
 
-  openPhotoLightbox(activePhoto);
-}
-
-function previousPhoto() {
-  if (!activeAlbum) return;
-
-  const photos =
-    photoAlbums[activeAlbum].photos;
-
-  activePhoto =
-    (activePhoto - 1 + photos.length) %
+  currentPhoto =
+    (currentPhoto + 1) %
     photos.length;
 
-  openPhotoLightbox(activePhoto);
+  openLightbox(
+    currentPhoto
+  );
+
 }
 
 
 /* =========================================================
-   Counter
+   PREVIOUS PHOTO
    ========================================================= */
 
-function updatePhotoCounter() {
-  const counter =
-    document.querySelector("#lightboxCounter") ||
-    document.querySelector(".lightbox-counter");
+function previousPhoto() {
 
-  if (!counter || !activeAlbum) return;
+  if (!currentAlbum) return;
+
+  const photos =
+    photoAlbums[currentAlbum].photos;
+
+  if (!photos.length) return;
+
+  currentPhoto =
+    (
+      currentPhoto -
+      1 +
+      photos.length
+    ) %
+    photos.length;
+
+  openLightbox(
+    currentPhoto
+  );
+
+}
+
+
+/* =========================================================
+   COUNTER
+   ========================================================= */
+
+function updateCounter() {
+
+  if (!currentAlbum) return;
+
+  const counter =
+    document.querySelector(
+      "#lightboxCounter"
+    ) ||
+    document.querySelector(
+      ".lightbox-counter"
+    );
+
+  if (!counter) return;
 
   const total =
-    photoAlbums[activeAlbum].photos.length;
+    photoAlbums[currentAlbum]
+      .photos.length;
 
   counter.textContent =
-    `${activePhoto + 1} / ${total}`;
+    `${currentPhoto + 1} / ${total}`;
+
 }
 
 
 /* =========================================================
-   Keyboard controls
+   KEYBOARD
    ========================================================= */
 
-document.addEventListener("keydown", (event) => {
-  const lightbox = getLightbox();
+document.addEventListener(
+  "keydown",
+  event => {
+
+    const lightbox =
+      getLightbox();
+
+    if (
+      !lightbox ||
+      !lightbox.classList.contains(
+        "active"
+      )
+    ) {
+      return;
+    }
+
+
+    if (
+      event.key === "Escape"
+    ) {
+
+      closeLightbox();
+
+    }
+
+
+    if (
+      event.key === "ArrowRight"
+    ) {
+
+      nextPhoto();
+
+    }
+
+
+    if (
+      event.key === "ArrowLeft"
+    ) {
+
+      previousPhoto();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   LIGHTBOX BUTTONS
+   ========================================================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    const lightbox =
+      getLightbox();
+
+    if (!lightbox) return;
+
+
+    const close =
+      lightbox.querySelector(
+        ".lightbox-close"
+      ) ||
+      document.querySelector(
+        "#lightboxClose"
+      );
+
+
+    const next =
+      lightbox.querySelector(
+        ".lightbox-next"
+      ) ||
+      document.querySelector(
+        "#lightboxNext"
+      );
+
+
+    const previous =
+      lightbox.querySelector(
+        ".lightbox-prev"
+      ) ||
+      document.querySelector(
+        "#lightboxPrev"
+      );
+
+
+    if (close) {
+
+      close.addEventListener(
+        "click",
+        closeLightbox
+      );
+
+    }
+
+
+    if (next) {
+
+      next.addEventListener(
+        "click",
+        nextPhoto
+      );
+
+    }
+
+
+    if (previous) {
+
+      previous.addEventListener(
+        "click",
+        previousPhoto
+      );
+
+    }
+
+
+    lightbox.addEventListener(
+      "click",
+      event => {
+
+        if (
+          event.target === lightbox
+        ) {
+
+          closeLightbox();
+
+        }
+
+      }
+    );
+
+  }
+);
+
+
+/* =========================================================
+   ALBUM BUTTONS
+   ========================================================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    document
+      .querySelectorAll(
+        "[data-album]"
+      )
+      .forEach(button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            const albumId =
+              button.dataset.album;
+
+            if (
+              photoAlbums[albumId]
+            ) {
+
+              openAlbum(
+                albumId
+              );
+
+            }
+
+          }
+        );
+
+      });
+
+  }
+);
+
+
+/* =========================================================
+   LANGUAGE
+   ========================================================= */
+
+function setLanguage(language) {
 
   if (
-    !lightbox ||
-    !lightbox.classList.contains("active")
+    language !== "en" &&
+    language !== "zh"
   ) {
-    return;
+    language = "en";
   }
 
-  if (event.key === "Escape") {
-    closePhotoLightbox();
-  }
 
-  if (event.key === "ArrowRight") {
-    nextPhoto();
-  }
-
-  if (event.key === "ArrowLeft") {
-    previousPhoto();
-  }
-});
+  localStorage.setItem(
+    "willie-language",
+    language
+  );
 
 
-/* =========================================================
-   Lightbox buttons
-   ========================================================= */
-
-document.addEventListener("DOMContentLoaded", () => {
-  const lightbox = getLightbox();
-
-  if (!lightbox) return;
-
-  const close =
-    lightbox.querySelector(".lightbox-close") ||
-    document.querySelector("#lightboxClose");
-
-  const next =
-    lightbox.querySelector(".lightbox-next") ||
-    document.querySelector("#lightboxNext");
-
-  const previous =
-    lightbox.querySelector(".lightbox-prev") ||
-    document.querySelector("#lightboxPrev");
-
-  if (close) {
-    close.addEventListener(
-      "click",
-      closePhotoLightbox
-    );
-  }
-
-  if (next) {
-    next.addEventListener(
-      "click",
-      nextPhoto
-    );
-  }
-
-  if (previous) {
-    previous.addEventListener(
-      "click",
-      previousPhoto
-    );
-  }
-
-  lightbox.addEventListener("click", (event) => {
-    if (event.target === lightbox) {
-      closePhotoLightbox();
-    }
-  });
-});
+  document.documentElement.lang =
+    language === "zh"
+      ? "zh-TW"
+      : "en";
 
 
-/* =========================================================
-   Album buttons
-   ========================================================= */
+  /*
+   * data-en / data-zh
+   */
 
-document.addEventListener("DOMContentLoaded", () => {
   document
-    .querySelectorAll("[data-album]")
-    .forEach((button) => {
-      button.addEventListener("click", () => {
-        const albumId =
-          button.dataset.album;
+    .querySelectorAll(
+      "[data-en][data-zh]"
+    )
+    .forEach(element => {
 
-        if (photoAlbums[albumId]) {
-          openPhotoAlbum(albumId);
-        }
-      });
+      element.textContent =
+        language === "zh"
+          ? element.dataset.zh
+          : element.dataset.en;
+
     });
-});
+
+
+  /*
+   * data-i18n
+   */
+
+  const text = {
+
+    about:
+      language === "zh"
+        ? "關於我"
+        : "About",
+
+    life:
+      language === "zh"
+        ? "生活"
+        : "Life",
+
+    photography:
+      language === "zh"
+        ? "攝影"
+        : "Photography",
+
+    games:
+      language === "zh"
+        ? "遊戲"
+        : "Games",
+
+    map:
+      language === "zh"
+        ? "地圖"
+        : "Places",
+
+    future:
+      language === "zh"
+        ? "未來"
+        : "Future",
+
+    contact:
+      language === "zh"
+        ? "聯絡"
+        : "Contact",
+
+    gallery:
+      language === "zh"
+        ? "攝影"
+        : "Photography"
+
+  };
+
+
+  document
+    .querySelectorAll(
+      "[data-i18n]"
+    )
+    .forEach(element => {
+
+      const key =
+        element.dataset.i18n;
+
+      if (text[key]) {
+
+        element.textContent =
+          text[key];
+
+      }
+
+    });
+
+
+  /*
+   * 語言按鈕
+   */
+
+  const languageButton =
+    document.querySelector(
+      "#languageToggle"
+    ) ||
+    document.querySelector(
+      ".language-toggle"
+    );
+
+  if (languageButton) {
+
+    languageButton.textContent =
+      language === "en"
+        ? "中文"
+        : "EN";
+
+  }
+
+
+  /*
+   * 如果目前正在看相簿
+   * 同步更新相簿名稱
+   */
+
+  if (currentAlbum) {
+
+    const album =
+      photoAlbums[currentAlbum];
+
+    const title =
+      document.querySelector(
+        "#galleryTitle"
+      ) ||
+      document.querySelector(
+        ".gallery-title"
+      );
+
+    if (title && album) {
+
+      title.textContent =
+        language === "zh"
+          ? album.title
+          : album.titleEN;
+
+    }
+
+  }
+
+}
 
 
 /* =========================================================
-   Public functions
+   LANGUAGE BUTTON
    ========================================================= */
 
-window.openPhotoAlbum =
-  openPhotoAlbum;
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
 
-window.openPhotoLightbox =
-  openPhotoLightbox;
+    const button =
+      document.querySelector(
+        "#languageToggle"
+      ) ||
+      document.querySelector(
+        ".language-toggle"
+      );
 
-window.closePhotoLightbox =
-  closePhotoLightbox;
+    if (!button) return;
+
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        const current =
+          localStorage.getItem(
+            "willie-language"
+          ) || "en";
+
+        setLanguage(
+          current === "en"
+            ? "zh"
+            : "en"
+        );
+
+      }
+    );
+
+
+    setLanguage(
+      localStorage.getItem(
+        "willie-language"
+      ) || "en"
+    );
+
+  }
+);
+
+
+/* =========================================================
+   THEME
+   ========================================================= */
+
+function setTheme(theme) {
+
+  document.documentElement
+    .setAttribute(
+      "data-theme",
+      theme
+    );
+
+  localStorage.setItem(
+    "willie-theme",
+    theme
+  );
+
+}
+
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    const saved =
+      localStorage.getItem(
+        "willie-theme"
+      );
+
+
+    if (saved) {
+
+      setTheme(saved);
+
+    } else {
+
+      const dark =
+        window.matchMedia &&
+        window.matchMedia(
+          "(prefers-color-scheme: dark)"
+        ).matches;
+
+      setTheme(
+        dark
+          ? "dark"
+          : "light"
+      );
+
+    }
+
+
+    const button =
+      document.querySelector(
+        "#themeToggle"
+      ) ||
+      document.querySelector(
+        ".theme-toggle"
+      );
+
+
+    if (!button) return;
+
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        const current =
+          document.documentElement
+            .getAttribute(
+              "data-theme"
+            );
+
+        setTheme(
+          current === "dark"
+            ? "light"
+            : "dark"
+        );
+
+      }
+    );
+
+  }
+);
+
+
+/* =========================================================
+   MOBILE MENU
+   ========================================================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    const button =
+      document.querySelector(
+        "#menuToggle"
+      ) ||
+      document.querySelector(
+        ".menu-toggle"
+      );
+
+    const menu =
+      document.querySelector(
+        "#mobileMenu"
+      ) ||
+      document.querySelector(
+        ".mobile-menu"
+      );
+
+
+    if (!button || !menu) {
+      return;
+    }
+
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        button.classList.toggle(
+          "active"
+        );
+
+        menu.classList.toggle(
+          "active"
+        );
+
+      }
+    );
+
+
+    menu
+      .querySelectorAll("a")
+      .forEach(link => {
+
+        link.addEventListener(
+          "click",
+          () => {
+
+            button.classList.remove(
+              "active"
+            );
+
+            menu.classList.remove(
+              "active"
+            );
+
+          }
+        );
+
+      });
+
+  }
+);
+
+
+/* =========================================================
+   SCROLL PROGRESS
+   ========================================================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    const progress =
+      document.querySelector(
+        "#scrollProgress"
+      ) ||
+      document.querySelector(
+        ".scroll-progress"
+      );
+
+
+    if (!progress) return;
+
+
+    function updateProgress() {
+
+      const top =
+        window.scrollY || 0;
+
+      const height =
+        document.documentElement
+          .scrollHeight -
+        window.innerHeight;
+
+
+      const percentage =
+        height > 0
+          ? (
+              top / height
+            ) * 100
+          : 0;
+
+
+      progress.style.width =
+        `${percentage}%`;
+
+    }
+
+
+    window.addEventListener(
+      "scroll",
+      updateProgress,
+      {
+        passive: true
+      }
+    );
+
+
+    updateProgress();
+
+  }
+);
+
+
+/* =========================================================
+   CURSOR GLOW
+   ========================================================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    const glow =
+      document.querySelector(
+        "#cursorGlow"
+      ) ||
+      document.querySelector(
+        ".cursor-glow"
+      );
+
+
+    if (!glow) return;
+
+
+    if (
+      window.matchMedia &&
+      window.matchMedia(
+        "(pointer: coarse)"
+      ).matches
+    ) {
+
+      glow.style.display =
+        "none";
+
+      return;
+
+    }
+
+
+    window.addEventListener(
+      "pointermove",
+      event => {
+
+        glow.style.transform =
+          `translate3d(
+            ${event.clientX}px,
+            ${event.clientY}px,
+            0
+          )`;
+
+      },
+      {
+        passive: true
+      }
+    );
+
+  }
+);
+
+
+/* =========================================================
+   BACK BUTTON
+   ========================================================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    const button =
+      document.querySelector(
+        "#albumBack"
+      ) ||
+      document.querySelector(
+        ".album-back"
+      );
+
+
+    if (!button) return;
+
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        const section =
+          document.querySelector(
+            "#photoAlbum"
+          ) ||
+          document.querySelector(
+            ".photo-album"
+          );
+
+
+        if (section) {
+
+          section.classList.remove(
+            "active"
+          );
+
+        }
+
+
+        currentAlbum = null;
+
+      }
+    );
+
+  }
+);
+
+
+/* =========================================================
+   IMAGE FALLBACK
+   ========================================================= */
+
+document.addEventListener(
+  "error",
+  event => {
+
+    const image =
+      event.target;
+
+
+    if (
+      image &&
+      image.tagName === "IMG"
+    ) {
+
+      /*
+       * 不顯示錯誤文字。
+       * 保持網站版面乾淨。
+       */
+
+      image.style.visibility =
+        "hidden";
+
+    }
+
+  },
+  true
+);
+
+
+/* =========================================================
+   EXPORT
+   ========================================================= */
+
+window.photoAlbums =
+  photoAlbums;
+
+window.openAlbum =
+  openAlbum;
+
+window.openLightbox =
+  openLightbox;
+
+window.closeLightbox =
+  closeLightbox;
 
 window.nextPhoto =
   nextPhoto;
@@ -522,5 +1321,13 @@ window.nextPhoto =
 window.previousPhoto =
   previousPhoto;
 
-window.photoAlbums =
-  photoAlbums;
+window.setLanguage =
+  setLanguage;
+
+window.setTheme =
+  setTheme;
+
+
+/* =========================================================
+   END
+   ========================================================= */
