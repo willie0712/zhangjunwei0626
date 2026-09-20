@@ -1,138 +1,26 @@
-<section class="hero-profile" id="home">
-  <div class="hero-profile-glow"></div>
-
-  <div class="hero-profile-inner">
-
-    <!-- 左側：主要人物 -->
-    <div class="hero-person">
-      <div class="hero-person-image-wrap">
-        <div class="hero-person-ring"></div>
-
-        <img
-          src="https://i.ibb.co/tTr26F3n/willie.png"
-          alt="Willie"
-          class="hero-person-image"
-          loading="eager"
-          decoding="async"
-        >
-      </div>
-    </div>
-
-    <!-- 右側：個人資訊 -->
-    <div class="hero-profile-content">
-
-      <p class="hero-eyebrow">
-        PERSONAL WEBSITE
-      </p>
-
-      <h1>
-        Hi, I'm <span>Willie</span>.
-      </h1>
-
-      <p class="hero-name">
-        Hayashi · hayashi_970626
-      </p>
-
-      <p class="hero-description">
-        這裡是我的個人網站，記錄生活、旅行、照片、
-        剪輯以及一些正在學習與嘗試的事情。
-      </p>
-
-      <!-- 個人資訊 -->
-      <div class="hero-info-list">
-
-        <div class="hero-info-item">
-          <span class="hero-info-icon">📍</span>
-          <div>
-            <small>Location</small>
-            <strong>Keelung, Taiwan</strong>
-          </div>
-        </div>
-
-        <div class="hero-info-item">
-          <span class="hero-info-icon">🎓</span>
-          <div>
-            <small>Status</small>
-            <strong>Student</strong>
-          </div>
-        </div>
-
-        <div class="hero-info-item">
-          <span class="hero-info-icon">✨</span>
-          <div>
-            <small>Interests</small>
-            <strong>Photography · Editing · Technology</strong>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- 社群 -->
-      <div class="hero-socials">
-
-        <a
-          class="hero-social instagram"
-          href="https://instagram.com/hayashi_970626"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <span class="social-icon">◎</span>
-
-          <span class="social-text">
-            <small>Instagram</small>
-            <strong>@hayashi_970626</strong>
-          </span>
-
-          <span class="social-arrow">↗</span>
-        </a>
-
-        <div class="hero-social discord">
-
-          <span class="social-icon">◈</span>
-
-          <span class="social-text">
-            <small>Discord</small>
-            <strong id="discord-username">hayashi_970626</strong>
-          </span>
-
-          <button
-            type="button"
-            class="discord-copy"
-            id="discord-copy"
-            aria-label="複製 Discord 使用者名稱"
-          >
-            <span class="copy-text">Copy</span>
-          </button>
-
-        </div>
-
-      </div>
-
-      <!-- 照片入口 -->
-      <div class="hero-photo-entry">
-
-        <div>
-          <small>PHOTO ARCHIVE</small>
-
-          <strong>
-            Life in photographs
-          </strong>
-
-          <span>
-            3 albums · 147 photos
-          </span>
-        </div>
-
-        <a
-          href="#photos"
-          class="hero-photo-button"
-        >
-          Explore
-          <span>→</span>
-        </a>
-
-      </div>
-
-    </div>
-  </div>
-</section>
+<!doctype html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Willie Zhang — Photography & Life</title>
+<meta name="description" content="Willie Zhang 的個人網站，記錄攝影、生活、遊戲與正在發生的故事。">
+<link rel="preconnect" href="https://i.ibb.co"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="page-loader" id="pageLoader"><div class="loader-ring"></div><div class="loader-name">Willie<span>.</span></div></div>
+<div class="cursor-glow"></div><div class="scroll-progress"><span id="progress"></span></div>
+<header class="navbar"><div class="nav-container"><a href="#home" class="logo">Willie<span>.</span></a><nav class="desktop-nav"><a href="#about">關於我</a><a href="#life">生活</a><a href="#gallery">攝影</a><a href="#gaming">遊戲</a><a href="#map">地圖</a><a href="#goals">未來</a><a href="#contact">聯絡</a></nav><div class="nav-tools"><button class="language-button" id="langBtn" type="button">EN</button><button class="theme-toggle" id="themeBtn" type="button" aria-label="切換主題">☾</button><button class="menu-button" id="menuBtn" type="button" aria-label="開啟選單"><span></span><span></span><span></span></button></div></div><nav class="mobile-menu" id="mobileMenu"><a href="#about">關於我</a><a href="#life">生活</a><a href="#gallery">攝影</a><a href="#gaming">遊戲</a><a href="#map">地圖</a><a href="#goals">未來</a><a href="#contact">聯絡</a></nav></header>
+<main>
+<section id="home" class="hero"><div class="hero-background"><div class="hero-gradient gradient-one"></div><div class="hero-gradient gradient-two"></div></div><div class="hero-container"><div class="hero-copy"><div class="hero-label"><span class="status-dot"></span><span>目前正在記錄 2026</span></div><h1>Hi, I'm <span>Willie.</span></h1><p class="hero-description">我喜歡拿著相機到處走，也喜歡把平凡的生活剪成自己喜歡的樣子。有時候拍照，有時候打遊戲，有時候什麼都不做。這裡就是我把這些日子留下來的地方。</p><div class="hero-buttons"><a href="#gallery" class="button button-primary">看看我的照片</a><a href="https://instagram.com/hayashi_970626" target="_blank" rel="noopener noreferrer" class="button button-secondary">Instagram ↗</a></div></div><div class="hero-photo"><div class="hero-photo-frame"><img src="https://i.ibb.co/tTr26F3n/willie.png" alt="Willie Zhang"></div><div class="hero-photo-caption"><span>KEELUNG, TAIWAN</span><span>2026</span></div></div></div><div class="hero-bottom"><span>SCROLL TO EXPLORE</span><span class="scroll-arrow">↓</span></div></section>
+<section id="about" class="section about"><div class="container"><div class="section-intro"><span class="section-number">01</span><span class="section-label">ABOUT ME</span></div><div class="about-layout"><div class="about-title"><h2>我不是很會介紹自己，<span>但我喜歡記錄。</span></h2></div><div class="about-content"><p>今年 18 歲，目前還是二信的學生。比起很正式地介紹「我是誰」，我更喜歡讓照片、影片和生活裡留下來的東西慢慢說明。基隆是我每天生活的地方。下雨的街道、放學路上的風景、和朋友一起出去的時間，這些看起來很普通的事情，反而是我最想留下來的東西。</p><p>我現在也在慢慢學剪輯，希望有一天可以把腦袋裡想像的畫面真的做出來。不一定要多厲害，但至少是屬於自己的作品。</p><div class="about-facts"><div><strong>18</strong><span>YEARS OLD</span></div><div><strong>147+</strong><span>PHOTOS</span></div><div><strong>Keelung</strong><span>TAIWAN</span></div></div></div></div></div></section>
+<section id="life" class="section life"><div class="container"><div class="section-heading"><div><span class="section-number">02</span><span class="section-label">A LITTLE ABOUT MY LIFE</span></div><h2>最近的我，<span>大概是這樣。</span></h2></div><div class="life-grid"><article class="life-card large"><span class="card-tag">01</span><h3>攝影</h3><p>我沒有什麼「一定要拍什麼」的規則。有時候看到一個光影很好看，就會停下來拍。有時候只是覺得今天的天空很漂亮。</p><span class="card-icon">📷</span></article><article class="life-card"><span class="card-tag">02</span><h3>剪輯</h3><p>最近正在慢慢摸索 CapCut。從節奏、轉場到音樂搭配，一點一點把自己想做的東西做出來。</p><span class="card-icon">✂️</span></article><article class="life-card"><span class="card-tag">03</span><h3>朋友</h3><p>我很珍惜一起聊天、出去玩的朋友。很多現在覺得好笑的回憶，過幾年可能反而會變成最值得留下的東西。</p><span class="card-icon">🤝</span></article></div></div></section>
+<section id="gallery" class="section gallery"><div class="container"><div class="section-heading gallery-heading"><div><span class="section-number">03</span><span class="section-label">PHOTOGRAPHY</span></div><h2>把一些 <span>值得記住的日子</span> 留下來。</h2><p>這裡放的不是什麼專業攝影作品集，而是我這幾年走過的地方、遇過的人，以及一些當下覺得「這一刻很好看」的畫面。</p></div><div class="album-view"><div class="albums-grid" id="albumsGrid"></div></div><div class="photo-view" id="photoView" hidden><div class="photo-view-header"><button type="button" class="back-button" id="backButton">← 返回相簿</button><div class="photo-view-heading"><h3 class="photo-view-title" id="photoViewTitle">Photos</h3><span class="photo-counter" id="photoCounter">0 / 0</span></div></div><div class="photo-grid" id="photoGrid"></div></div></div></section>
+<section id="gaming" class="section gaming"><div class="container"><div class="section-intro"><span class="section-number">04</span><span class="section-label">GAMING</span></div><div class="gaming-header"><h2>有些夜晚，<span>不是拿相機。</span></h2><p>遊戲其實陪了我很長一段時間。從以前一直玩，到現在偶爾和朋友開一下，已經不只是「遊戲」這麼簡單，而是很多回憶的一部分。</p></div><div class="game-list"><article class="game-item"><div class="game-number">01</div><div class="game-main"><h3>Roblox</h3><span>2019 — NOW</span></div><p>最早期的遊戲回憶之一。地圖很多、玩法很多，最重要的是和朋友一起玩時總會發生一些奇怪的事情。</p></article><article class="game-item"><div class="game-number">02</div><div class="game-main"><h3>Minecraft</h3><span>2022 — NOW</span></div><p>沒有固定答案的遊戲。有時候蓋東西，有時候到處亂跑，單純享受自己決定下一步的感覺。</p></article><article class="game-item"><div class="game-number">03</div><div class="game-main"><h3>Asphalt 9</h3><span>2025 — NOW</span></div><p>喜歡速度感和那種只差一點點就能超車的瞬間。</p></article><article class="game-item"><div class="game-number">04</div><div class="game-main"><h3>Pixel Gun 3D</h3><span>2025 — NOW</span></div><p>像素風格加上快節奏玩法，偶爾玩一下就是很直接的放鬆。</p></article><article class="game-item"><div class="game-number">05</div><div class="game-main"><h3>WePlay</h3><span>2025 — NOW</span></div><p>和朋友一起玩的休閒時光，遊戲之外也留下不少聊天和互動的回憶。</p></article><article class="game-item"><div class="game-number">06</div><div class="game-main"><h3>極速領域 <small>(Speed Drifters)</small></h3><span>2025 — NOW</span></div><p>喜歡賽車、漂移和高速對戰帶來的節奏感。</p></article></div></div></section>
+<section id="map" class="section map-section"><div class="container"><div class="section-heading"><div><span class="section-number">05</span><span class="section-label">MY MAP</span></div><h2>走過的地方，<span>也留在地圖上。</span></h2><p>從基隆出發，把拍照、出遊和生活裡去過的地方慢慢標記下來。</p></div><div class="map-grid"><a class="map-card" href="https://www.google.com/maps/search/?api=1&query=Keelung%2CTaiwan" target="_blank" rel="noopener"><span>01</span><strong>基隆</strong><small>KEELUNG · HOME</small><em>↗</em></a><a class="map-card" href="https://www.google.com/maps/search/?api=1&query=Yilan%2CTaiwan" target="_blank" rel="noopener"><span>02</span><strong>宜蘭</strong><small>YILAN · SCHOOL TRIP</small><em>↗</em></a><a class="map-card" href="https://www.google.com/maps/search/?api=1&query=Beitou%2CTaipei%2CTaiwan" target="_blank" rel="noopener"><span>03</span><strong>北投</strong><small>BEITOU · DAY TRIP</small><em>↗</em></a><a class="map-card" href="https://www.google.com/maps/search/?api=1&query=Tamsui%2CTaipei%2CTaiwan" target="_blank" rel="noopener"><span>04</span><strong>淡水</strong><small>TAMSUI · DAY TRIP</small><em>↗</em></a><a class="map-card" href="https://www.google.com/maps/search/?api=1&query=Fulong%2CNew%20Taipei%2CTaiwan" target="_blank" rel="noopener"><span>05</span><strong>福隆</strong><small>FULONG · LIFE</small><em>↗</em></a><a class="map-card" href="https://www.google.com/maps/search/?api=1&query=Shimen%2CNew%20Taipei%2CTaiwan" target="_blank" rel="noopener"><span>06</span><strong>石門</strong><small>SHIMEN · LIFE</small><em>↗</em></a><a class="map-card" href="https://www.google.com/maps/search/?api=1&query=Dajia%2CTaichung%2CTaiwan" target="_blank" rel="noopener"><span>07</span><strong>台中大甲</strong><small>DAJIA · LIFE</small><em>↗</em></a></div></div></section><section id="goals" class="section goals"><div class="container"><div class="section-heading"><div><span class="section-number">06</span><span class="section-label">WHAT'S NEXT</span></div><h2>接下來，<span>繼續往前走。</span></h2></div><div class="goals-list"><article class="goal"><span>01</span><div><h3>把攝影拍得更好</h3><p>不只是拍得好看，而是開始知道自己為什麼想拍這一張。</p></div></article><article class="goal"><span>02</span><div><h3>把剪輯真正學起來</h3><p>希望有一天可以不用一直想著「這個效果怎麼做」，而是直接把腦中的畫面做出來。</p></div></article><article class="goal"><span>03</span><div><h3>好好走完高中最後一段</h3><p>把該完成的事情完成，也把這幾年的回憶好好留下來。</p></div></article><article class="goal"><span>04</span><div><h3>認識更多人</h3><p>不一定每個人都會一直留在身邊，但每一次認識，都可能成為故事的一部分。</p></div></article></div></div></section>
+<section id="contact" class="section contact"><div class="container"><div class="contact-box"><div><span class="section-number contact-number">07</span><span class="section-label">SAY HELLO</span><h2>如果你來到了這裡，<span>謝謝你。</span></h2><p>這個網站只是我目前生活的一小部分。之後還會繼續更新照片、故事和新的東西。</p></div><div class="contact-links"><a href="https://instagram.com/hayashi_970626" target="_blank" rel="noopener noreferrer"><span>Instagram</span><span>↗</span></a><button type="button" class="copy-discord" data-discord="hayashi_970626"><span>Discord</span><span>hayashi_970626</span></button></div></div></div></section>
+</main><footer class="footer"><div class="container"><div class="footer-main"><strong>Willie.</strong><span>Made with curiosity, memories and a little bit of chaos.</span></div><div class="footer-bottom"><span>© 2026 Willie Zhang</span><span>Keelung, Taiwan</span></div></div></footer>
+<div class="lightbox" id="lightbox" aria-hidden="true"><button class="lightbox-close" id="close">×</button><button class="lightbox-prev" id="prev">‹</button><div class="lightbox-content"><div class="lightbox-image-wrap"><div class="lightbox-loading"><div class="loader-spinner"></div></div><img class="lightbox-image" id="lightboxImg" src="" alt=""></div><div class="lightbox-info"><span class="lightbox-title" id="lightboxTitle">Photo</span><span class="lightbox-counter" id="lightboxCounter">0 / 0</span></div></div><button class="lightbox-next" id="next">›</button></div><div class="toast" id="toast"></div>
+<script src="script.js"></script>
+</body></html>
