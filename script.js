@@ -187,59 +187,26 @@
      DOM
      ========================================================= */
 
-  const pageLoader =
-    document.getElementById("pageLoader");
+  const pageLoader = document.getElementById("pageLoader");
+  const albumsGrid = document.getElementById("albumsGrid");
+  const photoView = document.getElementById("photoView");
+  const photoGrid = document.getElementById("photoGrid");
+  const backButton = document.getElementById("backButton");
 
-  const albumsGrid =
-    document.getElementById("albumsGrid");
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightboxImg");
+  const lightboxTitle = document.getElementById("lightboxTitle");
+  const lightboxCounter = document.getElementById("lightboxCounter");
+  const closeButton = document.getElementById("close");
+  const prevButton = document.getElementById("prev");
+  const nextButton = document.getElementById("next");
 
-  const photoView =
-    document.getElementById("photoView");
-
-  const photoGrid =
-    document.getElementById("photoGrid");
-
-  const backButton =
-    document.getElementById("backButton");
-
-  const lightbox =
-    document.getElementById("lightbox");
-
-  const lightboxImg =
-    document.getElementById("lightboxImg");
-
-  const lightboxTitle =
-    document.getElementById("lightboxTitle");
-
-  const lightboxCounter =
-    document.getElementById("lightboxCounter");
-
-  const closeButton =
-    document.getElementById("close");
-
-  const prevButton =
-    document.getElementById("prev");
-
-  const nextButton =
-    document.getElementById("next");
-
-  const themeButton =
-    document.getElementById("themeBtn");
-
-  const langButton =
-    document.getElementById("langBtn");
-
-  const menuButton =
-    document.getElementById("menuBtn");
-
-  const mobileMenu =
-    document.getElementById("mobileMenu");
-
-  const progress =
-    document.getElementById("progress");
-
-  const cursorGlow =
-    document.querySelector(".cursor-glow");
+  const themeButton = document.getElementById("themeBtn");
+  const langButton = document.getElementById("langBtn");
+  const menuButton = document.getElementById("menuBtn");
+  const mobileMenu = document.getElementById("mobileMenu");
+  const progress = document.getElementById("progress");
+  const cursorGlow = document.querySelector(".cursor-glow");
 
   /* =========================================================
      STATE
@@ -250,7 +217,6 @@
 
   /* =========================================================
      PAGE LOADER
-     不等待圖片全部載入
      ========================================================= */
 
   document.addEventListener("DOMContentLoaded", () => {
@@ -271,53 +237,31 @@
     albumsGrid.innerHTML = "";
 
     albums.forEach((album) => {
-      const card =
-        document.createElement("article");
+      const card = document.createElement("article");
 
       card.className = "album-card";
       card.dataset.albumId = album.id;
       card.tabIndex = 0;
-      card.setAttribute(
-        "role",
-        "button"
-      );
+      card.setAttribute("role", "button");
 
-      /*
-        保持原本相簿卡片：
-        01
-        宜蘭一日遊（二信校外教學）
-
-        不放縮圖。
-      */
       card.innerHTML = `
-        <span class="album-number">
-          ${album.number}
-        </span>
-
-        <h3>
-          ${album.title}
-        </h3>
+        <span class="album-number">${album.number}</span>
+        <h3>${album.title}</h3>
       `;
 
-      card.addEventListener(
-        "click",
-        () => {
+      card.addEventListener("click", () => {
+        openAlbum(album.id);
+      });
+
+      card.addEventListener("keydown", (event) => {
+        if (
+          event.key === "Enter" ||
+          event.key === " "
+        ) {
+          event.preventDefault();
           openAlbum(album.id);
         }
-      );
-
-      card.addEventListener(
-        "keydown",
-        (event) => {
-          if (
-            event.key === "Enter" ||
-            event.key === " "
-          ) {
-            event.preventDefault();
-            openAlbum(album.id);
-          }
-        }
-      );
+      });
 
       albumsGrid.appendChild(card);
     });
@@ -326,55 +270,41 @@
   /* =========================================================
      OPEN ALBUM
      
-     點進去：
-     01＋相簿名稱消失
-     ↓
-     返回相簿
-     ↓
-     PHOTO GRID
-     
-     不另外建立標題。
+     ★ 進入相簿後：
+     - 隱藏 01 / 02 / 03
+     - 隱藏所有相簿卡片
+     - 隱藏相簿名稱
+     - 不顯示 Photos
+     - 不顯示照片數量
+     - 只留下「返回相簿」與照片
      ========================================================= */
 
   function openAlbum(albumId) {
-    const album =
-      albums.find(
-        (item) =>
-          item.id === albumId
-      );
+    const album = albums.find(
+      (item) => item.id === albumId
+    );
 
     if (!album) return;
 
     currentAlbum = album;
     currentPhotoIndex = 0;
 
-    /*
-      隱藏原本的相簿卡片。
-      所以 01＋相簿名稱會消失。
-    */
+    /* ★ 強制隱藏整個相簿列表 */
     if (albumsGrid) {
       albumsGrid.hidden = true;
+      albumsGrid.style.display = "none";
     }
 
-    /*
-      顯示照片區。
-    */
+    /* ★ 顯示照片區 */
     if (photoView) {
       photoView.hidden = false;
+      photoView.style.display = "block";
     }
 
-    /*
-      只建立照片。
-      不建立相簿名稱。
-      不建立 PHOTO 數量。
-      不建立額外框。
-    */
+    /* ★ 只產生照片 */
     renderPhotoGrid();
 
-    const gallery =
-      document.getElementById(
-        "gallery"
-      );
+    const gallery = document.getElementById("gallery");
 
     if (gallery) {
       requestAnimationFrame(() => {
@@ -387,36 +317,36 @@
   }
 
   /* =========================================================
-     BACK TO ALBUMS
+     CLOSE ALBUM
      
-     點返回：
-     照片消失
-     ↓
-     01＋相簿名稱重新出現
+     ★ 返回相簿後：
+     - 照片區消失
+     - 返回按鈕消失
+     - 01 / 02 / 03 恢復
      ========================================================= */
 
   function closeAlbum() {
     currentAlbum = null;
     currentPhotoIndex = 0;
 
-    /*
-      隱藏照片區。
-    */
+    /* ★ 隱藏照片區 */
     if (photoView) {
       photoView.hidden = true;
+      photoView.style.display = "none";
     }
 
-    /*
-      恢復原本的相簿卡片。
-    */
+    /* ★ 恢復相簿列表 */
     if (albumsGrid) {
       albumsGrid.hidden = false;
+      albumsGrid.style.display = "";
     }
 
-    const gallery =
-      document.getElementById(
-        "gallery"
-      );
+    /* 清除照片 */
+    if (photoGrid) {
+      photoGrid.innerHTML = "";
+    }
+
+    const gallery = document.getElementById("gallery");
 
     if (gallery) {
       requestAnimationFrame(() => {
@@ -433,10 +363,7 @@
      ========================================================= */
 
   function renderPhotoGrid() {
-    if (
-      !photoGrid ||
-      !currentAlbum
-    ) {
+    if (!photoGrid || !currentAlbum) {
       return;
     }
 
@@ -445,56 +372,34 @@
     const fragment =
       document.createDocumentFragment();
 
-    currentAlbum.photos.forEach(
-      (src, index) => {
-        const tile =
-          document.createElement(
-            "button"
-          );
+    currentAlbum.photos.forEach((src, index) => {
+      const tile = document.createElement("button");
 
-        tile.type = "button";
-        tile.className =
-          "photo-tile";
+      tile.type = "button";
+      tile.className = "photo-tile";
 
-        tile.setAttribute(
-          "aria-label",
-          `Photo ${index + 1}`
-        );
+      tile.setAttribute(
+        "aria-label",
+        `Photo ${index + 1}`
+      );
 
-        const img =
-          document.createElement(
-            "img"
-          );
+      const img = document.createElement("img");
 
-        /*
-          直接使用 ImgBB 圖片。
-          沒有 thumbnail URL。
-        */
-        img.src = src;
-        img.alt =
-          `Photo ${index + 1}`;
+      img.src = src;
+      img.alt = `Photo ${index + 1}`;
+      img.loading = "lazy";
+      img.decoding = "async";
 
-        img.loading = "lazy";
-        img.decoding = "async";
+      tile.appendChild(img);
 
-        tile.appendChild(img);
+      tile.addEventListener("click", () => {
+        openLightbox(index);
+      });
 
-        tile.addEventListener(
-          "click",
-          () => {
-            openLightbox(index);
-          }
-        );
+      fragment.appendChild(tile);
+    });
 
-        fragment.appendChild(
-          tile
-        );
-      }
-    );
-
-    photoGrid.appendChild(
-      fragment
-    );
+    photoGrid.appendChild(fragment);
   }
 
   /* =========================================================
@@ -506,8 +411,7 @@
 
     if (
       index < 0 ||
-      index >=
-        currentAlbum.photos.length
+      index >= currentAlbum.photos.length
     ) {
       return;
     }
@@ -517,10 +421,7 @@
     updateLightbox();
 
     if (lightbox) {
-      lightbox.classList.add(
-        "show"
-      );
-
+      lightbox.classList.add("show");
       lightbox.setAttribute(
         "aria-hidden",
         "false"
@@ -534,10 +435,7 @@
 
   function closeLightbox() {
     if (lightbox) {
-      lightbox.classList.remove(
-        "show"
-      );
-
+      lightbox.classList.remove("show");
       lightbox.setAttribute(
         "aria-hidden",
         "true"
@@ -553,44 +451,24 @@
     if (!currentAlbum) return;
 
     const src =
-      currentAlbum.photos[
-        currentPhotoIndex
-      ];
+      currentAlbum.photos[currentPhotoIndex];
 
     if (lightboxImg) {
       lightboxImg.src = src;
-
       lightboxImg.alt =
-        `Photo ${
-          currentPhotoIndex + 1
-        }`;
-
-      lightboxImg.loading =
-        "eager";
-
-      lightboxImg.decoding =
-        "async";
+        `Photo ${currentPhotoIndex + 1}`;
+      lightboxImg.loading = "eager";
+      lightboxImg.decoding = "async";
     }
-
-    /*
-      這些只屬於 Lightbox 裡面的資訊，
-      不會在相簿照片上方新增標題。
-    */
 
     if (lightboxTitle) {
       lightboxTitle.textContent =
-        `Photo ${
-          currentPhotoIndex + 1
-        }`;
+        `Photo ${currentPhotoIndex + 1}`;
     }
 
     if (lightboxCounter) {
       lightboxCounter.textContent =
-        `${
-          currentPhotoIndex + 1
-        } / ${
-          currentAlbum.photos.length
-        }`;
+        `${currentPhotoIndex + 1} / ${currentAlbum.photos.length}`;
     }
   }
 
@@ -602,9 +480,7 @@
     if (!currentAlbum) return;
 
     currentPhotoIndex =
-      (
-        currentPhotoIndex + 1
-      ) %
+      (currentPhotoIndex + 1) %
       currentAlbum.photos.length;
 
     updateLightbox();
@@ -668,10 +544,7 @@
     lightbox.addEventListener(
       "click",
       (event) => {
-        if (
-          event.target ===
-          lightbox
-        ) {
+        if (event.target === lightbox) {
           closeLightbox();
         }
       }
@@ -687,29 +560,19 @@
     (event) => {
       if (
         lightbox &&
-        lightbox.classList.contains(
-          "show"
-        )
+        lightbox.classList.contains("show")
       ) {
-        if (
-          event.key === "Escape"
-        ) {
+        if (event.key === "Escape") {
           closeLightbox();
           return;
         }
 
-        if (
-          event.key ===
-          "ArrowRight"
-        ) {
+        if (event.key === "ArrowRight") {
           showNextPhoto();
           return;
         }
 
-        if (
-          event.key ===
-          "ArrowLeft"
-        ) {
+        if (event.key === "ArrowLeft") {
           showPreviousPhoto();
           return;
         }
@@ -731,11 +594,8 @@
         const touch =
           event.changedTouches[0];
 
-        touchStartX =
-          touch.clientX;
-
-        touchStartY =
-          touch.clientY;
+        touchStartX = touch.clientX;
+        touchStartY = touch.clientY;
       },
       {
         passive: true
@@ -749,16 +609,12 @@
           event.changedTouches[0];
 
         const diffX =
-          touch.clientX -
-          touchStartX;
+          touch.clientX - touchStartX;
 
         const diffY =
-          touch.clientY -
-          touchStartY;
+          touch.clientY - touchStartY;
 
-        if (
-          Math.abs(diffX) < 50
-        ) {
+        if (Math.abs(diffX) < 50) {
           return;
         }
 
@@ -786,8 +642,7 @@
      ========================================================= */
 
   function applyTheme(theme) {
-    const isDark =
-      theme === "dark";
+    const isDark = theme === "dark";
 
     document.body.classList.toggle(
       "dark",
@@ -825,10 +680,7 @@
       savedTheme === "dark" ||
       savedTheme === "light"
     ) {
-      applyTheme(
-        savedTheme
-      );
-
+      applyTheme(savedTheme);
       return;
     }
 
@@ -930,9 +782,7 @@
     langButton.addEventListener(
       "click",
       () => {
-        isEnglish =
-          !isEnglish;
-
+        isEnglish = !isEnglish;
         updateLanguage();
       }
     );
@@ -943,9 +793,7 @@
      ========================================================= */
 
   function closeMobileMenu() {
-    if (!mobileMenu) {
-      return;
-    }
+    if (!mobileMenu) return;
 
     mobileMenu.classList.remove(
       "open"
@@ -960,9 +808,7 @@
   }
 
   function toggleMobileMenu() {
-    if (!mobileMenu) {
-      return;
-    }
+    if (!mobileMenu) return;
 
     const opened =
       mobileMenu.classList.toggle(
@@ -985,9 +831,7 @@
   }
 
   document
-    .querySelectorAll(
-      ".mobile-menu a"
-    )
+    .querySelectorAll(".mobile-menu a")
     .forEach((link) => {
       link.addEventListener(
         "click",
@@ -1006,15 +850,9 @@
       }
 
       if (
-        mobileMenu.classList.contains(
-          "open"
-        ) &&
-        !mobileMenu.contains(
-          event.target
-        ) &&
-        !menuButton.contains(
-          event.target
-        )
+        mobileMenu.classList.contains("open") &&
+        !mobileMenu.contains(event.target) &&
+        !menuButton.contains(event.target)
       ) {
         closeMobileMenu();
       }
@@ -1026,38 +864,28 @@
      ========================================================= */
 
   function updateScrollProgress() {
-    if (!progress) {
-      return;
-    }
+    if (!progress) return;
 
     const scrollTop =
       window.scrollY ||
-      document.documentElement
-        .scrollTop;
+      document.documentElement.scrollTop;
 
     const total =
-      document.documentElement
-        .scrollHeight -
+      document.documentElement.scrollHeight -
       window.innerHeight;
 
     if (total <= 0) {
-      progress.style.width =
-        "0%";
-
+      progress.style.width = "0%";
       return;
     }
 
     const percentage =
-      (scrollTop / total) *
-      100;
+      (scrollTop / total) * 100;
 
     progress.style.width =
       `${Math.max(
         0,
-        Math.min(
-          100,
-          percentage
-        )
+        Math.min(100, percentage)
       )}%`;
   }
 
@@ -1089,28 +917,21 @@
     document.addEventListener(
       "mousemove",
       (event) => {
-        mouseX =
-          event.clientX;
+        mouseX = event.clientX;
+        mouseY = event.clientY;
 
-        mouseY =
-          event.clientY;
-
-        if (frame) {
-          return;
-        }
+        if (frame) return;
 
         frame =
-          requestAnimationFrame(
-            () => {
-              cursorGlow.style.left =
-                `${mouseX}px`;
+          requestAnimationFrame(() => {
+            cursorGlow.style.left =
+              `${mouseX}px`;
 
-              cursorGlow.style.top =
-                `${mouseY}px`;
+            cursorGlow.style.top =
+              `${mouseY}px`;
 
-              frame = null;
-            }
-          );
+            frame = null;
+          });
       },
       {
         passive: true
@@ -1121,6 +942,22 @@
   /* =========================================================
      INITIALIZE
      ========================================================= */
+
+  /*
+    初始狀態：
+    相簿列表顯示
+    照片區隱藏
+  */
+
+  if (albumsGrid) {
+    albumsGrid.hidden = false;
+    albumsGrid.style.display = "";
+  }
+
+  if (photoView) {
+    photoView.hidden = true;
+    photoView.style.display = "none";
+  }
 
   renderAlbums();
   initializeTheme();
