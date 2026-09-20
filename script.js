@@ -1,6 +1,6 @@
 /* =========================================================
    Willie Zhang — Photography & Life
-   Complete script.js
+   script.js
    ========================================================= */
 
 (() => {
@@ -15,7 +15,6 @@
       id: "yilan",
       number: "01",
       title: "宜蘭一日遊（二信校外教學）",
-      description: "72 PHOTOS",
       photos: [
         "https://i.ibb.co/dsbnxwmd/IMG-8503-compressed.jpg",
         "https://i.ibb.co/9kbLNm86/IMG-8502-compressed.jpg",
@@ -96,7 +95,6 @@
       id: "after-school",
       number: "02",
       title: "休學後的照片",
-      description: "55 PHOTOS",
       photos: [
         "https://i.ibb.co/SDFZ3thL/IMG-2203.jpg",
         "https://i.ibb.co/hJ52VS2y/IMG-2191.jpg",
@@ -160,7 +158,6 @@
       id: "beitou-danshui",
       number: "03",
       title: "北投淡水一日遊",
-      description: "20 PHOTOS",
       photos: [
         "https://i.ibb.co/Lhvvbrqb/IMG-7604.jpg",
         "https://i.ibb.co/x8HPp3m6/IMG-7606.jpg",
@@ -190,36 +187,30 @@
      DOM
      ========================================================= */
 
-  const $ = (selector, parent = document) => {
-    return parent.querySelector(selector);
-  };
+  const pageLoader = document.getElementById("pageLoader");
 
-  const $$ = (selector, parent = document) => {
-    return [...parent.querySelectorAll(selector)];
-  };
+  const albumsGrid = document.getElementById("albumsGrid");
+  const photoView = document.getElementById("photoView");
+  const photoGrid = document.getElementById("photoGrid");
+  const backButton = document.getElementById("backButton");
 
-  const pageLoader = $("#pageLoader");
-  const albumsGrid = $("#albumsGrid");
-  const photoView = $("#photoView");
-  const photoViewTitle = $("#photoViewTitle");
-  const photoCounter = $("#photoCounter");
-  const photoGrid = $("#photoGrid");
-  const backButton = $("#backButton");
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightboxImg");
+  const lightboxTitle = document.getElementById("lightboxTitle");
+  const lightboxCounter = document.getElementById("lightboxCounter");
 
-  const lightbox = $("#lightbox");
-  const lightboxImg = $("#lightboxImg");
-  const lightboxTitle = $("#lightboxTitle");
-  const lightboxCounter = $("#lightboxCounter");
-  const closeButton = $("#close");
-  const prevButton = $("#prev");
-  const nextButton = $("#next");
+  const closeButton = document.getElementById("close");
+  const prevButton = document.getElementById("prev");
+  const nextButton = document.getElementById("next");
 
-  const themeButton = $("#themeBtn");
-  const langButton = $("#langBtn");
-  const menuButton = $("#menuBtn");
-  const mobileMenu = $("#mobileMenu");
-  const progress = $("#progress");
-  const cursorGlow = $(".cursor-glow");
+  const themeButton = document.getElementById("themeBtn");
+  const langButton = document.getElementById("langBtn");
+
+  const menuButton = document.getElementById("menuBtn");
+  const mobileMenu = document.getElementById("mobileMenu");
+
+  const progress = document.getElementById("progress");
+  const cursorGlow = document.querySelector(".cursor-glow");
 
   /* =========================================================
      STATE
@@ -231,10 +222,7 @@
   /* =========================================================
      PAGE LOADER
      
-     IMPORTANT:
-     Do NOT use window.load here.
-     The page should stop showing "Willie" without waiting
-     for all ImgBB images to finish loading.
+     不等待所有照片載完。
      ========================================================= */
 
   document.addEventListener("DOMContentLoaded", () => {
@@ -246,10 +234,10 @@
   });
 
   /* =========================================================
-     ALBUMS
+     RENDER ALBUMS
      
-     Album cards are intentionally TEXT ONLY.
-     No thumbnails / cover images.
+     純文字相簿卡片。
+     不建立 cover / thumbnail。
      ========================================================= */
 
   function renderAlbums() {
@@ -262,14 +250,12 @@
 
       card.className = "album-card";
       card.dataset.albumId = album.id;
+      card.tabIndex = 0;
       card.setAttribute("role", "button");
-      card.setAttribute("tabindex", "0");
-      card.setAttribute("aria-label", `Open ${album.title}`);
 
       card.innerHTML = `
         <span class="album-number">${album.number}</span>
         <h3>${album.title}</h3>
-        <p>${album.description}</p>
       `;
 
       card.addEventListener("click", () => {
@@ -289,10 +275,22 @@
 
   /* =========================================================
      OPEN ALBUM
+     
+     重要：
+     不產生相簿名稱。
+     不產生 PHOTO 數量。
+     不產生標題框。
+     
+     只顯示：
+     ← 返回相簿
+     +
+     PHOTO GRID
      ========================================================= */
 
   function openAlbum(albumId) {
-    const album = albums.find((item) => item.id === albumId);
+    const album = albums.find(
+      (item) => item.id === albumId
+    );
 
     if (!album) return;
 
@@ -307,17 +305,9 @@
       photoView.hidden = false;
     }
 
-    if (photoViewTitle) {
-      photoViewTitle.textContent = album.title;
-    }
-
-    if (photoCounter) {
-      photoCounter.textContent = `${album.photos.length} PHOTOS`;
-    }
-
     renderPhotoGrid();
 
-    const gallery = $("#gallery");
+    const gallery = document.getElementById("gallery");
 
     if (gallery) {
       requestAnimationFrame(() => {
@@ -330,7 +320,7 @@
   }
 
   /* =========================================================
-     CLOSE ALBUM
+     BACK TO ALBUMS
      ========================================================= */
 
   function closeAlbum() {
@@ -345,7 +335,7 @@
       albumsGrid.hidden = false;
     }
 
-    const gallery = $("#gallery");
+    const gallery = document.getElementById("gallery");
 
     if (gallery) {
       requestAnimationFrame(() => {
@@ -359,9 +349,6 @@
 
   /* =========================================================
      PHOTO GRID
-     
-     Uses direct ImgBB URLs.
-     No thumbnail URL.
      ========================================================= */
 
   function renderPhotoGrid() {
@@ -376,16 +363,15 @@
 
       tile.type = "button";
       tile.className = "photo-tile";
-      tile.dataset.index = index;
       tile.setAttribute(
         "aria-label",
-        `${currentAlbum.title} — Photo ${index + 1}`
+        `Photo ${index + 1}`
       );
 
       const img = document.createElement("img");
 
       img.src = src;
-      img.alt = `${currentAlbum.title} ${index + 1}`;
+      img.alt = `Photo ${index + 1}`;
       img.loading = "lazy";
       img.decoding = "async";
 
@@ -425,10 +411,6 @@
     }
 
     document.body.classList.add("lightbox-open");
-
-    if (closeButton) {
-      closeButton.focus();
-    }
   }
 
   function closeLightbox() {
@@ -443,19 +425,26 @@
   function updateLightbox() {
     if (!currentAlbum) return;
 
-    const src = currentAlbum.photos[currentPhotoIndex];
+    const src =
+      currentAlbum.photos[currentPhotoIndex];
 
     if (lightboxImg) {
       lightboxImg.src = src;
       lightboxImg.alt =
-        `${currentAlbum.title} ${currentPhotoIndex + 1}`;
+        `Photo ${currentPhotoIndex + 1}`;
 
       lightboxImg.loading = "eager";
       lightboxImg.decoding = "async";
     }
 
+    /*
+      Lightbox 原本可以顯示照片資訊。
+      這裡不新增相簿名稱到頁面上方。
+    */
+
     if (lightboxTitle) {
-      lightboxTitle.textContent = currentAlbum.title;
+      lightboxTitle.textContent =
+        `Photo ${currentPhotoIndex + 1}`;
     }
 
     if (lightboxCounter) {
@@ -465,7 +454,7 @@
   }
 
   /* =========================================================
-     LIGHTBOX NAVIGATION
+     NEXT / PREVIOUS
      ========================================================= */
 
   function showNextPhoto() {
@@ -482,7 +471,8 @@
     if (!currentAlbum) return;
 
     currentPhotoIndex =
-      (currentPhotoIndex - 1 + currentAlbum.photos.length) %
+      (currentPhotoIndex - 1 +
+        currentAlbum.photos.length) %
       currentAlbum.photos.length;
 
     updateLightbox();
@@ -493,62 +483,87 @@
      ========================================================= */
 
   if (backButton) {
-    backButton.addEventListener("click", closeAlbum);
+    backButton.addEventListener(
+      "click",
+      closeAlbum
+    );
   }
 
   if (closeButton) {
-    closeButton.addEventListener("click", closeLightbox);
-  }
-
-  if (nextButton) {
-    nextButton.addEventListener("click", showNextPhoto);
+    closeButton.addEventListener(
+      "click",
+      closeLightbox
+    );
   }
 
   if (prevButton) {
-    prevButton.addEventListener("click", showPreviousPhoto);
+    prevButton.addEventListener(
+      "click",
+      showPreviousPhoto
+    );
+  }
+
+  if (nextButton) {
+    nextButton.addEventListener(
+      "click",
+      showNextPhoto
+    );
   }
 
   /* =========================================================
-     CLICK OUTSIDE LIGHTBOX IMAGE
+     LIGHTBOX BACKGROUND CLICK
      ========================================================= */
 
   if (lightbox) {
-    lightbox.addEventListener("click", (event) => {
-      if (event.target === lightbox) {
-        closeLightbox();
+    lightbox.addEventListener(
+      "click",
+      (event) => {
+        if (event.target === lightbox) {
+          closeLightbox();
+        }
       }
-    });
+    );
   }
 
   /* =========================================================
      KEYBOARD
      ========================================================= */
 
-  document.addEventListener("keydown", (event) => {
-    if (
-      !lightbox ||
-      !lightbox.classList.contains("show")
-    ) {
-      return;
+  document.addEventListener(
+    "keydown",
+    (event) => {
+      if (
+        lightbox &&
+        lightbox.classList.contains("show")
+      ) {
+        if (event.key === "Escape") {
+          closeLightbox();
+          return;
+        }
+
+        if (event.key === "ArrowRight") {
+          showNextPhoto();
+          return;
+        }
+
+        if (event.key === "ArrowLeft") {
+          showPreviousPhoto();
+          return;
+        }
+      }
+
+      if (
+        event.key === "Escape" &&
+        mobileMenu &&
+        mobileMenu.classList.contains("open")
+      ) {
+        closeMobileMenu();
+      }
     }
-
-    switch (event.key) {
-      case "Escape":
-        closeLightbox();
-        break;
-
-      case "ArrowRight":
-        showNextPhoto();
-        break;
-
-      case "ArrowLeft":
-        showPreviousPhoto();
-        break;
-    }
-  });
+  );
 
   /* =========================================================
-     TOUCH / SWIPE
+     TOUCH SWIPE
      ========================================================= */
 
   let touchStartX = 0;
@@ -558,7 +573,8 @@
     lightbox.addEventListener(
       "touchstart",
       (event) => {
-        const touch = event.changedTouches[0];
+        const touch =
+          event.changedTouches[0];
 
         touchStartX = touch.clientX;
         touchStartY = touch.clientY;
@@ -569,14 +585,23 @@
     lightbox.addEventListener(
       "touchend",
       (event) => {
-        const touch = event.changedTouches[0];
+        const touch =
+          event.changedTouches[0];
 
-        const diffX = touch.clientX - touchStartX;
-        const diffY = touch.clientY - touchStartY;
+        const diffX =
+          touch.clientX - touchStartX;
+
+        const diffY =
+          touch.clientY - touchStartY;
 
         if (Math.abs(diffX) < 50) return;
 
-        if (Math.abs(diffX) <= Math.abs(diffY)) return;
+        if (
+          Math.abs(diffX) <=
+          Math.abs(diffY)
+        ) {
+          return;
+        }
 
         if (diffX < 0) {
           showNextPhoto();
@@ -593,23 +618,26 @@
      ========================================================= */
 
   function applyTheme(theme) {
-    const isDark = theme === "dark";
+    const dark =
+      theme === "dark";
 
-    document.body.classList.toggle("dark", isDark);
+    document.body.classList.toggle(
+      "dark",
+      dark
+    );
 
     if (themeButton) {
-      themeButton.setAttribute(
-        "aria-label",
-        isDark ? "Switch to light mode" : "Switch to dark mode"
-      );
-
-      themeButton.textContent = isDark ? "☼" : "◐";
+      themeButton.textContent =
+        dark ? "☼" : "◐";
     }
 
     try {
-      localStorage.setItem("willie-theme", theme);
+      localStorage.setItem(
+        "willie-theme",
+        theme
+      );
     } catch (error) {
-      // Ignore localStorage errors.
+      // Ignore storage errors.
     }
   }
 
@@ -617,90 +645,81 @@
     let savedTheme = null;
 
     try {
-      savedTheme = localStorage.getItem("willie-theme");
+      savedTheme =
+        localStorage.getItem(
+          "willie-theme"
+        );
     } catch (error) {
       savedTheme = null;
     }
 
-    if (savedTheme === "dark" || savedTheme === "light") {
+    if (
+      savedTheme === "dark" ||
+      savedTheme === "light"
+    ) {
       applyTheme(savedTheme);
       return;
     }
 
     const prefersDark =
       window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches;
+      window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches;
 
-    applyTheme(prefersDark ? "dark" : "light");
+    applyTheme(
+      prefersDark ? "dark" : "light"
+    );
   }
 
   if (themeButton) {
-    themeButton.addEventListener("click", () => {
-      const isDark =
-        document.body.classList.contains("dark");
+    themeButton.addEventListener(
+      "click",
+      () => {
+        const isDark =
+          document.body.classList.contains(
+            "dark"
+          );
 
-      applyTheme(isDark ? "light" : "dark");
-    });
+        applyTheme(
+          isDark ? "light" : "dark"
+        );
+      }
+    );
   }
 
   /* =========================================================
-     LANGUAGE BUTTON
-     
-     Keeps the current site's simple language behavior.
+     LANGUAGE
      ========================================================= */
 
   let isEnglish = false;
 
   function updateLanguage() {
-    const translations = {
-      zh: {
-        gallery: "相簿",
-        about: "關於我",
-        contact: "聯絡",
-        back: "← 返回相簿"
-      },
-      en: {
-        gallery: "Gallery",
-        about: "About",
-        contact: "Contact",
-        back: "← Back to albums"
-      }
-    };
-
-    const lang = isEnglish
-      ? translations.en
-      : translations.zh;
-
-    const galleryLink = document.querySelector(
-      'a[href="#gallery"]'
+    const links = document.querySelectorAll(
+      'a[href="#gallery"], a[href="#about"], a[href="#contact"]'
     );
 
-    const aboutLink = document.querySelector(
-      'a[href="#about"]'
-    );
+    if (links.length >= 3) {
+      links[0].textContent =
+        isEnglish ? "Gallery" : "相簿";
 
-    const contactLink = document.querySelector(
-      'a[href="#contact"]'
-    );
+      links[1].textContent =
+        isEnglish ? "About" : "關於我";
 
-    if (galleryLink) {
-      galleryLink.textContent = lang.gallery;
-    }
-
-    if (aboutLink) {
-      aboutLink.textContent = lang.about;
-    }
-
-    if (contactLink) {
-      contactLink.textContent = lang.contact;
+      links[2].textContent =
+        isEnglish ? "Contact" : "聯絡";
     }
 
     if (backButton) {
-      backButton.textContent = lang.back;
+      backButton.textContent =
+        isEnglish
+          ? "← Back to albums"
+          : "← 返回相簿";
     }
 
     if (langButton) {
-      langButton.textContent = isEnglish ? "中" : "EN";
+      langButton.textContent =
+        isEnglish ? "中" : "EN";
     }
 
     document.documentElement.lang =
@@ -708,10 +727,13 @@
   }
 
   if (langButton) {
-    langButton.addEventListener("click", () => {
-      isEnglish = !isEnglish;
-      updateLanguage();
-    });
+    langButton.addEventListener(
+      "click",
+      () => {
+        isEnglish = !isEnglish;
+        updateLanguage();
+      }
+    );
   }
 
   /* =========================================================
@@ -724,20 +746,23 @@
     mobileMenu.classList.remove("open");
 
     if (menuButton) {
-      menuButton.setAttribute("aria-expanded", "false");
+      menuButton.setAttribute(
+        "aria-expanded",
+        "false"
+      );
     }
   }
 
   function toggleMobileMenu() {
     if (!mobileMenu) return;
 
-    const isOpen =
+    const opened =
       mobileMenu.classList.toggle("open");
 
     if (menuButton) {
       menuButton.setAttribute(
         "aria-expanded",
-        String(isOpen)
+        String(opened)
       );
     }
   }
@@ -749,25 +774,34 @@
     );
   }
 
-  $$(".mobile-menu a").forEach((link) => {
-    link.addEventListener("click", () => {
-      closeMobileMenu();
+  document
+    .querySelectorAll(".mobile-menu a")
+    .forEach((link) => {
+      link.addEventListener(
+        "click",
+        closeMobileMenu
+      );
     });
-  });
 
-  document.addEventListener("click", (event) => {
-    if (!mobileMenu || !menuButton) return;
+  document.addEventListener(
+    "click",
+    (event) => {
+      if (
+        !mobileMenu ||
+        !menuButton
+      ) {
+        return;
+      }
 
-    const target = event.target;
-
-    if (
-      mobileMenu.classList.contains("open") &&
-      !mobileMenu.contains(target) &&
-      !menuButton.contains(target)
-    ) {
-      closeMobileMenu();
+      if (
+        mobileMenu.classList.contains("open") &&
+        !mobileMenu.contains(event.target) &&
+        !menuButton.contains(event.target)
+      ) {
+        closeMobileMenu();
+      }
     }
-  });
+  );
 
   /* =========================================================
      SCROLL PROGRESS
@@ -780,20 +814,23 @@
       window.scrollY ||
       document.documentElement.scrollTop;
 
-    const documentHeight =
+    const total =
       document.documentElement.scrollHeight -
       window.innerHeight;
 
-    if (documentHeight <= 0) {
+    if (total <= 0) {
       progress.style.width = "0%";
       return;
     }
 
     const percentage =
-      (scrollTop / documentHeight) * 100;
+      (scrollTop / total) * 100;
 
     progress.style.width =
-      `${Math.min(100, Math.max(0, percentage))}%`;
+      `${Math.max(
+        0,
+        Math.min(100, percentage)
+      )}%`;
   }
 
   window.addEventListener(
@@ -813,7 +850,7 @@
      ========================================================= */
 
   if (cursorGlow) {
-    let cursorFrame = null;
+    let frame = null;
     let mouseX = 0;
     let mouseY = 0;
 
@@ -823,33 +860,22 @@
         mouseX = event.clientX;
         mouseY = event.clientY;
 
-        if (cursorFrame) return;
+        if (frame) return;
 
-        cursorFrame = requestAnimationFrame(() => {
-          cursorGlow.style.left = `${mouseX}px`;
-          cursorGlow.style.top = `${mouseY}px`;
+        frame =
+          requestAnimationFrame(() => {
+            cursorGlow.style.left =
+              `${mouseX}px`;
 
-          cursorFrame = null;
-        });
+            cursorGlow.style.top =
+              `${mouseY}px`;
+
+            frame = null;
+          });
       },
       { passive: true }
     );
   }
-
-  /* =========================================================
-     IMAGE ERROR HANDLING
-     ========================================================= */
-
-  document.addEventListener("error", (event) => {
-    const target = event.target;
-
-    if (
-      target instanceof HTMLImageElement &&
-      target.closest(".photo-tile")
-    ) {
-      target.style.opacity = "0.25";
-    }
-  }, true);
 
   /* =========================================================
      INITIALIZE
