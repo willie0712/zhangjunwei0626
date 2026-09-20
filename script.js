@@ -1,56 +1,894 @@
-const albums=[
-{id:'yilan',zh:'宜蘭一日遊（二信校外教學）',en:'Yilan Day Trip (School Field Trip)',count:72},
-{id:'after',zh:'休學後的照片',en:'Photos After Leaving School',count:55},
-{id:'tamsui',zh:'北投淡水一日遊',en:'Beitou & Tamsui Day Trip',count:20}
+/* =========================================================
+   Willie Zhang — Photography & Life
+   Gallery / Lightbox / Language / Theme
+   ========================================================= */
+
+const albums = [
+  {
+    id: "yilan",
+    name: "宜蘭一日遊（二信校外教學）",
+    nameEN: "Yilan Day Trip",
+    count: 72
+  },
+  {
+    id: "after",
+    name: "休學後的照片",
+    nameEN: "Photos After Leaving School",
+    count: 55
+  },
+  {
+    id: "tamsui",
+    name: "北投淡水一日遊",
+    nameEN: "Beitou & Tamsui Day Trip",
+    count: 20
+  }
 ];
-const urls={yilan:['https://i.ibb.co/gZGdKczn/IMG-8504.jpg','https://i.ibb.co/DPmQX76w/IMG-8505.jpg','https://i.ibb.co/1YHpVNhQ/IMG-8506.jpg','https://i.ibb.co/nNzpLnN9/IMG-8508.jpg','https://i.ibb.co/5hGtQhZw/IMG-8509.jpg','https://i.ibb.co/Q7GGhjb7/IMG-8510.jpg','https://i.ibb.co/YFhMvhCR/IMG-8511.jpg','https://i.ibb.co/KpHH66fT/IMG-8512.jpg','https://i.ibb.co/yc9JHF2T/IMG-8519.jpg','https://i.ibb.co/gZ41SFSx/IMG-8521.jpg','https://i.ibb.co/rf5Rj83k/IMG-8522.jpg','https://i.ibb.co/78Qknkt/IMG-8523.jpg','https://i.ibb.co/XxZ8Rq0G/IMG-8524.jpg','https://i.ibb.co/rf4WvTbM/IMG-8525.jpg','https://i.ibb.co/cp6GYBn/IMG-8527.jpg','https://i.ibb.co/N6nzHfWv/IMG-8528.jpg','https://i.ibb.co/MHtQd20/IMG-8529.jpg','https://i.ibb.co/XxY1PGSP/IMG-8530.jpg','https://i.ibb.co/XrBHRPPg/IMG-8541.jpg','https://i.ibb.co/C5KQWq7f/IMG-8542.jpg','https://i.ibb.co/gMkfGrMh/IMG-8543.jpg','https://i.ibb.co/vvM82tJ9/IMG-8545.jpg','https://i.ibb.co/6cP6N9T4/IMG-8546.jpg','https://i.ibb.co/mrTjgZ3r/IMG-8450.jpg','https://i.ibb.co/5grvzMVK/IMG-8451.jpg','https://i.ibb.co/HpT1Lkkg/IMG-8452.jpg','https://i.ibb.co/v4LCG4pk/IMG-8453.jpg','https://i.ibb.co/5WWYXL8c/IMG-8454.jpg','https://i.ibb.co/cGsF2D6/IMG-8455.jpg','https://i.ibb.co/39hRJQCB/IMG-8458.jpg','https://i.ibb.co/vv11YV6z/IMG-8459.jpg','https://i.ibb.co/HDgC2Sdb/IMG-8460.jpg','https://i.ibb.co/bMTf5Fx0/IMG-8461.jpg','https://i.ibb.co/cXVn3psw/IMG-8462.jpg','https://i.ibb.co/tpjPwMGj/IMG-8463.jpg','https://i.ibb.co/RTJ9s67m/IMG-8466.jpg','https://i.ibb.co/LDppq3Kh/IMG-8467.jpg','https://i.ibb.co/bMgH2nGd/IMG-8468.jpg','https://i.ibb.co/B5Bkcths/IMG-8469.jpg','https://i.ibb.co/zHW2QsFS/IMG-8470.jpg','https://i.ibb.co/hFkfvGYW/IMG-8471.jpg','https://i.ibb.co/tw38rmS2/IMG-8472.jpg','https://i.ibb.co/xtkVjNzh/IMG-8473.jpg','https://i.ibb.co/93psc7qY/IMG-8474.jpg','https://i.ibb.co/Pv4wM5Yd/IMG-8475.jpg','https://i.ibb.co/jPRNJQ2g/IMG-8476.jpg','https://i.ibb.co/svHTbSgz/IMG-8477.jpg','https://i.ibb.co/vCL93Tkm/IMG-8478.jpg','https://i.ibb.co/sTSSmCt/IMG-8479.jpg','https://i.ibb.co/NbdYS20/IMG-8481.jpg','https://i.ibb.co/VYNg3wm2/IMG-8482.jpg','https://i.ibb.co/p6fKqvc0/IMG-8483.jpg','https://i.ibb.co/KxMVq0Hg/IMG-8484.jpg','https://i.ibb.co/4vyFnW4/IMG-8485.jpg','https://i.ibb.co/1Gchr7mG/IMG-8486.jpg','https://i.ibb.co/twYxBnK2/IMG-8487.jpg','https://i.ibb.co/6z6qfZ1/IMG-8488.jpg','https://i.ibb.co/XZfHmyS5/IMG-8489.jpg','https://i.ibb.co/wZmms6fP/IMG-8490.jpg','https://i.ibb.co/v6LYxx9R/IMG-8491.jpg','https://i.ibb.co/rfHWFFNx/IMG-8492.jpg','https://i.ibb.co/BKZDxb0v/IMG-8493.jpg','https://i.ibb.co/TD4j4gcX/IMG-8494.jpg','https://i.ibb.co/0j90n3hp/IMG-8495.jpg','https://i.ibb.co/HSMf6mr/IMG-8496.jpg','https://i.ibb.co/bjvvbj2b/IMG-8497.jpg','https://i.ibb.co/fYbcLFkT/IMG-8498.jpg','https://i.ibb.co/FLBXrdpD/IMG-8499.jpg','https://i.ibb.co/RkhpJMzX/IMG-8500.jpg','https://i.ibb.co/99GYN6pW/IMG-8501.jpg','https://i.ibb.co/pjR1yy5K/IMG-8502.jpg','https://i.ibb.co/ymFJr7Qm/IMG-8503.jpg'],after:['https://i.ibb.co/SDFZ3thL/IMG-2203.jpg','https://i.ibb.co/hJ52VS2y/IMG-2191.jpg','https://i.ibb.co/9HZ7DbbG/IMG-2204.jpg','https://i.ibb.co/KzqBcsZc/IMG-2234.jpg','https://i.ibb.co/nMxp4C52/IMG-2237.jpg','https://i.ibb.co/hQrGxGL/IMG-2266.jpg','https://i.ibb.co/k2vgMJc7/IMG-2283.jpg','https://i.ibb.co/xKdcrBch/IMG-2288.jpg','https://i.ibb.co/bjdC8Qp6/IMG001.jpg','https://i.ibb.co/nqYGBMgs/IMG-2291.jpg','https://i.ibb.co/3mQP2X5W/IMG002.jpg','https://i.ibb.co/m5yrHd22/IMG003.jpg','https://i.ibb.co/0VhL8W7D/IMG004.jpg','https://i.ibb.co/RRJrJ85/IMG005.jpg','https://i.ibb.co/zTBZG5xX/IMG006.jpg','https://i.ibb.co/pjpTtyj9/IMG007.jpg','https://i.ibb.co/pj4RGXwT/IMG008.jpg','https://i.ibb.co/ds5xQ2hV/IMG009.jpg','https://i.ibb.co/zTY5M19g/IMG0010.jpg','https://i.ibb.co/fYWhqK4m/IMG0011.jpg','https://i.ibb.co/8g8Csrr4/IMG0012.jpg','https://i.ibb.co/YvjQqSD/IMG0013.jpg','https://i.ibb.co/k6hG0q9G/IMG0014.jpg','https://i.ibb.co/bMZhtZZt/IMG0015.jpg','https://i.ibb.co/jPwYjqzc/IMG0016.jpg','https://i.ibb.co/5gKPVtrQ/IMG-1413.jpg','https://i.ibb.co/fz9RNd2p/IMG-1414.jpg','https://i.ibb.co/BVK5ygdK/IMG-1419.jpg','https://i.ibb.co/BKtHz7p4/IMG-1422.jpg','https://i.ibb.co/1tXY0JPk/IMG-1423.jpg','https://i.ibb.co/qYSS5WLw/IMG-1424.jpg','https://i.ibb.co/KcC5rzDM/IMG-1426.jpg','https://i.ibb.co/jPPGys2D/IMG-1428.jpg','https://i.ibb.co/whmksfKH/IMG-1429.jpg','https://i.ibb.co/DX9dh30/IMG-1430.jpg','https://i.ibb.co/RT0Btg6S/IMG-1431.jpg','https://i.ibb.co/5g3sjv1Z/IMG-1432.jpg','https://i.ibb.co/mVpnLQcL/IMG-1604.jpg','https://i.ibb.co/rGPzwds1/IMG-1606.jpg','https://i.ibb.co/V0b1Vh3W/IMG-1637.jpg','https://i.ibb.co/kVgTxdpx/IMG-1638.jpg','https://i.ibb.co/m53ht0zW/IMG-1641.jpg','https://i.ibb.co/3YMFdPfN/IMG-1639.jpg','https://i.ibb.co/p64m0qXw/IMG-1642.jpg','https://i.ibb.co/HLhHNDZ5/IMG-1772.jpg','https://i.ibb.co/dsghtDNy/IMG-1773.jpg','https://i.ibb.co/1YL1fg9W/IMG-1798.jpg','https://i.ibb.co/nqHwjgmC/IMG-2144.jpg','https://i.ibb.co/Wv2brHdY/IMG-2145.jpg','https://i.ibb.co/BK4th8Hk/IMG-2146.jpg','https://i.ibb.co/TM4vq7tN/IMG-2147.jpg','https://i.ibb.co/WhnTtd7/IMG-2148.jpg','https://i.ibb.co/0jF0f37R/IMG-2153.jpg','https://i.ibb.co/V083bKdN/IMG-2174.jpg','https://i.ibb.co/HpHXS3qN/IMG-2190.jpg'],tamsui:['https://i.ibb.co/Lhvvbrqb/IMG-7604.jpg','https://i.ibb.co/x8HPp3m6/IMG-7606.jpg','https://i.ibb.co/mF4h6F4J/IMG-7607.jpg','https://i.ibb.co/PvqZYGrL/IMG-7622.jpg','https://i.ibb.co/DPzKmTLQ/IMG-7627.jpg','https://i.ibb.co/35f9gvZs/IMG-7628.jpg','https://i.ibb.co/rPZ59SW/IMG-7643.jpg','https://i.ibb.co/k2PNwv7c/IMG-7646.jpg','https://i.ibb.co/N2QnMSfw/IMG-7649.jpg','https://i.ibb.co/nNdcc1N9/IMG-7650.jpg','https://i.ibb.co/PZBqtDMm/IMG-7651.jpg','https://i.ibb.co/gbkHtxLG/IMG-7652.jpg','https://i.ibb.co/zHRRJhx9/IMG-7653.jpg','https://i.ibb.co/LDtdcrhL/IMG-7654.jpg','https://i.ibb.co/dJMkn4fj/IMG-7655.jpg','https://i.ibb.co/WW4x1B6F/IMG-7561.jpg','https://i.ibb.co/N6F8c36V/IMG-7598.jpg','https://i.ibb.co/zVHvk8yz/IMG-7599.jpg','https://i.ibb.co/27PZNSMD/IMG-7600.jpg','https://i.ibb.co/4RQ2PBTZ/IMG-7603.jpg']};
 
-let active=null,index=0;
-let currentLang=localStorage.getItem('willie-language')||'en';
-const albumsGrid=document.querySelector('#albumsGrid'),photoView=document.querySelector('#photoView'),photoGrid=document.querySelector('#photoGrid');
-const title=document.querySelector('#photoViewTitle'),counter=document.querySelector('#photoCounter');
-const box=document.querySelector('#lightbox'),img=document.querySelector('#lightboxImg'),lbTitle=document.querySelector('#lightboxTitle'),lbCounter=document.querySelector('#lightboxCounter');
+const urls = {
+  yilan: [
+    "https://i.ibb.co/nNNdw4vN/IMG-8481.jpg",
+    "https://i.ibb.co/VYh5my4y/IMG-8479.jpg",
+    "https://i.ibb.co/ZpnRtxXf/IMG-8482.jpg",
+    "https://i.ibb.co/Qj3rgVbk/IMG-8483.jpg",
+    "https://i.ibb.co/dsMvnfgK/IMG-8484.jpg",
+    "https://i.ibb.co/hRk0HzKj/IMG-8485.jpg",
+    "https://i.ibb.co/JwC1XnS4/IMG-8486.jpg",
+    "https://i.ibb.co/kgTVZTHh/IMG-8487.jpg",
+    "https://i.ibb.co/4RF0jQ36/IMG-8488.jpg",
+    "https://i.ibb.co/qMpgP6fs/IMG-8489.jpg",
+    "https://i.ibb.co/qMvT8RKZ/IMG-8490.jpg",
+    "https://i.ibb.co/sdxMrpr0/IMG-8491.jpg",
+    "https://i.ibb.co/TDkHQ7Jy/IMG-8492.jpg",
+    "https://i.ibb.co/qFs7jjZ6/IMG-8493.jpg",
+    "https://i.ibb.co/21p2xk2r/IMG-8494.jpg",
+    "https://i.ibb.co/1G31Sqpz/IMG-8495.jpg",
+    "https://i.ibb.co/vxKZLvKM/IMG-8496.jpg",
+    "https://i.ibb.co/YBLH7VXy/IMG-8497.jpg",
+    "https://i.ibb.co/d0KKgc8h/IMG-8498.jpg",
+    "https://i.ibb.co/jZQXjRH5/IMG-8499.jpg",
+    "https://i.ibb.co/7dmHLGw2/IMG-8500.jpg",
+    "https://i.ibb.co/LzThF0Qd/IMG-8501.jpg",
+    "https://i.ibb.co/XfXNdGJK/IMG-8502.jpg",
+    "https://i.ibb.co/dJtpW5Qq/IMG-8503.jpg",
+    "https://i.ibb.co/Fk0SXxjD/IMG-8504.jpg",
+    "https://i.ibb.co/hF2RnFxc/IMG-8505.jpg",
+    "https://i.ibb.co/3mrw18H9/IMG-8506.jpg",
+    "https://i.ibb.co/SDwgjP4N/IMG-8508.jpg",
+    "https://i.ibb.co/QvZd3msw/IMG-8509.jpg",
+    "https://i.ibb.co/rqgBWfF/IMG-8510.jpg",
+    "https://i.ibb.co/YFjjghjY/IMG-8511.jpg",
+    "https://i.ibb.co/WNSLGzmt/IMG-8512.jpg",
+    "https://i.ibb.co/29KdP53/IMG-8519.jpg",
+    "https://i.ibb.co/VcTpfvtC/IMG-8521.jpg",
+    "https://i.ibb.co/5m4JQz2/IMG-8522.jpg",
+    "https://i.ibb.co/BHsj3CRx/IMG-8523.jpg",
+    "https://i.ibb.co/S4mckCP1/IMG-8524.jpg",
+    "https://i.ibb.co/dwGjdXHB/IMG-8525.jpg",
+    "https://i.ibb.co/1fg0ytDH/IMG-8527.jpg",
+    "https://i.ibb.co/Pzj8rGBP/IMG-8528.jpg",
+    "https://i.ibb.co/S7Xq03Pt/IMG-8529.jpg",
+    "https://i.ibb.co/xqd6yxsc/IMG-8530.jpg",
+    "https://i.ibb.co/6cMLSS8K/IMG-8541.jpg",
+    "https://i.ibb.co/mC4SqxY9/IMG-8542.jpg",
+    "https://i.ibb.co/mCdQ568y/IMG-8543.jpg",
+    "https://i.ibb.co/d4LMXXJG/IMG-8545.jpg",
+    "https://i.ibb.co/Lhh2k9ch/IMG-8546.jpg",
+    "https://i.ibb.co/Pb2Gp2P/IMG-8450.jpg",
+    "https://i.ibb.co/cKRkL4vW/IMG-8451.jpg",
+    "https://i.ibb.co/20Dc0Smt/IMG-8452.jpg",
+    "https://i.ibb.co/DHR1psSz/IMG-8453.jpg",
+    "https://i.ibb.co/23tYnw1C/IMG-8454.jpg",
+    "https://i.ibb.co/HTm3YFsx/IMG-8455.jpg",
+    "https://i.ibb.co/kgy4DmcY/IMG-8458.jpg",
+    "https://i.ibb.co/JjtrQSkT/IMG-8459.jpg",
+    "https://i.ibb.co/fdY5rf3v/IMG-8460.jpg",
+    "https://i.ibb.co/WWpYdJxp/IMG-8461.jpg",
+    "https://i.ibb.co/bYL1Twc/IMG-8462.jpg",
+    "https://i.ibb.co/7NW4xc8h/IMG-8463.jpg",
+    "https://i.ibb.co/RkFF4PzK/IMG-8466.jpg",
+    "https://i.ibb.co/Z1756m5F/IMG-8467.jpg",
+    "https://i.ibb.co/99ZhCXD2/IMG-8468.jpg",
+    "https://i.ibb.co/tw1FmMc4/IMG-8469.jpg",
+    "https://i.ibb.co/qFrnFGkV/IMG-8470.jpg",
+    "https://i.ibb.co/GvG19v4D/IMG-8471.jpg",
+    "https://i.ibb.co/pB1354Mg/IMG-8472.jpg",
+    "https://i.ibb.co/Wjy4NKN/IMG-8473.jpg",
+    "https://i.ibb.co/5h2G2jwS/IMG-8474.jpg",
+    "https://i.ibb.co/6c5Jb5mC/IMG-8475.jpg",
+    "https://i.ibb.co/YTpyd6jP/IMG-8476.jpg",
+    "https://i.ibb.co/spfc1vgm/IMG-8477.jpg",
+    "https://i.ibb.co/84LwsPb7/IMG-8478.jpg"
+  ],
 
-const T={
- en:{
-  nav:['About','Life','Photography','Games','Places','Future','Contact'],
-  status:'Recording 2026', heroDesc:'I like walking around with a camera and turning ordinary days into something that feels like mine. Sometimes I take photos, sometimes I play games, and sometimes I do nothing at all. This is where I keep those days.',
-  viewPhotos:'View my photos', instagram:'Instagram ↗', scroll:'SCROLL TO EXPLORE',
-  aboutTitle:'I am not very good at introducing myself, <span>but I like to remember things.</span>',
-  aboutP1:'I am 18 years old and still a student at Er Xin Senior High School. Rather than formally explaining who I am, I prefer to let photos, videos, and little pieces of everyday life tell the story. Keelung is where I live. Rainy streets, views on the way home, and time spent going out with friends may seem ordinary, but those are the things I want to keep the most.',
-  aboutP2:'I am also slowly learning video editing. I hope that one day I can turn the scenes in my head into something real. It does not have to be amazing — I just want it to feel like my own work.',
-  facts:['YEARS OLD','PHOTOS','TAIWAN'],
-  lifeLabel:'A LITTLE ABOUT MY LIFE',lifeTitle:'This is <span>what life looks like lately.</span>',
-  life:[['Photography','I do not really have a fixed rule about what to photograph. Sometimes a light or shadow catches my eye and I stop. Sometimes I just think the sky looks beautiful.'],['Editing','I have been slowly learning CapCut. From rhythm and transitions to matching music, I am figuring things out one step at a time.'],['Friends','I really value the friends I can talk to and go out with. A lot of moments that feel funny now may become the memories worth keeping years later.']],
-  galleryLabel:'PHOTOGRAPHY',galleryTitle:'Keeping <span>days worth remembering</span>.',galleryDesc:'This is not a professional photography portfolio. It is a collection of places I have been, people I have met, and moments that simply felt worth keeping.',
-  back:'← Back to albums', photos:'PHOTOS',
-  gamingLabel:'GAMING',gamingTitle:'Some nights, <span>I do not pick up the camera.</span>',gamingDesc:'Games have been part of my life for a long time. From playing all the time to occasionally joining friends now, they are not just games anymore — they are part of many memories.',
-  games:[['Roblox','2019 — NOW','One of my earliest gaming memories. There are so many maps and ways to play, but the best part is how something strange always happens when playing with friends.'],['Minecraft','2022 — NOW','A game with no fixed answer. Sometimes I build, sometimes I wander around, simply enjoying the feeling of deciding what to do next.'],['Asphalt 9','2025 — NOW','I like the sense of speed and those moments when an overtake comes down to the smallest difference.'],['Pixel Gun 3D','2025 — NOW','Pixel-style visuals and fast-paced gameplay make it an easy way to relax for a while.'],['WePlay','2025 — NOW','Casual time with friends, with plenty of memories from the conversations and interactions beyond the games themselves.'],['Speed Drifters','2025 — NOW','I like racing, drifting, and the rhythm of high-speed competition.']],
-  mapLabel:'MY MAP',mapTitle:'Places I have been <span>also stay on the map.</span>',mapDesc:'Starting from Keelung, I am slowly marking the places connected to photography, trips, and everyday life.',map:['KEELUNG · HOME','YILAN · SCHOOL TRIP','BEITOU · DAY TRIP','TAMSUI · DAY TRIP','FULONG · LIFE','SHIMEN · LIFE','DAJIA · LIFE'],
-  goalsLabel:"WHAT'S NEXT",goalsTitle:'Keep moving <span>forward.</span>',goals:[['Make my photography better','Not just taking good-looking photos, but learning why I want to take each one.'],['Really learn editing','I hope one day I can stop wondering how to make an effect and simply turn the scene in my head into something real.'],['Finish the last stretch of high school well','Finish what needs to be done, and keep the memories from these years.'],['Meet more people','Not everyone will stay around forever, but every person I meet can become part of a story.']],
-  contactLabel:'SAY HELLO',contactTitle:'If you made it here, <span>thank you.</span>',contactDesc:'This website is only a small part of my life right now. I will keep adding photos, stories, and new things.',discord:'Discord',footer:'Made with curiosity, memories and a little bit of chaos.',location:'Keelung, Taiwan',copy:'Discord copied'
- },
- zh:{
-  nav:['關於我','生活','攝影','遊戲','地圖','未來','聯絡'],status:'目前正在記錄 2026',heroDesc:'我喜歡拿著相機到處走，也喜歡把平凡的生活剪成自己喜歡的樣子。有時候拍照，有時候打遊戲，有時候什麼都不做。這裡就是我把這些日子留下來的地方。',viewPhotos:'看看我的照片',instagram:'Instagram ↗',scroll:'SCROLL TO EXPLORE',aboutTitle:'我不是很會介紹自己，<span>但我喜歡記錄。</span>',aboutP1:'今年 18 歲，目前還是二信的學生。比起很正式地介紹「我是誰」，我更喜歡讓照片、影片和生活裡留下來的東西慢慢說明。基隆是我每天生活的地方。下雨的街道、放學路上的風景、和朋友一起出去的時間，這些看起來很普通的事情，反而是我最想留下來的東西。',aboutP2:'我現在也在慢慢學剪輯，希望有一天可以把腦袋裡想像的畫面真的做出來。不一定要多厲害，但至少是屬於自己的作品。',facts:['YEARS OLD','PHOTOS','TAIWAN'],lifeLabel:'最近的我',lifeTitle:'最近的我，<span>大概是這樣。</span>',life:[['攝影','我沒有什麼「一定要拍什麼」的規則。有時候看到一個光影很好看，就會停下來拍。有時候只是覺得今天的天空很漂亮。'],['剪輯','最近正在慢慢摸索 CapCut。從節奏、轉場到音樂搭配，一點一點把自己想做的東西做出來。'],['朋友','我很珍惜一起聊天、出去玩的朋友。很多現在覺得好笑的回憶，過幾年可能反而會變成最值得留下的東西。']],galleryLabel:'PHOTOGRAPHY',galleryTitle:'把一些 <span>值得記住的日子</span> 留下來。',galleryDesc:'這裡放的不是什麼專業攝影作品集，而是我這幾年走過的地方、遇過的人，以及一些當下覺得「這一刻很好看」的畫面。',back:'← 返回相簿',photos:'PHOTOS',gamingLabel:'GAMING',gamingTitle:'有些夜晚，<span>不是拿相機。</span>',gamingDesc:'遊戲其實陪了我很長一段時間。從以前一直玩，到現在偶爾和朋友開一下，已經不只是「遊戲」這麼簡單，而是很多回憶的一部分。',games:[['Roblox','2019 — NOW','最早期的遊戲回憶之一。地圖很多、玩法很多，最重要的是和朋友一起玩時總會發生一些奇怪的事情。'],['Minecraft','2022 — NOW','沒有固定答案的遊戲。有時候蓋東西，有時候到處亂跑，單純享受自己決定下一步的感覺。'],['Asphalt 9','2025 — NOW','喜歡速度感和那種只差一點點就能超車的瞬間。'],['Pixel Gun 3D','2025 — NOW','像素風格加上快節奏玩法，偶爾玩一下就是很直接的放鬆。'],['WePlay','2025 — NOW','和朋友一起玩的休閒時光，遊戲之外也留下不少聊天和互動的回憶。'],['極速領域','2025 — NOW','喜歡賽車、漂移和高速對戰帶來的節奏感。']],mapLabel:'MY MAP',mapTitle:'走過的地方，<span>也留在地圖上。</span>',mapDesc:'從基隆出發，把拍照、出遊和生活裡去過的地方慢慢標記下來。',map:['KEELUNG · HOME','YILAN · SCHOOL TRIP','BEITOU · DAY TRIP','TAMSUI · DAY TRIP','FULONG · LIFE','SHIMEN · LIFE','DAJIA · LIFE'],goalsLabel:"WHAT'S NEXT",goalsTitle:'接下來，<span>繼續往前走。</span>',goals:[['把攝影拍得更好','不只是拍得好看，而是開始知道自己為什麼想拍這一張。'],['把剪輯真正學起來','希望有一天可以不用一直想著「這個效果怎麼做」，而是直接把腦中的畫面做出來。'],['好好走完高中最後一段','把該完成的事情完成，也把這幾年的回憶好好留下來。'],['認識更多人','不一定每個人都會一直留在身邊，但每一次認識，都可能成為故事的一部分。']],contactLabel:'SAY HELLO',contactTitle:'如果你來到了這裡，<span>謝謝你。</span>',contactDesc:'這個網站只是我目前生活的一小部分。之後還會繼續更新照片、故事和新的東西。',discord:'Discord',footer:'Made with curiosity, memories and a little bit of chaos.',location:'Keelung, Taiwan',copy:'Discord 已複製'
- }
+  after: [
+    "https://i.ibb.co/SDFZ3thL/IMG-2203.jpg",
+    "https://i.ibb.co/hJ52VS2y/IMG-2191.jpg",
+    "https://i.ibb.co/9HZ7DbbG/IMG-2204.jpg",
+    "https://i.ibb.co/KzqBcsZc/IMG-2234.jpg",
+    "https://i.ibb.co/nMxp4C52/IMG-2237.jpg",
+    "https://i.ibb.co/hQrGxGL/IMG-2266.jpg",
+    "https://i.ibb.co/k2vgMJc7/IMG-2283.jpg",
+    "https://i.ibb.co/xKdcrBch/IMG-2288.jpg",
+    "https://i.ibb.co/bjdC8Qp6/IMG001.jpg",
+    "https://i.ibb.co/nqYGBMgs/IMG-2291.jpg",
+    "https://i.ibb.co/3mQP2X5W/IMG002.jpg",
+    "https://i.ibb.co/m5yrHd22/IMG003.jpg",
+    "https://i.ibb.co/0VhL8W7D/IMG004.jpg",
+    "https://i.ibb.co/RRJrJ85/IMG005.jpg",
+    "https://i.ibb.co/zTBZG5xX/IMG006.jpg",
+    "https://i.ibb.co/pjpTtyj9/IMG007.jpg",
+    "https://i.ibb.co/pj4RGXwT/IMG008.jpg",
+    "https://i.ibb.co/ds5xQ2hV/IMG009.jpg",
+    "https://i.ibb.co/zTY5M19g/IMG0010.jpg",
+    "https://i.ibb.co/fYWhqK4m/IMG0011.jpg",
+    "https://i.ibb.co/8g8Csrr4/IMG0012.jpg",
+    "https://i.ibb.co/YvjQqSD/IMG0013.jpg",
+    "https://i.ibb.co/k6hG0q9G/IMG0014.jpg",
+    "https://i.ibb.co/bMZhtZZt/IMG0015.jpg",
+    "https://i.ibb.co/jPwYjqzc/IMG0016.jpg",
+    "https://i.ibb.co/5gKPVtrQ/IMG-1413.jpg",
+    "https://i.ibb.co/fz9RNd2p/IMG-1414.jpg",
+    "https://i.ibb.co/BVK5ygdK/IMG-1419.jpg",
+    "https://i.ibb.co/BKtHz7p4/IMG-1422.jpg",
+    "https://i.ibb.co/1tXY0JPk/IMG-1423.jpg",
+    "https://i.ibb.co/qYSS5WLw/IMG-1424.jpg",
+    "https://i.ibb.co/KcC5rzDM/IMG-1426.jpg",
+    "https://i.ibb.co/jPPGys2D/IMG-1428.jpg",
+    "https://i.ibb.co/whmksfKH/IMG-1429.jpg",
+    "https://i.ibb.co/DX9dh30/IMG-1430.jpg",
+    "https://i.ibb.co/RT0Btg6S/IMG-1431.jpg",
+    "https://i.ibb.co/5g3sjv1Z/IMG-1432.jpg",
+    "https://i.ibb.co/mVpnLQcL/IMG-1604.jpg",
+    "https://i.ibb.co/rGPzwds1/IMG-1606.jpg",
+    "https://i.ibb.co/V0b1Vh3W/IMG-1637.jpg",
+    "https://i.ibb.co/kVgTxdpx/IMG-1638.jpg",
+    "https://i.ibb.co/m53ht0zW/IMG-1641.jpg",
+    "https://i.ibb.co/3YMFdPfN/IMG-1639.jpg",
+    "https://i.ibb.co/p64m0qXw/IMG-1642.jpg",
+    "https://i.ibb.co/HLhHNDZ5/IMG-1772.jpg",
+    "https://i.ibb.co/dsghtDNy/IMG-1773.jpg",
+    "https://i.ibb.co/1YL1fg9W/IMG-1798.jpg",
+    "https://i.ibb.co/nqHwjgmC/IMG-2144.jpg",
+    "https://i.ibb.co/Wv2brHdY/IMG-2145.jpg",
+    "https://i.ibb.co/BK4th8Hk/IMG-2146.jpg",
+    "https://i.ibb.co/TM4vq7tN/IMG-2147.jpg",
+    "https://i.ibb.co/WhnTtd7/IMG-2148.jpg",
+    "https://i.ibb.co/0jF0f37R/IMG-2153.jpg",
+    "https://i.ibb.co/V083bKdN/IMG-2174.jpg",
+    "https://i.ibb.co/HpHXS3qN/IMG-2190.jpg"
+  ],
+
+  tamsui: [
+    "https://i.ibb.co/Lhvvbrqb/IMG-7604.jpg",
+    "https://i.ibb.co/x8HPp3m6/IMG-7606.jpg",
+    "https://i.ibb.co/mF4h6F4J/IMG-7607.jpg",
+    "https://i.ibb.co/PvqZYGrL/IMG-7622.jpg",
+    "https://i.ibb.co/DPzKmTLQ/IMG-7627.jpg",
+    "https://i.ibb.co/35f9gvZs/IMG-7628.jpg",
+    "https://i.ibb.co/rPZ59SW/IMG-7643.jpg",
+    "https://i.ibb.co/k2PNwv7c/IMG-7646.jpg",
+    "https://i.ibb.co/N2QnMSfw/IMG-7649.jpg",
+    "https://i.ibb.co/nNdcc1N9/IMG-7650.jpg",
+    "https://i.ibb.co/PZBqtDMm/IMG-7651.jpg",
+    "https://i.ibb.co/gbkHtxLG/IMG-7652.jpg",
+    "https://i.ibb.co/zHRRJhx9/IMG-7653.jpg",
+    "https://i.ibb.co/LDtdcrhL/IMG-7654.jpg",
+    "https://i.ibb.co/dJMkn4fj/IMG-7655.jpg",
+    "https://i.ibb.co/WW4x1B6F/IMG-7561.jpg",
+    "https://i.ibb.co/N6F8c36V/IMG-7598.jpg",
+    "https://i.ibb.co/zVHvk8yz/IMG-7599.jpg",
+    "https://i.ibb.co/27PZNSMD/IMG-7600.jpg",
+    "https://i.ibb.co/4RQ2PBTZ/IMG-7603.jpg"
+  ]
 };
-function setText(sel,text,html=false){const el=document.querySelector(sel);if(!el)return;html?el.innerHTML=text:el.textContent=text}
-function setTexts(sel,texts){document.querySelectorAll(sel).forEach((el,i)=>{if(texts[i]!=null)el.textContent=texts[i]})}
-function renderAlbums(){const L=T[currentLang];albumsGrid.innerHTML=albums.map((a,i)=>`<article class="album-card" data-id="${a.id}"><div class="album-number">${String(i+1).padStart(2,'0')}</div><h3>${currentLang==='en'?a.en:a.zh}</h3><p>${a.count} ${L.photos}</p></article>`).join('');albumsGrid.querySelectorAll('.album-card').forEach(c=>c.onclick=()=>openAlbum(c.dataset.id))}
-function openAlbum(id){active=albums.find(a=>a.id===id);title.textContent=currentLang==='en'?active.en:active.zh;counter.textContent=`0 / ${active.count}`;photoView.hidden=false;albumsGrid.parentElement.style.display='none';renderPhotos();photoView.scrollIntoView({behavior:'smooth',block:'start'})}
-function renderPhotos(){const list=urls[active.id]||[];photoGrid.innerHTML='';for(let i=0;i<active.count;i++){const tile=document.createElement('div');tile.className='photo-tile';tile.dataset.i=i;const src=list[i];if(src){const im=document.createElement('img');im.loading='eager';im.decoding='async';im.src=src;im.onerror=()=>{tile.classList.add('photo-error');tile.title=currentLang==='en'?'This image could not be loaded from ImgBB':'圖片目前無法從 ImgBB 載入'};im.alt=`${currentLang==='en'?active.en:active.zh} ${i+1}`;tile.appendChild(im);tile.onclick=()=>openBox(i)}else{tile.innerHTML=`<div class="photo-placeholder">PHOTO ${String(i+1).padStart(2,'0')}</div>`}photoGrid.appendChild(tile)}}
-function applyLanguage(lang){currentLang=lang;localStorage.setItem('willie-language',lang);const L=T[lang];document.documentElement.lang=lang==='en'?'en':'zh-TW';document.title=lang==='en'?'Willie Zhang — Photography & Life':'Willie Zhang — Photography & Life';document.querySelector('#langBtn').textContent=lang==='en'?'中':'EN';
-setTexts('.desktop-nav a',L.nav);setTexts('.mobile-menu a',L.nav);setText('.hero-label span:last-child',L.status);setText('.hero-description',L.heroDesc);setText('.hero-buttons .button-primary',L.viewPhotos);setText('.hero-buttons .button-secondary',L.instagram);setText('.hero-bottom span:first-child',L.scroll);setText('.about-title h2',L.aboutTitle,true);setTexts('.about-content p',[L.aboutP1,L.aboutP2]);setTexts('.about-facts div span',L.facts);setText('#life .section-label',L.lifeLabel);setText('#life .section-heading h2',L.lifeTitle,true);setTexts('#life .life-card h3',L.life.map(x=>x[0]));setTexts('#life .life-card p',L.life.map(x=>x[1]));setText('#gallery .section-label',L.galleryLabel);setText('#gallery .gallery-heading h2',L.galleryTitle,true);setText('#gallery .gallery-heading p',L.galleryDesc);setText('#backButton',L.back);setText('#gaming .section-label',L.gamingLabel);setText('#gaming .gaming-header h2',L.gamingTitle,true);setText('#gaming .gaming-header p',L.gamingDesc);document.querySelectorAll('.game-item').forEach((el,i)=>{el.querySelector('.game-main h3').innerHTML=L.games[i][0]+(i===5&&lang==='en'?'':'');el.querySelector('.game-main span').textContent=L.games[i][1];el.querySelector('p').textContent=L.games[i][2]});setText('#map .section-label',L.mapLabel);setText('#map .section-heading h2',L.mapTitle,true);setText('#map .section-heading p',L.mapDesc);setTexts('.map-card small',L.map);setText('#goals .section-label',L.goalsLabel);setText('#goals .section-heading h2',L.goalsTitle,true);document.querySelectorAll('.goal').forEach((el,i)=>{el.querySelector('h3').textContent=L.goals[i][0];el.querySelector('p').textContent=L.goals[i][1]});setText('#contact .section-label',L.contactLabel);setText('#contact h2',L.contactTitle,true);setText('#contact .contact-box p',L.contactDesc);setText('.copy-discord span:first-child',L.discord);setText('.footer-main span',L.footer);setTexts('.footer-bottom span',[`© 2026 Willie Zhang`,L.location]);
-if(active){title.textContent=lang==='en'?active.en:active.zh;renderPhotos()}renderAlbums()}
 
-document.querySelector('#backButton').onclick=()=>{photoView.hidden=true;albumsGrid.parentElement.style.display='';window.location.hash='gallery';document.querySelector('#gallery').scrollIntoView({behavior:'smooth'})};
-function openBox(i){const list=urls[active.id]||[];if(!list[i])return;index=i;img.src=list[i];lbTitle.textContent=currentLang==='en'?active.en:active.zh;lbCounter.textContent=`${i+1} / ${active.count}`;box.classList.add('show');box.setAttribute('aria-hidden','false');document.body.style.overflow='hidden'}
-function closeBox(){box.classList.remove('show');box.setAttribute('aria-hidden','true');img.src='';document.body.style.overflow=''}
-function move(n){const list=urls[active.id]||[];let j=index+n;while(j<0)j+=active.count;while(j>=active.count)j-=active.count;if(!list[j])return;index=j;img.src=list[j];lbCounter.textContent=`${j+1} / ${active.count}`}
-document.querySelector('#close').onclick=closeBox;document.querySelector('#prev').onclick=()=>move(-1);document.querySelector('#next').onclick=()=>move(1);box.onclick=e=>{if(e.target===box)closeBox()};document.addEventListener('keydown',e=>{if(!box.classList.contains('show'))return;if(e.key==='Escape')closeBox();if(e.key==='ArrowLeft')move(-1);if(e.key==='ArrowRight')move(1)});
-document.querySelector('#themeBtn').onclick=()=>{document.body.classList.toggle('dark');document.querySelector('#themeBtn').textContent=document.body.classList.contains('dark')?'☀':'☾'};
-document.querySelector('#langBtn').onclick=()=>applyLanguage(currentLang==='en'?'zh':'en');
-document.querySelector('#menuBtn').onclick=()=>document.querySelector('#mobileMenu').classList.toggle('open');document.querySelectorAll('.mobile-menu a').forEach(a=>a.onclick=()=>document.querySelector('#mobileMenu').classList.remove('open'));
-const toast=document.querySelector('#toast');document.querySelector('.copy-discord').onclick=async()=>{const value='hayashi_970626';try{await navigator.clipboard.writeText(value);toast.textContent=T[currentLang].copy;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1600)}catch{toast.textContent=value;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1600)}};
-addEventListener('mousemove',e=>{const g=document.querySelector('.cursor-glow');if(g){g.style.left=e.clientX+'px';g.style.top=e.clientY+'px'}});addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-innerHeight;document.querySelector('#progress').style.width=(h>0?scrollY/h*100:0)+'%'});
-applyLanguage(currentLang);addEventListener('load',()=>setTimeout(()=>document.querySelector('#pageLoader').classList.add('done'),450));
+
+/* =========================================================
+   Language
+   ========================================================= */
+
+const translations = {
+  en: {
+    about: "About",
+    life: "Life",
+    photography: "Photography",
+    games: "Games",
+    map: "Places",
+    future: "Future",
+    contact: "Contact",
+    gallery: "Photography",
+    memories: "Memories",
+    back: "Back",
+    photos: "Photos",
+    places: "Places"
+  },
+
+  zh: {
+    about: "關於我",
+    life: "生活",
+    photography: "攝影",
+    games: "遊戲",
+    map: "地圖",
+    future: "未來",
+    contact: "聯絡",
+    gallery: "攝影",
+    memories: "回憶",
+    back: "返回",
+    photos: "照片",
+    places: "地點"
+  }
+};
+
+
+/* =========================================================
+   State
+   ========================================================= */
+
+let currentLanguage = localStorage.getItem("willie-language") || "en";
+let currentAlbum = null;
+let currentPhotoIndex = 0;
+
+
+/* =========================================================
+   Utility
+   ========================================================= */
+
+function $(selector) {
+  return document.querySelector(selector);
+}
+
+function $$(selector) {
+  return Array.from(document.querySelectorAll(selector));
+}
+
+
+/*
+ * ImgBB thumbnail helper.
+ *
+ * Important:
+ * We do NOT change the original image URL.
+ * The original URL is kept in data-full.
+ *
+ * If ImgBB does not provide a thumbnail variant for a
+ * particular URL, the browser simply falls back to the
+ * original URL.
+ */
+function getThumbnailUrl(url) {
+  if (!url) return "";
+
+  /*
+   * ImgBB's normal direct image URLs are already optimized
+   * by the CDN in many cases.
+   *
+   * We keep the original URL as the actual image source
+   * because changing the filename/path ourselves could
+   * break some existing ImgBB images.
+   */
+  return url;
+}
+
+
+/* =========================================================
+   Gallery
+   ========================================================= */
+
+function renderAlbums() {
+  const container =
+    document.querySelector("#albumGrid") ||
+    document.querySelector(".album-grid") ||
+    document.querySelector("#albums");
+
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  albums.forEach((album) => {
+    const card = document.createElement("button");
+
+    card.className = "album-card";
+    card.type = "button";
+    card.dataset.album = album.id;
+
+    const firstImage = urls[album.id]?.[0] || "";
+
+    card.innerHTML = `
+      <div class="album-image">
+        <img
+          src="${getThumbnailUrl(firstImage)}"
+          alt="${album.nameEN}"
+          loading="lazy"
+          decoding="async"
+        >
+      </div>
+
+      <div class="album-info">
+        <h3 data-zh="${album.name}" data-en="${album.nameEN}">
+          ${currentLanguage === "zh" ? album.name : album.nameEN}
+        </h3>
+
+        <span>
+          ${album.count} ${translations[currentLanguage].photos}
+        </span>
+      </div>
+    `;
+
+    card.addEventListener("click", () => {
+      openAlbum(album.id);
+    });
+
+    container.appendChild(card);
+  });
+}
+
+
+function openAlbum(albumId) {
+  currentAlbum = albumId;
+  currentPhotoIndex = 0;
+
+  const album = albums.find((item) => item.id === albumId);
+  const images = urls[albumId] || [];
+
+  const albumView =
+    document.querySelector("#albumView") ||
+    document.querySelector(".album-view");
+
+  const albumGrid =
+    document.querySelector("#albumPhotoGrid") ||
+    document.querySelector(".photo-grid") ||
+    document.querySelector("#photoGrid");
+
+  if (!albumGrid) return;
+
+  if (albumView) {
+    albumView.classList.add("active");
+  }
+
+  albumGrid.innerHTML = "";
+
+  images.forEach((url, index) => {
+    const item = document.createElement("button");
+
+    item.className = "photo-card";
+    item.type = "button";
+
+    item.innerHTML = `
+      <img
+        src="${getThumbnailUrl(url)}"
+        data-full="${url}"
+        alt="${album?.nameEN || "Photo"} ${index + 1}"
+        loading="lazy"
+        decoding="async"
+        fetchpriority="${index < 4 ? "high" : "auto"}"
+      >
+    `;
+
+    item.addEventListener("click", () => {
+      openLightbox(index);
+    });
+
+    albumGrid.appendChild(item);
+  });
+
+  updateAlbumTitle(album);
+
+  /*
+   * Scroll to the album area without showing a loading message.
+   */
+  if (albumView) {
+    albumView.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }
+}
+
+
+function updateAlbumTitle(album) {
+  if (!album) return;
+
+  const title =
+    document.querySelector("#albumTitle") ||
+    document.querySelector(".album-title");
+
+  if (!title) return;
+
+  title.textContent =
+    currentLanguage === "zh"
+      ? album.name
+      : album.nameEN;
+}
+
+
+/* =========================================================
+   Lightbox
+   ========================================================= */
+
+function openLightbox(index) {
+  if (!currentAlbum) return;
+
+  const images = urls[currentAlbum] || [];
+
+  if (!images[index]) return;
+
+  currentPhotoIndex = index;
+
+  const lightbox =
+    document.querySelector("#lightbox") ||
+    document.querySelector(".lightbox");
+
+  const lightboxImage =
+    document.querySelector("#lightboxImage") ||
+    document.querySelector(".lightbox img");
+
+  const counter =
+    document.querySelector("#lightboxCounter") ||
+    document.querySelector(".lightbox-counter");
+
+  if (!lightbox || !lightboxImage) return;
+
+  /*
+   * IMPORTANT:
+   * Only here do we load the full-resolution image.
+   */
+  lightboxImage.src = images[index];
+  lightboxImage.removeAttribute("srcset");
+  lightboxImage.loading = "eager";
+  lightboxImage.decoding = "async";
+
+  lightbox.classList.add("active");
+  document.body.classList.add("lightbox-open");
+
+  if (counter) {
+    counter.textContent = `${index + 1} / ${images.length}`;
+  }
+}
+
+
+function closeLightbox() {
+  const lightbox =
+    document.querySelector("#lightbox") ||
+    document.querySelector(".lightbox");
+
+  if (!lightbox) return;
+
+  lightbox.classList.remove("active");
+  document.body.classList.remove("lightbox-open");
+}
+
+
+function nextPhoto() {
+  if (!currentAlbum) return;
+
+  const images = urls[currentAlbum] || [];
+
+  if (!images.length) return;
+
+  currentPhotoIndex =
+    (currentPhotoIndex + 1) % images.length;
+
+  openLightbox(currentPhotoIndex);
+}
+
+
+function previousPhoto() {
+  if (!currentAlbum) return;
+
+  const images = urls[currentAlbum] || [];
+
+  if (!images.length) return;
+
+  currentPhotoIndex =
+    (currentPhotoIndex - 1 + images.length) %
+    images.length;
+
+  openLightbox(currentPhotoIndex);
+}
+
+
+/* =========================================================
+   Lightbox controls
+   ========================================================= */
+
+function bindLightbox() {
+  const close =
+    document.querySelector("#lightboxClose") ||
+    document.querySelector(".lightbox-close");
+
+  const next =
+    document.querySelector("#lightboxNext") ||
+    document.querySelector(".lightbox-next");
+
+  const previous =
+    document.querySelector("#lightboxPrev") ||
+    document.querySelector(".lightbox-prev");
+
+  if (close) {
+    close.addEventListener("click", closeLightbox);
+  }
+
+  if (next) {
+    next.addEventListener("click", nextPhoto);
+  }
+
+  if (previous) {
+    previous.addEventListener("click", previousPhoto);
+  }
+
+  const lightbox =
+    document.querySelector("#lightbox") ||
+    document.querySelector(".lightbox");
+
+  if (lightbox) {
+    lightbox.addEventListener("click", (event) => {
+      if (event.target === lightbox) {
+        closeLightbox();
+      }
+    });
+  }
+
+  document.addEventListener("keydown", (event) => {
+    const isOpen =
+      lightbox &&
+      lightbox.classList.contains("active");
+
+    if (!isOpen) return;
+
+    if (event.key === "Escape") {
+      closeLightbox();
+    }
+
+    if (event.key === "ArrowRight") {
+      nextPhoto();
+    }
+
+    if (event.key === "ArrowLeft") {
+      previousPhoto();
+    }
+  });
+}
+
+
+/* =========================================================
+   Language
+   ========================================================= */
+
+function setLanguage(language) {
+  if (!translations[language]) {
+    language = "en";
+  }
+
+  currentLanguage = language;
+
+  localStorage.setItem(
+    "willie-language",
+    language
+  );
+
+  document.documentElement.lang =
+    language === "zh"
+      ? "zh-TW"
+      : "en";
+
+  /*
+   * Elements using:
+   * data-en="..."
+   * data-zh="..."
+   */
+  $$("[data-en][data-zh]").forEach((element) => {
+    element.textContent =
+      language === "zh"
+        ? element.dataset.zh
+        : element.dataset.en;
+  });
+
+  /*
+   * Special navigation elements.
+   */
+  $$("[data-i18n]").forEach((element) => {
+    const key = element.dataset.i18n;
+
+    if (
+      translations[language] &&
+      translations[language][key]
+    ) {
+      element.textContent =
+        translations[language][key];
+    }
+  });
+
+  /*
+   * Language button.
+   */
+  const languageButton =
+    document.querySelector("#languageToggle") ||
+    document.querySelector(".language-toggle");
+
+  if (languageButton) {
+    languageButton.textContent =
+      language === "en"
+        ? "中文"
+        : "EN";
+  }
+
+  updateAlbumTitle(
+    albums.find(
+      (album) => album.id === currentAlbum
+    )
+  );
+}
+
+
+/* =========================================================
+   Theme
+   ========================================================= */
+
+function setTheme(theme) {
+  document.documentElement.dataset.theme =
+    theme;
+
+  localStorage.setItem(
+    "willie-theme",
+    theme
+  );
+}
+
+
+function initTheme() {
+  const savedTheme =
+    localStorage.getItem("willie-theme");
+
+  if (savedTheme) {
+    setTheme(savedTheme);
+    return;
+  }
+
+  const prefersDark =
+    window.matchMedia &&
+    window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+
+  setTheme(
+    prefersDark
+      ? "dark"
+      : "light"
+  );
+}
+
+
+function bindThemeToggle() {
+  const button =
+    document.querySelector("#themeToggle") ||
+    document.querySelector(".theme-toggle");
+
+  if (!button) return;
+
+  button.addEventListener("click", () => {
+    const current =
+      document.documentElement.dataset.theme;
+
+    setTheme(
+      current === "dark"
+        ? "light"
+        : "dark"
+    );
+  });
+}
+
+
+/* =========================================================
+   Language toggle
+   ========================================================= */
+
+function bindLanguageToggle() {
+  const button =
+    document.querySelector("#languageToggle") ||
+    document.querySelector(".language-toggle");
+
+  if (!button) return;
+
+  button.addEventListener("click", () => {
+    setLanguage(
+      currentLanguage === "en"
+        ? "zh"
+        : "en"
+    );
+  });
+}
+
+
+/* =========================================================
+   Mobile menu
+   ========================================================= */
+
+function bindMobileMenu() {
+  const button =
+    document.querySelector("#menuToggle") ||
+    document.querySelector(".menu-toggle");
+
+  const menu =
+    document.querySelector("#mobileMenu") ||
+    document.querySelector(".mobile-menu");
+
+  if (!button || !menu) return;
+
+  button.addEventListener("click", () => {
+    menu.classList.toggle("active");
+    button.classList.toggle("active");
+  });
+
+  $$(".mobile-menu a").forEach((link) => {
+    link.addEventListener("click", () => {
+      menu.classList.remove("active");
+      button.classList.remove("active");
+    });
+  });
+}
+
+
+/* =========================================================
+   Scroll progress
+   ========================================================= */
+
+function initScrollProgress() {
+  const progress =
+    document.querySelector("#scrollProgress") ||
+    document.querySelector(".scroll-progress");
+
+  if (!progress) return;
+
+  const update = () => {
+    const scrollTop =
+      window.scrollY || 0;
+
+    const height =
+      document.documentElement.scrollHeight -
+      window.innerHeight;
+
+    const percentage =
+      height > 0
+        ? (scrollTop / height) * 100
+        : 0;
+
+    progress.style.width =
+      `${percentage}%`;
+  };
+
+  window.addEventListener(
+    "scroll",
+    update,
+    { passive: true }
+  );
+
+  update();
+}
+
+
+/* =========================================================
+   Cursor glow
+   ========================================================= */
+
+function initCursorGlow() {
+  const glow =
+    document.querySelector("#cursorGlow") ||
+    document.querySelector(".cursor-glow");
+
+  if (!glow) return;
+
+  /*
+   * Disable custom cursor effects on touch devices.
+   */
+  if (
+    window.matchMedia &&
+    window.matchMedia("(pointer: coarse)").matches
+  ) {
+    glow.style.display = "none";
+    return;
+  }
+
+  window.addEventListener(
+    "pointermove",
+    (event) => {
+      glow.style.transform =
+        `translate3d(${event.clientX}px, ${event.clientY}px, 0)`;
+    },
+    { passive: true }
+  );
+}
+
+
+/* =========================================================
+   Page loader
+   ========================================================= */
+
+function initPageLoader() {
+  const loader =
+    document.querySelector("#pageLoader") ||
+    document.querySelector(".page-loader");
+
+  if (!loader) return;
+
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      loader.classList.add("hidden");
+
+      setTimeout(() => {
+        loader.remove();
+      }, 700);
+    }, 250);
+  });
+}
+
+
+/* =========================================================
+   Gallery back button
+   ========================================================= */
+
+function bindAlbumBack() {
+  const back =
+    document.querySelector("#albumBack") ||
+    document.querySelector(".album-back");
+
+  if (!back) return;
+
+  back.addEventListener("click", () => {
+    const albumView =
+      document.querySelector("#albumView") ||
+      document.querySelector(".album-view");
+
+    if (albumView) {
+      albumView.classList.remove("active");
+    }
+
+    currentAlbum = null;
+  });
+}
+
+
+/* =========================================================
+   Image error handling
+   ========================================================= */
+
+function bindImageErrorFallback() {
+  document.addEventListener(
+    "error",
+    (event) => {
+      const image = event.target;
+
+      if (
+        image &&
+        image.tagName === "IMG" &&
+        image.dataset.full &&
+        image.src !== image.dataset.full
+      ) {
+        image.src = image.dataset.full;
+      }
+    },
+    true
+  );
+}
+
+
+/* =========================================================
+   Initialize
+   ========================================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+  initTheme();
+
+  renderAlbums();
+
+  setLanguage(currentLanguage);
+
+  bindLanguageToggle();
+  bindThemeToggle();
+  bindMobileMenu();
+  bindLightbox();
+  bindAlbumBack();
+
+  initScrollProgress();
+  initCursorGlow();
+  initPageLoader();
+
+  bindImageErrorFallback();
+});
